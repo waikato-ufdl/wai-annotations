@@ -1,5 +1,8 @@
 import re
-from typing import Tuple
+from typing import Tuple, Pattern
+
+# Pattern for matching sharded record filenames
+SHARDED_FILENAME_PATTERN: Pattern = re.compile("^(.*)-(\\d{5})-of-(\\d{5})$")
 
 
 def format_sharded_filename(base_name: str, shards: int, index: int):
@@ -23,7 +26,7 @@ def sharded_filename_params(filename: str) -> Tuple[str, int, int]:
     :return:            The base name, the number of shards,
                         and the shard index.
     """
-    match = re.match("^(.*)-(\\d{5})-of-(\\d{5})$", filename)
+    match = SHARDED_FILENAME_PATTERN.match(filename)
 
     if match:
         return match.group(1), int(match.group(3)), int(match.group(2))
