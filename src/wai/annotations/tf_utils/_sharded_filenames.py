@@ -26,6 +26,6 @@ def sharded_filename_params(filename: str) -> Tuple[str, int, int]:
     match = re.match("^(.*)-(\\d{5})-of-(\\d{5})$", filename)
 
     if match:
-        return match.group(1), int(match.group(2)), int(match.group(3))
+        return match.group(1), int(match.group(3)), int(match.group(2))
     else:
         return "", 0, 0
