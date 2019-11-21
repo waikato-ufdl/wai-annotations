@@ -36,5 +36,12 @@ setup(
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
-    ]
+        "wai.common",
+        "tensorflow",
+        "Pillow",
+        "contextlib2"
+    ],
+    entry_points={
+        "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"]
+    }
 )
