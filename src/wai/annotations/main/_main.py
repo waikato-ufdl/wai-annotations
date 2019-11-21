@@ -6,6 +6,7 @@ from typing import List, Optional
 
 from ._components import components
 from ._parser import parser
+from ._coercions import coerce_bbox, coerce_mask
 
 
 def main(args: Optional[List[str]] = None):
@@ -23,8 +24,17 @@ def main(args: Optional[List[str]] = None):
     output_converter = components[namespace.output_type][2].instance_from_namespace(namespace)
     writer = components[namespace.output_type][3].instance_from_namespace(namespace)
 
-    # Chain the components
-    writer.save(output_converter.convert_all(input_converter.convert_all(reader.load())))
+    # Create the input chain
+    input_chain = input_converter.convert_all(reader.load())
+
+    # Add a coercion if specified
+    if namespace.coerce == "bbox":
+        input_chain = map(coerce_bbox, input_chain)
+    elif namespace.coerce == "mask":
+        input_chain = map(coerce_mask, input_chain)
+
+    # Finish the chain with the output components
+    writer.save(output_converter.convert_all(input_chain))
 
 
 def sys_main() -> int:

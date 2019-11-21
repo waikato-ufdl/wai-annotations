@@ -11,6 +11,11 @@ parser.add_argument(
     "-v", "--verbose", action="store_true", dest="verbose", required=False,
     help="whether to be more verbose when generating the records")
 
+parser.add_argument(
+    "-c", "--coerce", dest="coerce", required=False, choices=["bbox", "mask"],
+    help="whether to coerce located objects into a particular boundary type"
+)
+
 # Import the components that are available to us
 from ._components import components as available_components
 
