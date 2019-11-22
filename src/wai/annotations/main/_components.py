@@ -17,5 +17,6 @@ ComponentSpec = Tuple[
 
 components: Dict[str, ComponentSpec] = {
     "adams": (ADAMSReportReader, FromADAMSReport, ToADAMSReport, ADAMSReportWriter),
-    "tfrecords": (TensorflowExampleReader, FromTensorflowExample, ToTensorflowExample, TensorflowExampleWriter)
+    "tfrecords": (TensorflowExampleReader, FromTensorflowExample, ToTensorflowExample, TensorflowExampleWriter),
+    "coco": (None, None, ToCOCO, COCOWriter)
 }
