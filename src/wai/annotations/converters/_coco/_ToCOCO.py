@@ -34,7 +34,7 @@ class ToCOCO(InternalFormatConverter[COCOExternalFormat]):
                 polygon.append(float(point.y))
 
         return Annotation(id=0, image_id=0, category_id=0,  # Will be calculated at write-time
-                          segmentation=[polygon],
+                          segmentation=[polygon] if len(polygon) > 0 else [],
                           area=0.0,  # TODO Calculate actual area
                           bbox=[float(located_object.x), float(located_object.y),
                                 float(located_object.width), float(located_object.height)],
