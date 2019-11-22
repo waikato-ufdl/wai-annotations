@@ -1,13 +1,12 @@
-import io
 from typing import Tuple, List, Dict, Optional, Pattern
 
-from PIL import Image as pil
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 import tensorflow as tf
 
 from ...core import InternalFormatConverter, ImageFormat
 from ...core.constants import LABEL_METADATA_KEY
 from ...core.external_formats import TensorflowExampleExternalFormat
+from ...core.utils import get_image_size
 from ...tf_utils import make_feature
 
 
@@ -29,7 +28,7 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
                          image_format: ImageFormat,
                          located_objects: LocatedObjects) -> TensorflowExampleExternalFormat:
         # Get the dimensions of the image
-        width, height = self.get_image_shape(image_data)
+        width, height = get_image_size(image_data)
 
         # Format and extract the relevant annotation parameters
         lefts, rights, tops, bottoms, labels, classes = self.process_located_objects(located_objects,
@@ -55,18 +54,6 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
                 }
             )
         )
-
-    @staticmethod
-    def get_image_shape(image_data: bytes) -> Tuple[int, int]:
-        """
-        Gets the shape of the image from the data.
-
-        :param image_data:  The image data.
-        :return:            The width and height of the image.
-        """
-        image = pil.open(io.BytesIO(image_data))
-
-        return image.width, image.height
 
     def process_located_objects(self, located_objects: LocatedObjects, image_width: int, image_height: int) -> Tuple[
         List[float],

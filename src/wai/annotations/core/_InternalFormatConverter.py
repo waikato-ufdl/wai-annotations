@@ -1,12 +1,12 @@
 import re
 from abc import abstractmethod
 from argparse import ArgumentParser, Namespace
-from typing import Optional, List, Dict, Any, Pattern, Set, Iterable, Iterator
+from typing import Optional, List, Dict, Any, Pattern, Iterable, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
+from .utils import get_object_label
 from .external_formats import ExternalFormat
-from .constants import LABEL_METADATA_KEY, DEFAULT_LABEL
 from ._Converter import Converter
 from ._typing import InternalFormat
 from ._ImageFormat import ImageFormat
@@ -114,13 +114,8 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         :param located_object:  The located object to test.
         :return:                True if the object matches, false if not.
         """
-        # Get the object's label
-        label: str = located_object.metadata[LABEL_METADATA_KEY] \
-            if LABEL_METADATA_KEY in located_object.metadata \
-            else DEFAULT_LABEL
-
         # Filter the label
-        return self.filter_label(label)
+        return self.filter_label(get_object_label(located_object))
 
     def filter_instance(self, instance: InternalFormat) -> bool:
         """
