@@ -45,10 +45,11 @@ def coerce_mask(instance: InternalFormat) -> InternalFormat:
             continue
 
         # Calculate the bound coordinates
-        left = located_object.x
-        right = located_object.x + located_object.width - 1
-        top = located_object.y
-        bottom = located_object.y + located_object.height - 1
+        rectangle = located_object.get_rectangle()
+        left = rectangle.left()
+        right = rectangle.right()
+        top = rectangle.top()
+        bottom = rectangle.bottom()
 
         # Create a polygon from the bound coordinates
         polygon = Polygon(Point(left, top),
