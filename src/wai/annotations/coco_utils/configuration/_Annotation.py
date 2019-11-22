@@ -8,7 +8,7 @@ class Annotation(Configuration["Annotation"]):
     id: int = NumberProperty("", integer_only=True)
     image_id: int = NumberProperty("", integer_only=True)
     category_id: int = NumberProperty("", integer_only=True)
-    segmentation: List[List[float]] = ArrayProperty(ArrayProperty(NumberProperty("")))  # RLE not allowed
+    segmentation: List[List[float]] = ArrayProperty(ArrayProperty(NumberProperty("")), max_elements=1)
     area: float = NumberProperty("")
     bbox: List[float] = ArrayProperty(NumberProperty(""), min_elements=4, max_elements=4)
     iscrowd: int = NumberProperty("", minimum=0, maximum=1, integer_only=True)
