@@ -8,6 +8,9 @@ from ...vgg_utils.configuration import VGGFile
 
 
 class VGGWriter(Writer[VGGExternalFormat]):
+    """
+    Writer of VGG-format JSON files.
+    """
     def __init__(self, output: str, no_images: bool = False):
         super().__init__(output)
 

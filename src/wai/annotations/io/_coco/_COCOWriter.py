@@ -10,6 +10,9 @@ from ...core.utils import get_image_size
 
 
 class COCOWriter(Writer[COCOExternalFormat]):
+    """
+    Writer of COCO-format JSON files.
+    """
     def __init__(self, output: str, no_images: bool = False):
         super().__init__(output)
 
