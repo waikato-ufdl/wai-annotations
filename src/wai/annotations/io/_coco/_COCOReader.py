@@ -42,4 +42,4 @@ class COCOReader(Reader[COCOExternalFormat]):
             # Get the labels from the categories
             labels = [label_lookup[annotation.category_id] for annotation in annotations]
 
-            yield image_file, image_data, image_format, annotations, labels
+            yield image.file_name, image_data, image_format, annotations, labels
