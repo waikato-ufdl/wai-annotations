@@ -18,15 +18,14 @@ class ToVGG(InternalFormatConverter[VGGExternalFormat]):
                          image_data: bytes,
                          image_format: ImageFormat,
                          located_objects: LocatedObjects) -> VGGExternalFormat:
-        regions = []
-        for located_object in located_objects:
-            region = Region(region_attributes=RegionAttributes(name="",
-                                                               type=get_object_label(located_object),
-                                                               image_quality=ImageQuality()),
-                            shape_attributes=self.get_shape_attributes(located_object))
+        # Create a region for each located object
+        regions = [Region(region_attributes=RegionAttributes(name="",
+                                                             type=get_object_label(located_object),
+                                                             image_quality=ImageQuality()),
+                          shape_attributes=self.get_shape_attributes(located_object))
+                   for located_object in located_objects]
 
-            regions.append(region)
-
+        # Create an image info for the image
         image = Image(filename=image_filename,
                       size=-1,
                       file_attributes=FileAttributes(caption="", public_domain="no", image_url=""),
@@ -36,14 +35,19 @@ class ToVGG(InternalFormatConverter[VGGExternalFormat]):
 
     def get_shape_attributes(self, located_object: LocatedObject) -> Union[RectShapeAttributes, PolygonShapeAttributes]:
         """
-        TODO
-        :param located_object:
-        :return:
+        Gets the shape attributes of the given located object.
+        The type of the attributes is determined by whether
+        the object is in bbox or mask format.
+
+        :param located_object:  The located object.
+        :return:                The shape attributes.
         """
+        # Mask format
         if located_object.has_polygon():
             return PolygonShapeAttributes(name="polygon",
                                           all_points_x=located_object.get_polygon_x(),
                                           all_points_y=located_object.get_polygon_y())
+        # Bbox format
         else:
             return RectShapeAttributes(name="rect",
                                        x=located_object.x,
