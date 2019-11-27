@@ -5,6 +5,6 @@ from ._ImageQuality import ImageQuality
 
 
 class RegionAttributes(Configuration["RegionAttributes"]):
-    name: str = StringProperty("")
-    type: str = StringProperty("")
-    image_quality: ImageQuality = SubConfiguration("", ImageQuality)
+    name: str = StringProperty()
+    type: str = StringProperty()
+    image_quality: ImageQuality = SubConfiguration(configuration_type=ImageQuality)

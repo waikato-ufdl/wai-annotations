@@ -8,7 +8,9 @@ from ._Region import Region
 
 
 class Image(Configuration["Image"]):
-    filename: str = StringProperty("")
-    size: int = NumberProperty("", integer_only=True)
-    file_attributes: FileAttributes = SubConfiguration("", FileAttributes)
-    regions: List[Region] = ArrayProperty(SubConfiguration("", Region))
+    filename: str = StringProperty()
+    size: int = NumberProperty(integer_only=True)
+    file_attributes: FileAttributes = SubConfiguration(configuration_type=FileAttributes)
+    regions: List[Region] = ArrayProperty(
+        element_property=SubConfiguration(configuration_type=Region)
+    )

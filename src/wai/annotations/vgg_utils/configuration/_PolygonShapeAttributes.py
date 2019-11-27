@@ -5,6 +5,10 @@ from wai.common.json.configuration.property import ConstantProperty, NumberPrope
 
 
 class PolygonShapeAttributes(Configuration["PolygonShapeAttributes"]):
-    name: str = ConstantProperty("", "polygon")
-    all_points_x: List[int] = ArrayProperty(NumberProperty("", integer_only=True))
-    all_points_y: List[int] = ArrayProperty(NumberProperty("", integer_only=True))
+    name: str = ConstantProperty(value="polygon")
+    all_points_x: List[int] = ArrayProperty(
+        element_property=NumberProperty(integer_only=True)
+    )
+    all_points_y: List[int] = ArrayProperty(
+        element_property=NumberProperty(integer_only=True)
+    )
