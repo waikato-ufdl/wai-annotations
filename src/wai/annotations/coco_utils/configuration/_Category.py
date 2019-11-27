@@ -3,6 +3,6 @@ from wai.common.json.configuration.property import NumberProperty, StringPropert
 
 
 class Category(Configuration["Category"]):
-    id: int = NumberProperty("", integer_only=True)
-    name: str = StringProperty("")
-    supercategory: str = StringProperty("")
+    id: int = NumberProperty(integer_only=True)
+    name: str = StringProperty()
+    supercategory: str = StringProperty()

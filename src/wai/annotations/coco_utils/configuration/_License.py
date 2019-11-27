@@ -3,6 +3,6 @@ from wai.common.json.configuration.property import NumberProperty, StringPropert
 
 
 class License(Configuration["License"]):
-    id: int = NumberProperty("", integer_only=True)
-    name: str = StringProperty("")
-    url: str = StringProperty("")
+    id: int = NumberProperty(integer_only=True)
+    name: str = StringProperty()
+    url: str = StringProperty()

@@ -11,8 +11,16 @@ from ._Category import Category
 
 
 class COCOFile(Configuration["COCOFile"]):
-    info: Info = SubConfiguration("", Info)
-    images: List[Image] = ArrayProperty(SubConfiguration("", Image))
-    annotations: List[Annotation] = ArrayProperty(SubConfiguration("", Annotation))
-    licenses: List[License] = ArrayProperty(SubConfiguration("", License))
-    categories: List[Category] = ArrayProperty(SubConfiguration("", Category))
+    info: Info = SubConfiguration(configuration_type=Info)
+    images: List[Image] = ArrayProperty(
+        element_property=SubConfiguration(configuration_type=Image)
+    )
+    annotations: List[Annotation] = ArrayProperty(
+        element_property=SubConfiguration(configuration_type=Annotation)
+    )
+    licenses: List[License] = ArrayProperty(
+        element_property=SubConfiguration(configuration_type=License)
+    )
+    categories: List[Category] = ArrayProperty(
+        element_property=SubConfiguration(configuration_type=Category)
+    )

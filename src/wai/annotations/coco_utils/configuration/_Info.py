@@ -3,9 +3,9 @@ from wai.common.json.configuration.property import NumberProperty, StringPropert
 
 
 class Info(Configuration["Info"]):
-    year: int = NumberProperty("", integer_only=True)
-    version: str = StringProperty("")
-    description: str = StringProperty("")
-    contributor: str = StringProperty("")
-    url: str = StringProperty("")
-    date_created: str = StringProperty("")
+    year: int = NumberProperty(integer_only=True)
+    version: str = StringProperty()
+    description: str = StringProperty()
+    contributor: str = StringProperty()
+    url: str = StringProperty()
+    date_created: str = StringProperty()
