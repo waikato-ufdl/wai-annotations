@@ -3,7 +3,7 @@ import datetime
 from argparse import ArgumentParser, Namespace
 from typing import Iterable, Any, Dict
 
-from ...coco_utils.configuration import COCOFile, Image, Category, Info
+from ...coco_utils.configuration import COCOFile, Image, Category, Info, License
 from ...core import Writer
 from ...core.external_formats import COCOExternalFormat
 from ...core.utils import get_image_size
@@ -13,10 +13,15 @@ class COCOWriter(Writer[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
-    def __init__(self, output: str, no_images: bool = False):
+    def __init__(self, output: str,
+                 no_images: bool = False,
+                 license_name: str = "",
+                 license_url: str = ""):
         super().__init__(output)
 
         self.no_images: bool = no_images
+        self.license_name: str = license_name
+        self.license_url: str = license_url
 
     @classmethod
     def configure_parser(cls, parser: ArgumentParser):
@@ -25,10 +30,18 @@ class COCOWriter(Writer[COCOExternalFormat]):
         parser.add_argument("--no-images", action="store_true", required=False, dest="no_images",
                             help="skip the writing of images, outputting only the annotations")
 
+        parser.add_argument("--license-name", required=False, dest="license_name",
+                            help="the license of the images")
+
+        parser.add_argument("--license-url", required=False, dest="license_url",
+                            help="the license of the images")
+
     @classmethod
     def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
         kwargs = super().determine_kwargs_from_namespace(namespace)
-        kwargs.update(no_images=namespace.no_images)
+        kwargs.update(no_images=namespace.no_images,
+                      license_name=namespace.license_name,
+                      license_url=namespace.license_url)
         return kwargs
 
     @classmethod
@@ -57,7 +70,7 @@ class COCOWriter(Writer[COCOExternalFormat]):
                                                  date_created=str(now)),
                                        images=[],
                                        annotations=[],
-                                       licenses=[],
+                                       licenses=[self.create_license()],
                                        categories=[])
 
         # Write each instance
@@ -78,7 +91,7 @@ class COCOWriter(Writer[COCOExternalFormat]):
                           width=width,
                           height=height,
                           file_name=image_filename,
-                          license=0,
+                          license=1,
                           flickr_url="",
                           coco_url="",
                           date_captured="")
@@ -109,3 +122,14 @@ class COCOWriter(Writer[COCOExternalFormat]):
 
         # Save the file
         coco_file.save_to_json_file(self.output)
+
+    def create_license(self) -> License:
+        """
+        Creates the license for the images if one is specified,
+        or a default one if not.
+
+        :return:    The license.
+        """
+        return License(id=1,
+                       name=self.license_name if self.license_name != "" else "default",
+                       url=self.license_url)
