@@ -5,6 +5,7 @@ from wai.common.file.report import loadf, Report
 
 from ...core import Reader, ImageFormat
 from ...core.external_formats import ADAMSExternalFormat
+from ...core.utils import get_files_from_directory
 from .constants import EXTENSION
 
 
@@ -16,7 +17,7 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
         # If given a directory as input, recursively load all
         # report files in the directory
         if os.path.isdir(input_path):
-            return self.get_files_from_directory(input_path)
+            return get_files_from_directory(input_path, EXTENSION)
 
         # Otherwise we expect a file containing a list of reports
         else:
@@ -44,18 +45,3 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
         report: Report = loadf(filename)
 
         yield image_file, image_data, report
-
-    @staticmethod
-    def get_files_from_directory(directory: str) -> Iterable[str]:
-        """
-        Recursively gets the report files from all sub-directories of the
-        given directory (including itself).
-
-        :param directory:   The top-level directory to search.
-        :return:            The iterator of filenames.
-        """
-        # Process each subdirectory
-        for subdir, dirs, files in os.walk(directory):
-            for file in files:
-                if file.endswith(EXTENSION):
-                    yield os.path.join(subdir, file)
