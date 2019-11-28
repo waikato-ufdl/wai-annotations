@@ -40,10 +40,10 @@ class ADAMSReportWriter(Writer[ADAMSExternalFormat]):
         # Write each instance
         for instance in instances:
             # Unpack the instance
-            image_filename, image_data, image_filetype, report = instance
+            image_filename, image_data, report = instance
 
             # Write the image
-            if not self.no_images:
+            if not self.no_images and image_data is not None:
                 with open(os.path.join(path, image_filename), "wb") as file:
                     file.write(image_data)
 

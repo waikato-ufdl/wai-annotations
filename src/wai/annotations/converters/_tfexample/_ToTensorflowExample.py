@@ -24,11 +24,17 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
 
     def convert_unpacked(self,
                          image_filename: str,
-                         image_data: bytes,
-                         image_format: ImageFormat,
+                         image_data: Optional[bytes],
                          located_objects: LocatedObjects) -> TensorflowExampleExternalFormat:
+        # Make sure we have an image
+        if image_data is None:
+            raise ValueError(f"Tensorflow records require image data")
+
         # Get the dimensions of the image
         width, height = get_image_size(image_data)
+
+        # Get the image format
+        image_format = ImageFormat.for_filename(image_filename)
 
         # Format and extract the relevant annotation parameters
         lefts, rights, tops, bottoms, labels, classes = self.process_located_objects(located_objects,

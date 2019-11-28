@@ -2,9 +2,9 @@ from typing import List
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
-from ...core import ExternalFormatConverter, InternalFormat, ImageFormat
+from ...core import ExternalFormatConverter, InternalFormat
 from ...core.external_formats import TensorflowExampleExternalFormat
-from ...core.constants import LABEL_METADATA_KEY
+from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY, DEFAULT_PREFIX
 from ...tf_utils import extract_feature
 
 
@@ -20,7 +20,6 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
         # Extract the image data from the example instance
         image_filename = decode_utf_8(extract_feature(instance.features, 'image/filename')[0])
         image_data = extract_feature(instance.features, 'image/encoded')[0]
-        image_format = ImageFormat.for_extension(decode_utf_8(extract_feature(instance.features, 'image/format')[0]))
         image_width = extract_feature(instance.features, 'image/width')[0]
         image_height = extract_feature(instance.features, 'image/height')[0]
 
@@ -33,7 +32,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
 
         located_objects = self.process_located_objects(lefts, rights, tops, bottoms, labels, image_width, image_height)
 
-        return image_filename, image_data, image_format, located_objects
+        return image_filename, image_data, located_objects
 
     def process_located_objects(self,
                                 lefts: List[float],
@@ -67,7 +66,8 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
             height = round(bottom * image_height) - y + 1
 
             # Create the located object
-            located_object: LocatedObject = LocatedObject(x, y, width, height, **{LABEL_METADATA_KEY: label})
+            located_object: LocatedObject = LocatedObject(x, y, width, height, **{LABEL_METADATA_KEY: label,
+                                                                                  PREFIX_METADATA_KEY: DEFAULT_PREFIX})
 
             # Add the object to the list
             located_objects.append(located_object)

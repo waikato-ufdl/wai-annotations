@@ -1,10 +1,9 @@
 """
 Module defining the COCO external format.
 """
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 from ...coco_utils.configuration import Annotation
-from .._ImageFormat import ImageFormat
 
-# Image filename, image data, image format, COCO annotations, labels
-COCOExternalFormat = Tuple[str, bytes, ImageFormat, List[Annotation], List[str]]
+# Image filename, image data, COCO annotations, labels, prefixes
+COCOExternalFormat = Tuple[str, Optional[bytes], List[Annotation], List[str], List[str]]

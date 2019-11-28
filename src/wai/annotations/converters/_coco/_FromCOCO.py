@@ -3,7 +3,7 @@ from wai.common.geometry import Polygon, Point
 
 from ...coco_utils.configuration import Annotation
 from ...core import ExternalFormatConverter, InternalFormat
-from ...core.constants import LABEL_METADATA_KEY
+from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY
 from ...core.external_formats import COCOExternalFormat
 
 
@@ -13,17 +13,18 @@ class FromCOCO(ExternalFormatConverter[COCOExternalFormat]):
     """
     def _convert(self, instance: COCOExternalFormat) -> InternalFormat:
         # Unpack the external format
-        image_filename, image_data, image_format, annotations, labels = instance
+        image_filename, image_data, annotations, labels, prefixes = instance
 
-        return (image_filename, image_data, image_format,
-                LocatedObjects(map(self.to_located_object, annotations, labels)))
+        return (image_filename, image_data,
+                LocatedObjects(map(self.to_located_object, annotations, labels, prefixes)))
 
-    def to_located_object(self, annotation: Annotation, label: str) -> LocatedObject:
+    def to_located_object(self, annotation: Annotation, label: str, prefix: str) -> LocatedObject:
         """
         Converts an COCO annotation/label pair into a located object.
 
         :param annotation:  The annotation.
         :param label:       The label.
+        :param prefix:      The prefix.
         :return:            The located object.
         """
         # Create the located object
@@ -31,7 +32,8 @@ class FromCOCO(ExternalFormatConverter[COCOExternalFormat]):
                                        round(annotation.bbox[1]),
                                        round(annotation.bbox[2]),
                                        round(annotation.bbox[3]),
-                                       **{LABEL_METADATA_KEY: label})
+                                       **{LABEL_METADATA_KEY: label,
+                                          PREFIX_METADATA_KEY: prefix})
 
         # Create the polygon if there is one
         points = []

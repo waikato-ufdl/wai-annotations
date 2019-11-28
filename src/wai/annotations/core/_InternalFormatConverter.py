@@ -9,7 +9,6 @@ from .utils import get_object_label
 from .external_formats import ExternalFormat
 from ._Converter import Converter
 from ._typing import InternalFormat
-from ._ImageFormat import ImageFormat
 
 
 class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
@@ -51,25 +50,23 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
 
     def convert(self, instance: InternalFormat) -> ExternalFormat:
         # Unpack the instance
-        image_filename, image_data, image_format, located_objects = instance
+        image_filename, image_data, located_objects = instance
 
         # Use the options to filter the located objects by label
         self.remove_invalid_objects(located_objects)
 
-        return self.convert_unpacked(image_filename, image_data, image_format, located_objects)
+        return self.convert_unpacked(image_filename, image_data, located_objects)
 
     @abstractmethod
     def convert_unpacked(self,
                          image_filename: str,
-                         image_data: bytes,
-                         image_format: ImageFormat,
+                         image_data: Optional[bytes],
                          located_objects: LocatedObjects) -> ExternalFormat:
         """
         Converts an instance from internal format into the external format.
 
         :param image_filename:  The name of the image file.
         :param image_data:      The binary image data.
-        :param image_format:    The image file format.
         :param located_objects: The located objects in the image.
         :return:                The instance in external format.
         """
@@ -125,6 +122,6 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         :return:            True if the instance matches, false if not.
         """
         # Get the located objects
-        located_objects: LocatedObjects = instance[3]
+        located_objects: LocatedObjects = instance[2]
 
         return any(self.filter_object(located_object) for located_object in located_objects)

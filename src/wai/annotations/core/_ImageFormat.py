@@ -12,14 +12,31 @@ class ImageFormat(Enum):
     PNG = {"png", "PNG"}
 
     @classmethod
-    def get_associated_image(cls, filename: str) -> Tuple[Optional[str], Optional["ImageFormat"]]:
+    def for_filename(cls, filename: str) -> Optional["ImageFormat"]:
+        """
+        Gets the image format for a given image filename.
+
+        :param filename:    The image filename.
+        :return:            The image format, or none if no format matched.
+        """
+        # Get the extension from the filename
+        extension: str = os.path.splitext(filename)[1][1:]
+
+        # Search for a format with this extension
+        for image_format in ImageFormat:
+            if extension in image_format.value:
+                return image_format
+
+        return None
+
+    @classmethod
+    def get_associated_image(cls, filename: str) -> Optional[str]:
         """
         Gets an image associated with the given filename, by replacing its
         extension with one of the valid image formats.
 
         :param filename:    The filename to find an image for.
-        :return:            The filename of the image and the image format,
-                            or None, None if not found.
+        :return:            The filename of the image, None if not found.
         """
         # Remove the extension from the filename
         filename = os.path.splitext(filename)[0]
@@ -32,10 +49,10 @@ class ImageFormat(Enum):
 
                 # If an image of this format exists, return it
                 if os.path.exists(image_filename):
-                    return image_filename, image_format
+                    return image_filename
 
         # No image found
-        return None, None
+        return None
 
     @classmethod
     def for_extension(cls, extension: str) -> Optional["ImageFormat"]:

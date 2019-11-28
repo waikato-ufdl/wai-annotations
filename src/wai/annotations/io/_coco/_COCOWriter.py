@@ -8,12 +8,17 @@ from ...core import Writer
 from ...core.external_formats import COCOExternalFormat
 from ...core.utils import get_image_size
 
+# The default name/url to use for the license if none is provided
+DEFAULT_LICENSE_NAME: str = "default"
+DEFAULT_LICENSE_URL: str = ""
+
 
 class COCOWriter(Writer[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
-    def __init__(self, output: str,
+    def __init__(self,
+                 output: str,
                  no_images: bool = False,
                  license_name: str = "",
                  license_url: str = ""):
@@ -30,10 +35,10 @@ class COCOWriter(Writer[COCOExternalFormat]):
         parser.add_argument("--no-images", action="store_true", required=False, dest="no_images",
                             help="skip the writing of images, outputting only the annotations")
 
-        parser.add_argument("--license-name", required=False, dest="license_name",
+        parser.add_argument("--license-name", required=False, dest="license_name", default="",
                             help="the license of the images")
 
-        parser.add_argument("--license-url", required=False, dest="license_url",
+        parser.add_argument("--license-url", required=False, dest="license_url", default="",
                             help="the license of the images")
 
     @classmethod
@@ -76,15 +81,15 @@ class COCOWriter(Writer[COCOExternalFormat]):
         # Write each instance
         for instance_index, instance in enumerate(instances, 1):
             # Unpack the instance
-            image_filename, image_data, image_filetype, annotations, labels = instance
+            image_filename, image_data, annotations, labels, prefixes = instance
 
             # Write the image
-            if not self.no_images:
+            if not self.no_images and image_data is not None:
                 with open(os.path.join(path, image_filename), "wb") as file:
                     file.write(image_data)
 
             # Get the dimensions of the image
-            width, height = get_image_size(image_data)
+            width, height = get_image_size(image_data) if image_data is not None else (-1, -1)
 
             # Create the image description
             image = Image(id=instance_index,
@@ -100,12 +105,12 @@ class COCOWriter(Writer[COCOExternalFormat]):
             coco_file.images.append(image)
 
             # Process each annotation
-            for annotation, label in zip(annotations, labels):
+            for annotation, label, prefix in zip(annotations, labels, prefixes):
                 # Create a category for this label if there isn't one already
                 if label not in category_lookup:
                     category = Category(id=len(category_lookup) + 1,
                                         name=label,
-                                        supercategory="")
+                                        supercategory=prefix)
 
                     category_lookup[label] = category.id
 
@@ -131,5 +136,5 @@ class COCOWriter(Writer[COCOExternalFormat]):
         :return:    The license.
         """
         return License(id=1,
-                       name=self.license_name if self.license_name != "" else "default",
-                       url=self.license_url)
+                       name=self.license_name if self.license_name != "" else DEFAULT_LICENSE_NAME,
+                       url=self.license_url if self.license_url != "" else DEFAULT_LICENSE_URL)

@@ -1,12 +1,12 @@
-from typing import Union
+from typing import Union, Optional
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...vgg_utils.configuration import Image, FileAttributes, Region, RegionAttributes, ImageQuality, \
     RectShapeAttributes, PolygonShapeAttributes
-from ...core import InternalFormatConverter, ImageFormat
+from ...core import InternalFormatConverter
 from ...core.external_formats import VGGExternalFormat
-from ...core.utils import get_object_label
+from ...core.utils import get_object_label, get_object_prefix
 
 
 class ToVGG(InternalFormatConverter[VGGExternalFormat]):
@@ -15,15 +15,14 @@ class ToVGG(InternalFormatConverter[VGGExternalFormat]):
     """
     def convert_unpacked(self,
                          image_filename: str,
-                         image_data: bytes,
-                         image_format: ImageFormat,
+                         image_data: Optional[bytes],
                          located_objects: LocatedObjects) -> VGGExternalFormat:
         # Create a region for each located object
-        regions = [Region(region_attributes=RegionAttributes(name="",
+        regions = [Region(region_attributes=RegionAttributes(name=f"{get_object_prefix(located_object)}-{index}",
                                                              type=get_object_label(located_object),
                                                              image_quality=ImageQuality()),
                           shape_attributes=self.get_shape_attributes(located_object))
-                   for located_object in located_objects]
+                   for index, located_object in enumerate(located_objects, 1)]
 
         # Create an image info for the image
         image = Image(filename=image_filename,
@@ -31,7 +30,7 @@ class ToVGG(InternalFormatConverter[VGGExternalFormat]):
                       file_attributes=FileAttributes(caption="", public_domain="no", image_url=""),
                       regions=regions)
 
-        return image_data, image_format, image
+        return image_data, image
 
     def get_shape_attributes(self, located_object: LocatedObject) -> Union[RectShapeAttributes, PolygonShapeAttributes]:
         """

@@ -43,7 +43,7 @@ class VGGWriter(Writer[VGGExternalFormat]):
         # Write each instance
         for instance_index, instance in enumerate(instances, 1):
             # Unpack the instance
-            image_data, image_filetype, image = instance
+            image_data, image = instance
 
             # Write the image
             if not self.no_images:

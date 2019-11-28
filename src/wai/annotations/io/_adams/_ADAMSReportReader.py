@@ -29,15 +29,13 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
 
     def read(self, filename: str) -> Iterator[ADAMSExternalFormat]:
         # Get the image associated to this report
-        image_file, image_format = ImageFormat.get_associated_image(filename)
-
-        # Log a warning if the image wasn't found
-        if image_file is None:
-            raise RuntimeError(f"Failed to determine image for report: {filename}")
+        image_file = ImageFormat.get_associated_image(filename)
 
         # Load the image
-        with open(image_file, "rb") as file:
-            image_data = file.read()
+        image_data = None
+        if image_file is not None:
+            with open(image_file, "rb") as file:
+                image_data = file.read()
 
         # Strip the image file down to just it's base name
         image_file = os.path.basename(image_file)
@@ -45,7 +43,7 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
         # Load the report
         report: Report = loadf(filename)
 
-        yield image_file, image_data, image_format, report
+        yield image_file, image_data, report
 
     @staticmethod
     def get_files_from_directory(directory: str) -> Iterable[str]:
@@ -60,4 +58,4 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
         for subdir, dirs, files in os.walk(directory):
             for file in files:
                 if file.endswith(EXTENSION):
-                    yield os.path.join(directory, subdir, file)
+                    yield os.path.join(subdir, file)

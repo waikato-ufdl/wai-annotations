@@ -1,9 +1,11 @@
+from typing import Optional
+
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...coco_utils.configuration import Annotation
-from ...core import InternalFormatConverter, ImageFormat
+from ...core import InternalFormatConverter
 from ...core.external_formats import COCOExternalFormat
-from ...core.utils import get_object_label
+from ...core.utils import get_object_label, get_object_prefix
 
 
 class ToCOCO(InternalFormatConverter[COCOExternalFormat]):
@@ -12,12 +14,12 @@ class ToCOCO(InternalFormatConverter[COCOExternalFormat]):
     """
     def convert_unpacked(self,
                          image_filename: str,
-                         image_data: bytes,
-                         image_format: ImageFormat,
+                         image_data: Optional[bytes],
                          located_objects: LocatedObjects) -> COCOExternalFormat:
-        return (image_filename, image_data, image_format,
+        return (image_filename, image_data,
                 list(map(self.convert_located_object, located_objects)),
-                list(map(get_object_label, located_objects)))
+                list(map(get_object_label, located_objects)),
+                list(map(get_object_prefix, located_objects)))
 
     def convert_located_object(self, located_object: LocatedObject) -> Annotation:
         """
@@ -33,9 +35,13 @@ class ToCOCO(InternalFormatConverter[COCOExternalFormat]):
                 polygon.append(float(point.x))
                 polygon.append(float(point.y))
 
+        # Calculate the area of the annotation
+        # TODO: Calculate polygon area if object is mask bound
+        area = float(located_object.get_rectangle().area())
+
         return Annotation(id=0, image_id=0, category_id=0,  # Will be calculated at write-time
                           segmentation=[polygon] if len(polygon) > 0 else [],
-                          area=0.0,  # TODO Calculate actual area
+                          area=area,
                           bbox=[float(located_object.x), float(located_object.y),
                                 float(located_object.width), float(located_object.height)],
                           iscrowd=0)

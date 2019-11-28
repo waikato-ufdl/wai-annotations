@@ -44,7 +44,7 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
         converted_instance: InternalFormat = self._convert(instance)
 
         # Apply the label mapping
-        self.apply_label_mapping(converted_instance[3])
+        self.apply_label_mapping(converted_instance[2])
 
         return converted_instance
 

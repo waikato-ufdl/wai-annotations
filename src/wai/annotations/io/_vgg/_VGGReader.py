@@ -27,10 +27,12 @@ class VGGReader(Reader[VGGExternalFormat]):
         # Each image yields an instance
         for image in vgg_file._additional_properties.values():
             # Get the image associated to this entry
-            image_file, image_format = ImageFormat.get_associated_image(os.path.join(path, image.filename))
+            image_file = os.path.join(path, image.filename)
 
             # Load the image
-            with open(image_file, "rb") as file:
-                image_data = file.read()
+            image_data = None
+            if os.path.exists(image_file):
+                with open(image_file, "rb") as file:
+                    image_data = file.read()
 
-            yield image_data, image_format, image
+            yield image_data, image

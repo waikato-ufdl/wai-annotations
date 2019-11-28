@@ -5,7 +5,7 @@ from wai.common.geometry import Polygon, Point
 
 from ...vgg_utils.configuration import Region, RectShapeAttributes, PolygonShapeAttributes
 from ...core import ExternalFormatConverter, InternalFormat
-from ...core.constants import LABEL_METADATA_KEY
+from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY, DEFAULT_PREFIX
 from ...core.external_formats import VGGExternalFormat
 
 
@@ -15,11 +15,10 @@ class FromVGG(ExternalFormatConverter[VGGExternalFormat]):
     """
     def _convert(self, instance: VGGExternalFormat) -> InternalFormat:
         # Unpack the external format
-        image_data, image_format, image = instance
+        image_data, image = instance
 
         return (image.filename,
                 image_data,
-                image_format,
                 LocatedObjects(map(self.to_located_object, image.regions)))
 
     def to_located_object(self, region: Region) -> LocatedObject:
@@ -40,7 +39,8 @@ class FromVGG(ExternalFormatConverter[VGGExternalFormat]):
             polygon = None
 
         # Create the located object
-        located_object = LocatedObject(x, y, width, height, **{LABEL_METADATA_KEY: label})
+        located_object = LocatedObject(x, y, width, height, **{LABEL_METADATA_KEY: label,
+                                                               PREFIX_METADATA_KEY: DEFAULT_PREFIX})
 
         # Add the polygon if there is one
         if polygon is not None:
