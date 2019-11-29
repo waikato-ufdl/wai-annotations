@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 from typing import Iterable, Any, Dict
 
 from ...coco_utils.configuration import COCOFile, Image, Category, Info, License
-from ...core import Writer
+from ...core import SeparateImageWriter, ImageInfo
 from ...core.external_formats import COCOExternalFormat
 
 # The default name/url to use for the license if none is provided
@@ -12,7 +12,7 @@ DEFAULT_LICENSE_NAME: str = "default"
 DEFAULT_LICENSE_URL: str = ""
 
 
-class COCOWriter(Writer[COCOExternalFormat]):
+class COCOWriter(SeparateImageWriter[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
@@ -21,18 +21,14 @@ class COCOWriter(Writer[COCOExternalFormat]):
                  no_images: bool = False,
                  license_name: str = "",
                  license_url: str = ""):
-        super().__init__(output)
+        super().__init__(output, no_images)
 
-        self.no_images: bool = no_images
         self.license_name: str = license_name
         self.license_url: str = license_url
 
     @classmethod
     def configure_parser(cls, parser: ArgumentParser):
         super().configure_parser(parser)
-
-        parser.add_argument("--no-images", action="store_true", required=False, dest="no_images",
-                            help="skip the writing of images, outputting only the annotations")
 
         parser.add_argument("--license-name", required=False, dest="license_name", default="",
                             help="the license of the images")
@@ -43,8 +39,7 @@ class COCOWriter(Writer[COCOExternalFormat]):
     @classmethod
     def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
         kwargs = super().determine_kwargs_from_namespace(namespace)
-        kwargs.update(no_images=namespace.no_images,
-                      license_name=namespace.license_name,
+        kwargs.update(license_name=namespace.license_name,
                       license_url=namespace.license_url)
         return kwargs
 
@@ -52,7 +47,7 @@ class COCOWriter(Writer[COCOExternalFormat]):
     def output_help_text(cls) -> str:
         return "output file to write annotations to (images are placed in same directory)"
 
-    def write(self, instances: Iterable[COCOExternalFormat], path: str):
+    def write_without_images(self, instances: Iterable[COCOExternalFormat], path: str):
         # Get the current time
         now = datetime.datetime.now()
 
@@ -81,10 +76,6 @@ class COCOWriter(Writer[COCOExternalFormat]):
         for instance_index, instance in enumerate(instances, 1):
             # Unpack the instance
             image_info, annotations, labels, prefixes = instance
-
-            # Write the image
-            if not self.no_images:
-                image_info.write_data_if_present(path)
 
             # Create the image description
             image = Image(id=instance_index,
@@ -133,3 +124,9 @@ class COCOWriter(Writer[COCOExternalFormat]):
         return License(id=1,
                        name=self.license_name if self.license_name != "" else DEFAULT_LICENSE_NAME,
                        url=self.license_url if self.license_url != "" else DEFAULT_LICENSE_URL)
+
+    def extract_image_info_from_external_format(self, instance: COCOExternalFormat) -> ImageInfo:
+        # Unpack the instance
+        image_info, annotations, labels, prefixes = instance
+
+        return image_info
