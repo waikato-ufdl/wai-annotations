@@ -9,6 +9,7 @@ from .utils import get_object_label
 from .external_formats import ExternalFormat
 from ._Converter import Converter
 from ._typing import InternalFormat
+from ._ImageInfo import ImageInfo
 
 
 class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
@@ -50,23 +51,21 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
 
     def convert(self, instance: InternalFormat) -> ExternalFormat:
         # Unpack the instance
-        image_filename, image_data, located_objects = instance
+        image_info, located_objects = instance
 
         # Use the options to filter the located objects by label
         self.remove_invalid_objects(located_objects)
 
-        return self.convert_unpacked(image_filename, image_data, located_objects)
+        return self.convert_unpacked(image_info, located_objects)
 
     @abstractmethod
     def convert_unpacked(self,
-                         image_filename: str,
-                         image_data: Optional[bytes],
+                         image_info: ImageInfo,
                          located_objects: LocatedObjects) -> ExternalFormat:
         """
         Converts an instance from internal format into the external format.
 
-        :param image_filename:  The name of the image file.
-        :param image_data:      The binary image data.
+        :param image_info:      The info about the image.
         :param located_objects: The located objects in the image.
         :return:                The instance in external format.
         """
@@ -122,6 +121,6 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         :return:            True if the instance matches, false if not.
         """
         # Get the located objects
-        located_objects: LocatedObjects = instance[2]
+        image_info, located_objects = instance
 
         return any(self.filter_object(located_object) for located_object in located_objects)

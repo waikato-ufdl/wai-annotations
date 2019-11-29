@@ -1,9 +1,9 @@
-from typing import Dict, Optional
+from typing import Dict
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.file.report import Report
 
-from ...core import InternalFormatConverter
+from ...core import InternalFormatConverter, ImageInfo
 from ...core.constants import PREFIX_METADATA_KEY
 from ...core.external_formats import ADAMSExternalFormat
 
@@ -13,11 +13,13 @@ class ToADAMSReport(InternalFormatConverter[ADAMSExternalFormat]):
     Converter from internal format to ADAMS report-style annotations.
     """
     def convert_unpacked(self,
-                         image_filename: str,
-                         image_data: Optional[bytes],
+                         image_info: ImageInfo,
                          located_objects: LocatedObjects) -> ADAMSExternalFormat:
         # Divide the located objects into unique prefixes
         prefix_objects = self.divide_by_prefix(located_objects)
+
+        # Remove the prefix meta-data as it will be written as the actual prefix
+        self.remove_prefix_metadata(located_objects)
 
         # Create reports from each set of objects
         prefix_reports = [objects.to_report(prefix) for prefix, objects in prefix_objects.items()]
@@ -27,7 +29,7 @@ class ToADAMSReport(InternalFormatConverter[ADAMSExternalFormat]):
         for prefix_report in prefix_reports[1:]:
             report.merge_with(prefix_report)
 
-        return image_filename, image_data, report
+        return image_info, report
 
     def divide_by_prefix(self, located_objects: LocatedObjects) -> Dict[str, LocatedObjects]:
         """
@@ -53,3 +55,13 @@ class ToADAMSReport(InternalFormatConverter[ADAMSExternalFormat]):
             prefix_objects[prefix].append(located_object)
 
         return prefix_objects
+
+    def remove_prefix_metadata(self, located_objects: LocatedObjects):
+        """
+        Removes the prefix meta-data from the located objects.
+
+        :param located_objects:     The located objects.
+        """
+        for located_object in located_objects:
+            if PREFIX_METADATA_KEY in located_object.metadata:
+                del located_object.metadata[PREFIX_METADATA_KEY]

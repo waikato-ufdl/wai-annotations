@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from argparse import ArgumentParser, Namespace
-from typing import Generic, Iterator, Iterable, Dict, Any
+from typing import Generic, Iterable, Dict, Any
 
 from .external_formats import ExternalFormat
 from ._ArgumentConsumer import ArgumentConsumer

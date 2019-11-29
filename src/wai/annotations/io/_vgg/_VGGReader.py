@@ -1,7 +1,7 @@
 import os
 from typing import Iterator, Iterable
 
-from ...core import Reader, ImageFormat
+from ...core import Reader, ImageInfo
 from ...core.external_formats import VGGExternalFormat
 from ...vgg_utils.configuration import VGGFile
 
@@ -35,4 +35,4 @@ class VGGReader(Reader[VGGExternalFormat]):
                 with open(image_file, "rb") as file:
                     image_data = file.read()
 
-            yield image_data, image
+            yield ImageInfo(image.filename, image_data), image

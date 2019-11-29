@@ -1,12 +1,12 @@
 """
 Module for types associated with core functionality.
 """
-from typing import Tuple, Optional
+from typing import Tuple
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
-from ._ImageFormat import ImageFormat
+from ._ImageInfo import ImageInfo
 
 # The internal type used as an intermediary for conversions
-# Image filename, optional image data, objects located in image
-InternalFormat = Tuple[str, Optional[bytes], LocatedObjects]
+# Image info and objects located in image
+InternalFormat = Tuple[ImageInfo, LocatedObjects]

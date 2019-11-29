@@ -15,11 +15,9 @@ class FromVGG(ExternalFormatConverter[VGGExternalFormat]):
     """
     def _convert(self, instance: VGGExternalFormat) -> InternalFormat:
         # Unpack the external format
-        image_data, image = instance
+        image_info, image = instance
 
-        return (image.filename,
-                image_data,
-                LocatedObjects(map(self.to_located_object, image.regions)))
+        return image_info, LocatedObjects(map(self.to_located_object, image.regions))
 
     def to_located_object(self, region: Region) -> LocatedObject:
         """

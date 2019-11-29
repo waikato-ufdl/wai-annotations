@@ -3,6 +3,9 @@ Module which configures the argument parser for the main function.
 """
 from argparse import ArgumentParser
 
+# Import the components that are available to us
+from ._components import components as available_components
+
 # Create the unconfigured parser
 parser: ArgumentParser = ArgumentParser()
 
@@ -15,9 +18,6 @@ parser.add_argument(
     "-c", "--coerce", dest="coerce", required=False, choices=["bbox", "mask"],
     help="whether to coerce located objects into a particular boundary type"
 )
-
-# Import the components that are available to us
-from ._components import components as available_components
 
 # Filter the components into input side...
 input_components = {

@@ -43,8 +43,11 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
         # Do the conversion
         converted_instance: InternalFormat = self._convert(instance)
 
+        # Unpack the converted instance
+        image_info, located_objects = converted_instance
+
         # Apply the label mapping
-        self.apply_label_mapping(converted_instance[2])
+        self.apply_label_mapping(located_objects)
 
         return converted_instance
 

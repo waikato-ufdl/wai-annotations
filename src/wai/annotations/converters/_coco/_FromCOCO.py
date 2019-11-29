@@ -13,10 +13,9 @@ class FromCOCO(ExternalFormatConverter[COCOExternalFormat]):
     """
     def _convert(self, instance: COCOExternalFormat) -> InternalFormat:
         # Unpack the external format
-        image_filename, image_data, annotations, labels, prefixes = instance
+        image_info, annotations, labels, prefixes = instance
 
-        return (image_filename, image_data,
-                LocatedObjects(map(self.to_located_object, annotations, labels, prefixes)))
+        return image_info, LocatedObjects(map(self.to_located_object, annotations, labels, prefixes))
 
     def to_located_object(self, annotation: Annotation, label: str, prefix: str) -> LocatedObject:
         """

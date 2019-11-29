@@ -2,7 +2,7 @@ from typing import List
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
-from ...core import ExternalFormatConverter, InternalFormat
+from ...core import ExternalFormatConverter, InternalFormat, ImageInfo, ImageFormat
 from ...core.external_formats import TensorflowExampleExternalFormat
 from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY, DEFAULT_PREFIX
 from ...tf_utils import extract_feature
@@ -22,6 +22,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
         image_data = extract_feature(instance.features, 'image/encoded')[0]
         image_width = extract_feature(instance.features, 'image/width')[0]
         image_height = extract_feature(instance.features, 'image/height')[0]
+        image_format = ImageFormat.for_extension(extract_feature(instance.features, 'image/format')[0])
 
         # Extract the located object data from the instance
         lefts = extract_feature(instance.features, 'image/object/bbox/xmin')
@@ -32,7 +33,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
 
         located_objects = self.process_located_objects(lefts, rights, tops, bottoms, labels, image_width, image_height)
 
-        return image_filename, image_data, located_objects
+        return ImageInfo(image_filename, image_data, image_format, (image_width, image_height)), located_objects
 
     def process_located_objects(self,
                                 lefts: List[float],

@@ -1,9 +1,7 @@
-from typing import Optional
-
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...coco_utils.configuration import Annotation
-from ...core import InternalFormatConverter
+from ...core import InternalFormatConverter, ImageInfo
 from ...core.external_formats import COCOExternalFormat
 from ...core.utils import get_object_label, get_object_prefix
 
@@ -13,10 +11,9 @@ class ToCOCO(InternalFormatConverter[COCOExternalFormat]):
     Converter from internal format to COCO annotations.
     """
     def convert_unpacked(self,
-                         image_filename: str,
-                         image_data: Optional[bytes],
+                         image_info: ImageInfo,
                          located_objects: LocatedObjects) -> COCOExternalFormat:
-        return (image_filename, image_data,
+        return (image_info,
                 list(map(self.convert_located_object, located_objects)),
                 list(map(get_object_label, located_objects)),
                 list(map(get_object_prefix, located_objects)))

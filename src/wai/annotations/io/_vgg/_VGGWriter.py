@@ -43,12 +43,11 @@ class VGGWriter(Writer[VGGExternalFormat]):
         # Write each instance
         for instance_index, instance in enumerate(instances, 1):
             # Unpack the instance
-            image_data, image = instance
+            image_info, image = instance
 
             # Write the image
             if not self.no_images:
-                with open(os.path.join(path, image.filename), "wb") as file:
-                    file.write(image_data)
+                image_info.write_data_if_present(path)
 
             # Add the image to the map
             images[f"{image.filename}-1"] = image

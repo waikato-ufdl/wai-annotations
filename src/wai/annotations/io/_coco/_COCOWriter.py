@@ -6,7 +6,6 @@ from typing import Iterable, Any, Dict
 from ...coco_utils.configuration import COCOFile, Image, Category, Info, License
 from ...core import Writer
 from ...core.external_formats import COCOExternalFormat
-from ...core.utils import get_image_size
 
 # The default name/url to use for the license if none is provided
 DEFAULT_LICENSE_NAME: str = "default"
@@ -81,21 +80,17 @@ class COCOWriter(Writer[COCOExternalFormat]):
         # Write each instance
         for instance_index, instance in enumerate(instances, 1):
             # Unpack the instance
-            image_filename, image_data, annotations, labels, prefixes = instance
+            image_info, annotations, labels, prefixes = instance
 
             # Write the image
-            if not self.no_images and image_data is not None:
-                with open(os.path.join(path, image_filename), "wb") as file:
-                    file.write(image_data)
-
-            # Get the dimensions of the image
-            width, height = get_image_size(image_data) if image_data is not None else (-1, -1)
+            if not self.no_images:
+                image_info.write_data_if_present(path)
 
             # Create the image description
             image = Image(id=instance_index,
-                          width=width,
-                          height=height,
-                          file_name=image_filename,
+                          width=image_info.width(),
+                          height=image_info.height(),
+                          file_name=image_info.filename,
                           license=1,
                           flickr_url="",
                           coco_url="",

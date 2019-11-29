@@ -36,12 +36,12 @@ class FromADAMSReport(ExternalFormatConverter[ADAMSExternalFormat]):
 
     def _convert(self, instance: ADAMSExternalFormat) -> InternalFormat:
         # Unpack the external format
-        image_filename, image_data, report = instance
+        image_info, report = instance
 
         # Default to all prefixes if none provided
         prefixes = set(self.prefixes) if self.prefixes is not None else self.find_all_prefixes(report)
 
-        return image_filename, image_data, self.get_located_objects_from_report(report, prefixes)
+        return image_info, self.get_located_objects_from_report(report, prefixes)
 
     def get_located_objects_from_report(self, report: Report, prefixes: Set[str]) -> LocatedObjects:
         """

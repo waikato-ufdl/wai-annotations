@@ -2,7 +2,7 @@ import os
 from typing import Iterator, Iterable
 
 from ...coco_utils.configuration import COCOFile
-from ...core import Reader
+from ...core import Reader, ImageInfo
 from ...core.external_formats import COCOExternalFormat
 
 
@@ -41,6 +41,9 @@ class COCOReader(Reader[COCOExternalFormat]):
                 with open(image_file, "rb") as file:
                     image_data = file.read()
 
+            # Create the image info object
+            image_info = ImageInfo(image.file_name, image_data, size=(image.width, image.height))
+
             # Collect the annotations for this image
             annotations = [annotation for annotation in coco_file.annotations if annotation.image_id == image.id]
 
@@ -50,4 +53,4 @@ class COCOReader(Reader[COCOExternalFormat]):
             # Get the prefixes from the categories
             prefixes = [prefix_lookup[annotation.category_id] for annotation in annotations]
 
-            yield image.file_name, image_data, annotations, labels, prefixes
+            yield image_info, annotations, labels, prefixes

@@ -1,6 +1,7 @@
 import os
 from enum import Enum
-from typing import Tuple, Optional
+from typing import Optional
+from itertools import chain
 
 
 class ImageFormat(Enum):
@@ -23,11 +24,15 @@ class ImageFormat(Enum):
         extension: str = os.path.splitext(filename)[1][1:]
 
         # Search for a format with this extension
-        for image_format in ImageFormat:
-            if extension in image_format.value:
-                return image_format
+        image_format = cls.for_extension(extension)
 
-        return None
+        # If a format was found, return it
+        if image_format is not None:
+            return image_format
+
+        # Otherwise it is an error
+        raise ValueError(f"'{filename}' does not end in a recognised extension "
+                         f"({', '.join(chain(*(image_format.value for image_format in ImageFormat)))})")
 
     @classmethod
     def get_associated_image(cls, filename: str) -> Optional[str]:

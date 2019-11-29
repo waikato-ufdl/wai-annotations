@@ -3,10 +3,9 @@ from typing import Tuple, List, Dict, Optional, Pattern
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 import tensorflow as tf
 
-from ...core import InternalFormatConverter, ImageFormat
+from ...core import InternalFormatConverter, ImageFormat, ImageInfo
 from ...core.constants import LABEL_METADATA_KEY
 from ...core.external_formats import TensorflowExampleExternalFormat
-from ...core.utils import get_image_size
 from ...tf_utils import make_feature
 
 
@@ -23,33 +22,29 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
             if self.labels is not None else {}
 
     def convert_unpacked(self,
-                         image_filename: str,
-                         image_data: Optional[bytes],
+                         image_info: ImageInfo,
                          located_objects: LocatedObjects) -> TensorflowExampleExternalFormat:
         # Make sure we have an image
-        if image_data is None:
+        if image_info.data is None:
             raise ValueError(f"Tensorflow records require image data")
 
-        # Get the dimensions of the image
-        width, height = get_image_size(image_data)
-
         # Get the image format
-        image_format = ImageFormat.for_filename(image_filename)
+        image_format = ImageFormat.for_filename(image_info.filename)
 
         # Format and extract the relevant annotation parameters
         lefts, rights, tops, bottoms, labels, classes = self.process_located_objects(located_objects,
-                                                                                     width,
-                                                                                     height)
+                                                                                     image_info.width(),
+                                                                                     image_info.height())
 
         # Create and return the example
         return tf.train.Example(
             features=tf.train.Features(
                 feature={
-                    'image/height': make_feature(height),
-                    'image/width': make_feature(width),
-                    'image/filename': make_feature(image_filename),
-                    'image/source_id': make_feature(image_filename),
-                    'image/encoded': make_feature(image_data),
+                    'image/height': make_feature(image_info.height()),
+                    'image/width': make_feature(image_info.width()),
+                    'image/filename': make_feature(image_info.filename),
+                    'image/source_id': make_feature(image_info.filename),
+                    'image/encoded': make_feature(image_info.data),
                     'image/format': make_feature(image_format.get_default_extension()),
                     'image/object/bbox/xmin': make_feature(lefts),
                     'image/object/bbox/xmax': make_feature(rights),

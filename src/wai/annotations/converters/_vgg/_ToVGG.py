@@ -1,10 +1,10 @@
-from typing import Union, Optional
+from typing import Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...vgg_utils.configuration import Image, FileAttributes, Region, RegionAttributes, ImageQuality, \
     RectShapeAttributes, PolygonShapeAttributes
-from ...core import InternalFormatConverter
+from ...core import InternalFormatConverter, ImageInfo
 from ...core.external_formats import VGGExternalFormat
 from ...core.utils import get_object_label, get_object_prefix
 
@@ -14,8 +14,7 @@ class ToVGG(InternalFormatConverter[VGGExternalFormat]):
     Converter from internal format to VGG annotations.
     """
     def convert_unpacked(self,
-                         image_filename: str,
-                         image_data: Optional[bytes],
+                         image_info: ImageInfo,
                          located_objects: LocatedObjects) -> VGGExternalFormat:
         # Create a region for each located object
         regions = [Region(region_attributes=RegionAttributes(name=f"{get_object_prefix(located_object)}-{index}",
@@ -25,12 +24,12 @@ class ToVGG(InternalFormatConverter[VGGExternalFormat]):
                    for index, located_object in enumerate(located_objects, 1)]
 
         # Create an image info for the image
-        image = Image(filename=image_filename,
+        image = Image(filename=image_info.filename,
                       size=-1,
                       file_attributes=FileAttributes(caption="", public_domain="no", image_url=""),
                       regions=regions)
 
-        return image_data, image
+        return image_info, image
 
     def get_shape_attributes(self, located_object: LocatedObject) -> Union[RectShapeAttributes, PolygonShapeAttributes]:
         """

@@ -3,7 +3,7 @@ from typing import Iterator, Iterable
 
 from wai.common.file.report import loadf, Report
 
-from ...core import Reader, ImageFormat
+from ...core import Reader, ImageFormat, ImageInfo
 from ...core.external_formats import ADAMSExternalFormat
 from ...core.utils import get_files_from_directory
 from .constants import EXTENSION
@@ -41,7 +41,10 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
         # Strip the image file down to just it's base name
         image_file = os.path.basename(image_file)
 
+        # Create the image info object
+        image_info = ImageInfo(image_file, image_data)
+
         # Load the report
         report: Report = loadf(filename)
 
-        yield image_file, image_data, report
+        yield image_info, report

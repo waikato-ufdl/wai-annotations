@@ -3,7 +3,8 @@ from typing import List, Union
 import tensorflow as tf
 
 
-def make_feature(value: Union[str, bytes, int, float, List[str], List[bytes], List[int], List[float]]) -> tf.train.Feature:
+def make_feature(value: Union[str, bytes, int, float, List[str], List[bytes], List[int], List[float]]) \
+        -> tf.train.Feature:
     """
     Creates a feature of the correct format for the given value.
 

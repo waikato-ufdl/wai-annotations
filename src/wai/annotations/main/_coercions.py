@@ -16,7 +16,7 @@ def coerce_bbox(instance: InternalFormat) -> InternalFormat:
     :return:            The same instance after coercion.
     """
     # Get the located objects from the instance
-    located_objects = instance[3]
+    image_info, located_objects = instance
 
     # Process each located object
     for located_object in located_objects:
@@ -36,7 +36,7 @@ def coerce_mask(instance: InternalFormat) -> InternalFormat:
     :return:            The same instance after coercion.
     """
     # Get the located objects from the instance
-    located_objects = instance[3]
+    image_info, located_objects = instance
 
     # Process each located object
     for located_object in located_objects:
