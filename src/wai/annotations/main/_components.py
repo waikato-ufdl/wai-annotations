@@ -19,7 +19,8 @@ components: Dict[str, ComponentSpec] = {
     "adams": (ADAMSReportReader, FromADAMSReport, ToADAMSReport, ADAMSReportWriter),
     "tfrecords": (TensorflowExampleReader, FromTensorflowExample, ToTensorflowExample, TensorflowExampleWriter),
     "coco": (COCOReader, FromCOCO, ToCOCO, COCOWriter),
-    "vgg": (VGGReader, FromVGG, ToVGG, VGGWriter)
+    "vgg": (VGGReader, FromVGG, ToVGG, VGGWriter),
+    "roi": (ROIReader, FromROI, ToROI, ROIWriter)
 }
 
 
