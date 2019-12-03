@@ -29,7 +29,7 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
 
         parser.add_argument(
             "-d", "--image-dimensions", metavar="width,height", dest="image_size", required=False,
-            help="image dimesions to use if none can be inferred",
+            help="image dimensions to use if none can be inferred",
             default="")
 
     @classmethod
