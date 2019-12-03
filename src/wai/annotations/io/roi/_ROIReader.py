@@ -1,31 +1,22 @@
 import os
-from typing import Iterator, Iterable
+from typing import Iterator
 import csv
 
-from ...core import Reader, ImageInfo
+from ...core import PerImageReader, ImageInfo
 from ...core.external_formats import ROIExternalFormat, ROIObject
-from ...core.utils import get_files_from_directory
-from .constants import EXTENSION
 
 
-class ROIReader(Reader[ROIExternalFormat]):
+class ROIReader(PerImageReader[ROIExternalFormat]):
     """
     Reader of ROI-format CSV files.
     """
-    def determine_input_files(self, input_path: str) -> Iterable[str]:
-        # If given a directory as input, recursively load all
-        # report files in the directory
-        if os.path.isdir(input_path):
-            return get_files_from_directory(input_path, EXTENSION)
-
-        # Otherwise we expect a file containing a list of reports
-        else:
-            with open(input_path, "r") as file:
-                return (line.strip() for line in file)
-
     @classmethod
     def input_help_text(cls) -> str:
         return "input directory with ROI csv files or text file with one absolute ROI file name per line"
+
+    @classmethod
+    def get_default_file_regex(cls) -> str:
+        return ".*-roi\\.csv"
 
     def read(self, filename: str) -> Iterator[ROIExternalFormat]:
         # Read in the file

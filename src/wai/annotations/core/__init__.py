@@ -7,6 +7,7 @@ from ._ExternalFormatConverter import ExternalFormatConverter
 from ._ImageFormat import ImageFormat
 from ._ImageInfo import ImageInfo
 from ._InternalFormatConverter import InternalFormatConverter
+from ._PerImageReader import PerImageReader
 from ._Reader import Reader
 from ._SeparateImageWriter import SeparateImageWriter
 from ._typing import InternalFormat

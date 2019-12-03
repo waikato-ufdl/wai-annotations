@@ -4,7 +4,6 @@ import csv
 
 from ...core import SeparateImageWriter, ImageInfo
 from ...core.external_formats import ROIExternalFormat, ROIObject
-from .constants import EXTENSION
 
 
 class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
@@ -50,7 +49,7 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
         :param image_filename:  The image filename.
         :return:                The ROI CSV filename.
         """
-        return f"{os.path.splitext(image_filename)[0]}-roi" + EXTENSION
+        return f"{os.path.splitext(image_filename)[0]}-roi.csv"
 
     def header(self) -> Tuple[str, ...]:
         """
