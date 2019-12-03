@@ -43,6 +43,9 @@ options, which depend on whether it is the input or output of the conversion.
                      
 * `-p`, `--prefixes`: Optional comma-separated list of object prefixes to look for in ADAMS report files.
                       If not specified, all object prefixes are converted. Formats: `adams`.
+                      
+* `-r`, `--regexp`: Optional regular expression for selecting annotation files whem `--input` is given
+                    as a directory. Formats: `adams`, `roi`.
 
 ### Output Options
 
