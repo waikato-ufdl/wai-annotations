@@ -78,3 +78,6 @@ options, which depend on whether it is the input or output of the conversion.
                     
 * `-p`, `--protobuf`: Optional argument specifying the name of a file to write the label mapping into, in
                       protobuf format. If omitted, no such file is written. Formats: `tfrecords`.
+                      
+* `-d`, `--image-dimensions`: Optional argument specifying the width and height to use for images that can't
+                              infer this information from the input data. Formats: `roi`.
