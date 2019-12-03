@@ -35,6 +35,11 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
         # Add each provided exchange to the mapping
         for map_string in namespace.mapping:
             old, new = map_string.split("=")
+
+            # Make sure we don't double-map a label
+            if old in mapping:
+                raise ValueError(f"Multiple mappings specified for label '{old}'")
+
             mapping[old] = new
 
         return {"label_mapping": mapping}
