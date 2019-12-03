@@ -19,6 +19,13 @@ def main(args: Optional[List[str]] = None):
     # Parse the arguments
     namespace = parser.parse_args(args)
 
+    # Make sure an input and output format were specified
+    # (currently no required flag for sub-parsers)
+    if not hasattr(namespace, "input_type"):
+        parser.error(f"No input type provided")
+    elif not hasattr(namespace, "output_type"):
+        parser.error(f"No output type provided")
+
     # Get the input and output formats
     input_format = namespace.input_type
     output_format = namespace.output_type
