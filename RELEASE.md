@@ -12,7 +12,7 @@ Commands for releasing on pypi-waikato (requires twine >= 1.8.0):
   rm -r dist src/wai.annotations.egg-info 
   python setup.py clean
   python setup.py sdist
-  twine upload --repository-url https://adams.cms.waikato.ac.nz/nexus/repository/pypi-waikato/ dist/*
+  twine upload dist/*
 ```
 
 
