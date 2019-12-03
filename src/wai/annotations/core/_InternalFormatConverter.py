@@ -96,12 +96,14 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         :param label:   The label to test.
         :return:        True if the label matches, false if not.
         """
-        if self.labels is not None:
-            return label in self.labels
-        elif self.regex is not None:
-            return bool(self.regex.match(label))
-        else:
+        if self.labels is None and self.regex is None:
             return True
+        elif self.labels is None:
+            return bool(self.regex.match(label))
+        elif self.regex is None:
+            return label in self.labels
+        else:
+            return bool(self.regex.match(label)) or label in self.labels
 
     def filter_object(self, located_object: LocatedObject) -> bool:
         """
