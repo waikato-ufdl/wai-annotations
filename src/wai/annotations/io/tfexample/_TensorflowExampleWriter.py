@@ -36,7 +36,7 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
             help="number of shards to split the images into (<= 1 for off)", default=-1)
 
         parser.add_argument(
-            "-p", "--protobuf_label_map", metavar="file", dest="protobuf_label_map", required=False,
+            "-p", "--protobuf", metavar="file", dest="protobuf_label_map", required=False,
             help="for storing the label strings and IDs", default=None)
 
     @classmethod
