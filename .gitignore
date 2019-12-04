@@ -108,3 +108,8 @@ venv.bak/
 
 # My test files
 corey/*
+
+# other
+*~
+*.swp
+

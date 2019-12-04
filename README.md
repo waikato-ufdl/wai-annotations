@@ -1,6 +1,14 @@
 # wai-annotations
 Python library for converting image and object annotations formats into each other.
 
+## Installation
+
+You can use pip to install the library:
+
+```
+pip install wai.annotations
+```
+
 ## Supported Formats
 
 Conversions to/from the following annotation formats are currently implemented. The
