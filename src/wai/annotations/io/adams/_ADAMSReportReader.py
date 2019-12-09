@@ -5,6 +5,8 @@ from wai.common.file.report import loadf, Report
 
 from ...core import PerImageReader, ImageFormat, ImageInfo
 from ...core.external_formats import ADAMSExternalFormat
+from ...core.utils import extension_to_regex
+from ...adams_utils import constants
 
 
 class ADAMSReportReader(PerImageReader[ADAMSExternalFormat]):
@@ -17,11 +19,11 @@ class ADAMSReportReader(PerImageReader[ADAMSExternalFormat]):
 
     @classmethod
     def get_default_file_regex(cls) -> str:
-        return ".*\\.report"
+        return extension_to_regex(constants.DEFAULT_EXTENSION)
 
     def read(self, filename: str) -> Iterator[ADAMSExternalFormat]:
         # Get the image associated to this report
-        image_file = ImageFormat.get_associated_image(filename)
+        image_file = ImageFormat.get_associated_image(os.path.splitext(filename)[0])
 
         # Load the image
         image_data = None

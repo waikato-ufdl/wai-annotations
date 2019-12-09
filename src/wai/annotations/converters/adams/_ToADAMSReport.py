@@ -15,6 +15,10 @@ class ToADAMSReport(InternalFormatConverter[ADAMSExternalFormat]):
     def convert_unpacked(self,
                          image_info: ImageInfo,
                          located_objects: LocatedObjects) -> ADAMSExternalFormat:
+        # If no located objects were found, return an empty report
+        if len(located_objects) == 0:
+            return image_info, located_objects.to_report()
+
         # Divide the located objects into unique prefixes
         prefix_objects = self.divide_by_prefix(located_objects)
 

@@ -1,7 +1,7 @@
 import re
 from abc import abstractmethod
 from argparse import ArgumentParser, Namespace
-from typing import Optional, List, Dict, Any, Pattern, Iterable, Iterator
+from typing import Optional, List, Dict, Any, Pattern
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
@@ -44,10 +44,6 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         regex = re.compile(namespace.regexp) if len(namespace.regexp) > 0 else None
 
         return {"labels": labels, "regex": regex}
-
-    def convert_all(self, instances: Iterable[InternalFormat]) -> Iterator[ExternalFormat]:
-        # Filter out any instances that contain no valid labels
-        return super().convert_all(filter(self.filter_instance, instances))
 
     def convert(self, instance: InternalFormat) -> ExternalFormat:
         # Unpack the instance
@@ -114,15 +110,3 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         """
         # Filter the label
         return self.filter_label(get_object_label(located_object))
-
-    def filter_instance(self, instance: InternalFormat) -> bool:
-        """
-        Filter function which selects instances which contain at least one valid located object.
-
-        :param instance:    The instance to test.
-        :return:            True if the instance matches, false if not.
-        """
-        # Get the located objects
-        image_info, located_objects = instance
-
-        return any(self.filter_object(located_object) for located_object in located_objects)

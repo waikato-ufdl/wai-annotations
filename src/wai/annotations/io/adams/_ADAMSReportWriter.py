@@ -5,6 +5,7 @@ from wai.common.file.report import save
 
 from ...core import SeparateImageWriter, ImageInfo
 from ...core.external_formats import ADAMSExternalFormat
+from ...adams_utils import constants
 
 
 class ADAMSReportWriter(SeparateImageWriter[ADAMSExternalFormat]):
@@ -23,7 +24,7 @@ class ADAMSReportWriter(SeparateImageWriter[ADAMSExternalFormat]):
             image_info, report = instance
 
             # Format the report filename
-            report_filename = f"{os.path.splitext(image_info.filename)[0]}.report"
+            report_filename = f"{os.path.splitext(image_info.filename)[0]}{constants.DEFAULT_EXTENSION}"
 
             # Save the report
             save(report, os.path.join(path, report_filename))

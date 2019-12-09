@@ -1,9 +1,12 @@
 import os
+import re
 from typing import Iterator
 import csv
 
-from ...core import PerImageReader, ImageInfo
+from ...core import PerImageReader, ImageInfo, ImageFormat
 from ...core.external_formats import ROIExternalFormat, ROIObject
+from ...core.utils import extension_to_regex
+from ...roi_utils import constants
 
 
 class ROIReader(PerImageReader[ROIExternalFormat]):
@@ -16,7 +19,7 @@ class ROIReader(PerImageReader[ROIExternalFormat]):
 
     @classmethod
     def get_default_file_regex(cls) -> str:
-        return ".*-roi\\.csv"
+        return extension_to_regex(constants.DEFAULT_EXTENSION)
 
     def read(self, filename: str) -> Iterator[ROIExternalFormat]:
         # Read in the file
@@ -28,7 +31,13 @@ class ROIReader(PerImageReader[ROIExternalFormat]):
             roi_dicts = [dict(row) for row in csv_reader]
 
         # Get the image filename
-        image_file = roi_dicts[0]["file"]
+        if len(roi_dicts) > 0:
+            image_file = roi_dicts[0]["file"]
+        else:
+            image_file = ImageFormat.get_associated_image(
+                re.compile(self.get_default_file_regex()).match(filename).group(1)
+            )
+            image_file = os.path.basename(image_file)
 
         # Get the full path to the image
         image_path = os.path.join(os.path.dirname(filename), image_file)

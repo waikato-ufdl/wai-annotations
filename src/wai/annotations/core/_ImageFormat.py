@@ -37,15 +37,12 @@ class ImageFormat(Enum):
     @classmethod
     def get_associated_image(cls, filename: str) -> Optional[str]:
         """
-        Gets an image associated with the given filename, by replacing its
-        extension with one of the valid image formats.
+        Gets an image associated with the given filename, by searching for
+        a file with one of the valid image format extensions.
 
-        :param filename:    The filename to find an image for.
+        :param filename:    The filename to find an image for, without extension.
         :return:            The filename of the image, None if not found.
         """
-        # Remove the extension from the filename
-        filename = os.path.splitext(filename)[0]
-
         # Check each variation of the extension for each format
         for image_format in ImageFormat:
             for extension in image_format.value:
