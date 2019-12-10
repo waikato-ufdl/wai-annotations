@@ -40,9 +40,9 @@ def main(args: Optional[List[str]] = None):
     input_chain = input_converter.convert_all(reader.load())
 
     # Add a coercion if specified
-    if namespace.coerce == "bbox":
+    if namespace.force == "bbox":
         input_chain = map(coerce_bbox, input_chain)
-    elif namespace.coerce == "mask":
+    elif namespace.force == "mask":
         input_chain = map(coerce_mask, input_chain)
 
     # Finish the chain with the output components

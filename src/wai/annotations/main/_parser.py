@@ -15,8 +15,8 @@ parser: ArgumentParser = ArgumentParser()
 #    help="whether to be more verbose when generating the records")
 
 parser.add_argument(
-    "-c", "--coerce", dest="coerce", required=False, choices=["bbox", "mask"],
-    help="whether to coerce located objects into a particular boundary type"
+    "-f", "--force", dest="force", required=False, choices=["bbox", "mask"],
+    help="forces located objects into a particular boundary type"
 )
 
 # Filter the components into input side...

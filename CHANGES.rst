@@ -10,3 +10,8 @@ Changelog
 -------------------
 
 - Can now work with images that contain no annotations.
+
+0.0.3 (????-??-??)
+------------------
+
+- Changed --coerce option to --force.

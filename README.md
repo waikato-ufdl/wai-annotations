@@ -32,11 +32,11 @@ options, which depend on whether it is the input or output of the conversion.
 
 ### Global Options
 
-* `-c`, `--coerce`: Optional argument to coerce the annotation boundaries into a specific type.
-                    Set to `bbox` to coerce polygon mask boundaries into a bounding box that
-                    tightly contains all polygon points. Set to `mask` to convert bounding box
-                    boundaries into polygon masks by creating a box-shaped polygon matching the
-                    original.
+* `-f`, `--force`: Optional argument to coerce the annotation boundaries into a specific type.
+                   Set to `bbox` to coerce polygon mask boundaries into a bounding box that
+                   tightly contains all polygon points. Set to `mask` to convert bounding box
+                   boundaries into polygon masks by creating a box-shaped polygon matching the
+                   original.
                     
 ### Input Options
 
