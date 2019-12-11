@@ -15,3 +15,5 @@ Changelog
 ------------------
 
 - Changed --coerce option to --force.
+- Tensorflow is no longer a dependency in setup.py as can work with
+  tensorflow or tensorflow-gpu.
