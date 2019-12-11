@@ -14,11 +14,11 @@ pip install wai.annotations
 Conversions to/from the following annotation formats are currently implemented. The
 short-form is the keyword to specify to the command-line arguments.
 
-* `adams`:      ADAMS reports
-* `coco`:       MS-COCO
-* `vgg`:        VGG
-* `tfrecords`:  Tensorflow TFRecords
-* `roi`:        ROI CSV
+* `adams`:      [ADAMS reports](https://adams.cms.waikato.ac.nz/)
+* `coco`:       [MS-COCO](http://cocodataset.org/)
+* `vgg`:        [VGG](https://www.robots.ox.ac.uk/~vgg/)
+* `tfrecords`:  [Tensorflow TFRecords](https://www.tensorflow.org/tutorials/load_data/tfrecord)
+* `roi`:        [ROI CSV]()
 
 ## Usage
 
@@ -52,7 +52,7 @@ options, which depend on whether it is the input or output of the conversion.
 * `-p`, `--prefixes`: Optional comma-separated list of object prefixes to look for in ADAMS report files.
                       If not specified, all object prefixes are converted. Formats: `adams`.
                       
-* `-r`, `--regexp`: Optional regular expression for selecting annotation files whem `--input` is given
+* `-r`, `--regexp`: Optional regular expression for selecting annotation files when `--input` is given
                     as a directory. Formats: `adams`, `roi`.
 
 ### Output Options
@@ -89,3 +89,21 @@ options, which depend on whether it is the input or output of the conversion.
                       
 * `-d`, `--image-dimensions`: Optional argument specifying the width and height to use for images that can't
                               infer this information from the input data. Formats: `roi`.
+
+## Examples
+
+Create a MS-COCO annotations file for a directory of images and ADAMS report annotations:
+
+```
+    convert-annotations \
+        adams -i /path/to/reports \
+        coco -o /path/to/images/coco-annotations.json --license-name "my license" --no-images
+```
+
+Create sharded Tensorflow records with a subset of the labelled objects from a monolithic original:
+
+```
+    convert-annotations \
+        tfrecords -i /path/to/objects.records \
+        tfrecords -o /path/to/subset.records -l label2,label4,label6 -s 5 -p label_map.proto
+```
