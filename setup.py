@@ -37,7 +37,6 @@ setup(
     author_email='coreytsterling@gmail.com',
     install_requires=[
         "wai.common",
-        "tensorflow",
         "Pillow",
         "contextlib2"
     ],

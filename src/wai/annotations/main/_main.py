@@ -4,6 +4,15 @@ Module containing the main entry point functions for converting annotations.
 import traceback
 from typing import List, Optional
 
+# Make sure a tensorflow library is installed
+try:
+    import tensorflow
+except ImportError as e:
+    raise RuntimeError("No tensorflow library found\n"
+                       "Please install either tensorflow or tensorflow-gpu\n"
+                       "    pip install tensorflow\n"
+                       "    pip install tensorflow-gpu")
+
 from ._components import get_reader_class, get_external_format_converter_class, get_internal_format_converter_class, \
     get_writer_class
 from ._parser import parser
