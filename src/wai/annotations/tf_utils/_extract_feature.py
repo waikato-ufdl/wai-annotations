@@ -9,8 +9,13 @@ def extract_feature(features: tf.train.Features, name: str) -> Union[List[bytes]
 
     :param features:    The tensorflow features to extract from.
     :param name:        The name of the feature to extract.
-    :return:            The feature.
+    :return:            The feature value list, or an empty list
+                        if the feature isn't present in the features.
     """
+    # Check the feature exists
+    if name not in features.feature:
+        return []
+
     # Select the feature
     feature = features.feature[name]
 

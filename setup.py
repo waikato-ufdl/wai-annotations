@@ -32,13 +32,16 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.0.2",
+    version="0.0.3",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
         "wai.common",
         "Pillow",
-        "contextlib2"
+        "contextlib2",
+        "pycocotools",
+        "numpy",
+        "scikit-image"
     ],
     entry_points={
         "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"]
