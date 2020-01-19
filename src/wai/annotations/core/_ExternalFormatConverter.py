@@ -38,7 +38,8 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
 
             # Make sure we don't double-map a label
             if old in mapping:
-                raise ValueError(f"Multiple mappings specified for label '{old}'")
+                raise ValueError(f"Multiple mappings specified for label '{old}': "
+                                 f"{mapping[old]}, {new}")
 
             mapping[old] = new
 
