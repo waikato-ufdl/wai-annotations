@@ -42,7 +42,8 @@ setup(
         "contextlib2",
         "numpy",
         "scikit-image",
-        "pycocotools"
+        "pycocotools",
+        "opencv-python",
     ],
     entry_points={
         "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"]
