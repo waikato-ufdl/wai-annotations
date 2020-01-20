@@ -1,7 +1,7 @@
 """
 Package for core functionality common to all conversions.
 """
-from ._ArgumentConsumer import ArgumentParser
+from ._ArgumentConsumer import ArgumentConsumer
 from ._Converter import Converter
 from ._ExternalFormatConverter import ExternalFormatConverter
 from ._ImageFormat import ImageFormat
