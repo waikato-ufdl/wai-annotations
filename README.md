@@ -40,7 +40,13 @@ options, which depend on whether it is the input or output of the conversion.
                     
 ### Input Options
 
-* `-i`, `--input`: Required argument specifying the input file or directory to convert. Formats: all.
+* `-i`, `--inputs`: Required argument specifying the input files to convert. Can be specified
+                    multiple times to build up the set of input files. Uses glob syntax to match
+                    multiple files at once. Formats: all.
+                   
+* `-n`, `--negatives`: Optional argument specifying images to include in the converted data-set as
+                       negative examples (contains no annotations). Can be specified multiple times
+                       and use glob syntax, same as `--inputs`. Formats: all.
 
 * `-m`, `--mapping`: Optional argument specifying a mapping from one label to another. Specify as
                      `old=new`, where `old` is the current label in the input files and `new` is the
@@ -51,9 +57,6 @@ options, which depend on whether it is the input or output of the conversion.
                      
 * `-p`, `--prefixes`: Optional comma-separated list of object prefixes to look for in ADAMS report files.
                       If not specified, all object prefixes are converted. Formats: `adams`.
-                      
-* `-r`, `--regexp`: Optional regular expression for selecting annotation files when `--input` is given
-                    as a directory. Formats: `adams`, `roi`.
 
 ### Output Options
 

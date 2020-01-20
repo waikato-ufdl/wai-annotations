@@ -8,6 +8,15 @@ class ArgumentConsumer(ABC):
     Interface for classes that can be instantiated by parsing
     command-line arguments.
     """
+    def __init__(self, *args, **kwargs):
+        if len(args) > 0:
+            raise RuntimeError(f"Unconsumed positional arguments:\n" +
+                               "\n".join(f"{arg}" for arg in args))
+
+        if len(kwargs) > 0:
+            raise RuntimeError(f"Unconsumed keyword arguments:\n" +
+                               "\n".join(f"{arg}: {value}" for arg, value in kwargs.items()))
+
     @classmethod
     @abstractmethod
     def configure_parser(cls, parser: ArgumentParser):

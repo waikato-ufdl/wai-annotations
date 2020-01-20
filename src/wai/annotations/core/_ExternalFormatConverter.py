@@ -1,10 +1,11 @@
 from abc import abstractmethod
 from argparse import ArgumentParser, Namespace
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, Iterable, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
 from .external_formats import ExternalFormat
+from .inline import DuplicateImageNames
 from .constants import LABEL_METADATA_KEY
 from ._typing import InternalFormat
 from ._Converter import Converter
@@ -15,6 +16,8 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
     Base class for converters from an external format to the internal format.
     """
     def __init__(self, label_mapping: Optional[Dict[str, str]] = None):
+        super().__init__()
+
         # An optional mapping to replace/consolidate object labels.
         # The key is the label to replace and the value is the label
         # to replace it with
@@ -44,6 +47,10 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
             mapping[old] = new
 
         return {"label_mapping": mapping}
+
+    def convert_all(self, instances: Iterable[ExternalFormat]) -> Iterator[InternalFormat]:
+        # Make sure no image is included more than once
+        return DuplicateImageNames().process(super().convert_all(instances))
 
     def convert(self, instance: ExternalFormat) -> InternalFormat:
         # Do the conversion

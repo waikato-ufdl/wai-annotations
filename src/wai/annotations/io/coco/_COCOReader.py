@@ -10,14 +10,7 @@ class COCOReader(Reader[COCOExternalFormat]):
     """
     Reader of COCO-format JSON files.
     """
-    def determine_input_files(self, input_path: str) -> Iterable[str]:
-        return input_path,
-
-    @classmethod
-    def input_help_text(cls) -> str:
-        return "JSON-format COCO annotations file"
-
-    def read(self, filename: str) -> Iterator[COCOExternalFormat]:
+    def read_annotation_file(self, filename: str) -> Iterator[COCOExternalFormat]:
         # Read in the file
         coco_file: COCOFile = COCOFile.load_from_json_file(filename)
 
@@ -54,3 +47,6 @@ class COCOReader(Reader[COCOExternalFormat]):
             prefixes = [prefix_lookup[annotation.category_id] for annotation in annotations]
 
             yield image_info, annotations, labels, prefixes
+
+    def image_info_to_external_format(self, image_info: ImageInfo) -> COCOExternalFormat:
+        return image_info, [], [], []

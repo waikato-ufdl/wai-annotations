@@ -1,3 +1,7 @@
+"""
+Module containing utility functions for working with the filenames
+that Tensorflow generates for sharded record files.
+"""
 import re
 from typing import Tuple, Pattern
 
@@ -32,3 +36,31 @@ def sharded_filename_params(filename: str) -> Tuple[str, int, int]:
         return match.group(1), int(match.group(3)), int(match.group(2))
     else:
         return "", 0, 0
+
+
+def is_shard_filename(filename: str) -> bool:
+    """
+    Checks if the filename corresponds to a set of shard files.
+
+    :param filename:    The filename.
+    :return:            True if the filename is one shard.
+    """
+    return sharded_filename_params(filename)[1] != 0
+
+
+def get_all_sharded_filenames(filename: str) -> Tuple[str, ...]:
+    """
+    Gets the ordered set of files that make up all the shards
+    that go with the specified filename.
+
+    :param filename:    The filename of a single shard.
+    :return:            The set of shard filenames.
+    """
+    # Get the shard parameters of the filename
+    base_name, shards, index = sharded_filename_params(filename)
+
+    # Error if not a shard file
+    if shards == 0:
+        raise ValueError(f"{filename} is not a shard filename")
+
+    return tuple(format_sharded_filename(base_name, shards, i) for i in range(index))

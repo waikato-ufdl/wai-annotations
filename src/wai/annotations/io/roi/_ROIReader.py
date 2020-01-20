@@ -3,25 +3,17 @@ import re
 from typing import Iterator
 import csv
 
-from ...core import PerImageReader, ImageInfo, ImageFormat
+from ...core import Reader, ImageInfo, ImageFormat
 from ...core.external_formats import ROIExternalFormat, ROIObject
 from ...core.utils import extension_to_regex
 from ...roi_utils import constants
 
 
-class ROIReader(PerImageReader[ROIExternalFormat]):
+class ROIReader(Reader[ROIExternalFormat]):
     """
     Reader of ROI-format CSV files.
     """
-    @classmethod
-    def input_help_text(cls) -> str:
-        return "input directory with ROI csv files or text file with one absolute ROI file name per line"
-
-    @classmethod
-    def get_default_file_regex(cls) -> str:
-        return extension_to_regex(constants.DEFAULT_EXTENSION)
-
-    def read(self, filename: str) -> Iterator[ROIExternalFormat]:
+    def read_annotation_file(self, filename: str) -> Iterator[ROIExternalFormat]:
         # Read in the file
         with open(filename, "r") as file:
             # Create a CSV dict reader around the file
@@ -34,21 +26,19 @@ class ROIReader(PerImageReader[ROIExternalFormat]):
         if len(roi_dicts) > 0:
             image_file = roi_dicts[0]["file"]
         else:
-            image_file = ImageFormat.get_associated_image(
-                re.compile(self.get_default_file_regex()).match(filename).group(1)
-            )
+            matcher = re.compile(extension_to_regex(constants.DEFAULT_EXTENSION))
+
+            image_file = ImageFormat.get_associated_image(matcher.match(filename).group(1))
+            
             image_file = os.path.basename(image_file)
 
         # Get the full path to the image
         image_path = os.path.join(os.path.dirname(filename), image_file)
 
-        # Load the image
-        image_data = None
-        if os.path.exists(image_path):
-            with open(image_path, "rb") as file:
-                image_data = file.read()
-
         # Create the ROI objects from the dictionaries
         roi_objects = list(map(ROIObject.from_dict, roi_dicts))
 
-        yield ImageInfo(image_file, image_data), roi_objects
+        yield ImageInfo.from_file(image_path), roi_objects
+
+    def image_info_to_external_format(self, image_info: ImageInfo) -> ROIExternalFormat:
+        return image_info, []

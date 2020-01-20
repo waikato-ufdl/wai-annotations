@@ -1,29 +1,40 @@
 import itertools
 from abc import abstractmethod
 from argparse import ArgumentParser, Namespace
-from typing import Generic, Iterator, Iterable, Dict, Any
+from typing import Generic, Iterator, Dict, Any, List
 
 from .external_formats import ExternalFormat
+from .utils import chain_map, recursive_iglob
 from ._ArgumentConsumer import ArgumentConsumer
+from ._ImageInfo import ImageInfo
 
 
 class Reader(ArgumentConsumer, Generic[ExternalFormat]):
     """
     Base class for classes which can read a specific external format from disk.
     """
-    def __init__(self, input: str):
-        # The name of the input file or directory to read from
-        self.input: str = input
+    def __init__(self, inputs: List[str], negatives: List[str]):
+        super().__init__()
+
+        # The name of the input files/directories to read from
+        self.inputs: List[str] = inputs
+
+        # The names of images to include in the conversion without annotations
+        self.negatives: List[str] = negatives
 
     @classmethod
     def configure_parser(cls, parser: ArgumentParser):
         parser.add_argument(
-            "-i", "--input", metavar="dir_or_file", dest="input", required=True,
-            help=cls.input_help_text())
+            "-i", "--inputs", metavar="files", dest="inputs", required=True, action="append",
+            help="Input image/annotations files (can use glob syntax)")
+        parser.add_argument(
+            "-n", "--negatives", metavar="image", dest="negatives", required=False, action="append", default=[],
+            help="Image files that have no annotations (can use glob syntax)")
 
     @classmethod
     def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
-        return {"input": namespace.input}
+        return {"inputs": namespace.inputs,
+                "negatives": namespace.negatives}
 
     def load(self) -> Iterator[ExternalFormat]:
         """
@@ -31,40 +42,31 @@ class Reader(ArgumentConsumer, Generic[ExternalFormat]):
 
         :return:            An iterator to the instances in the input file/directory.
         """
-        return self.read_all(self.determine_input_files(self.input))
+        return itertools.chain(
+            chain_map(self.read_annotation_file, self.annotation_files()),
+            chain_map(self.read_negative_image_file, self.negative_image_files())
+        )
+
+    def annotation_files(self) -> Iterator[str]:
+        """
+        Gets an iterator over the annotation files that will be
+        read by this reader based on the input options.
+
+        :return:    The iterator of filenames.
+        """
+        return chain_map(recursive_iglob, self.inputs)
+
+    def negative_image_files(self) -> Iterator[str]:
+        """
+        Gets an iterator over the negative images that will be
+        read by this reader based on the input options.
+
+        :return:    The iterator of filenames.
+        """
+        return chain_map(recursive_iglob, self.negatives)
 
     @abstractmethod
-    def determine_input_files(self, input_path: str) -> Iterable[str]:
-        """
-        Determines the input files from the provided input path.
-
-        :param input_path:  The input path (directory or filename).
-        :return:            An iterable of filenames.
-        """
-        pass
-
-    @classmethod
-    @abstractmethod
-    def input_help_text(cls) -> str:
-        """
-        Gets the help text describing what type of path the 'input' option
-        expects and how it is interpreted.
-
-        :return:    The help text.
-        """
-        pass
-
-    def read_all(self, filenames: Iterable[str]) -> Iterator[ExternalFormat]:
-        """
-        Reads instances from all of the given files.
-
-        :param filenames:   The files to read from.
-        :return:            An iterator to the instances in the files.
-        """
-        return itertools.chain(*map(self.read, filenames))
-
-    @abstractmethod
-    def read(self, filename: str) -> Iterator[ExternalFormat]:
+    def read_annotation_file(self, filename: str) -> Iterator[ExternalFormat]:
         """
         Reads a number of instances from a given file. If the
         instance information is spread over multiple files, the
@@ -73,5 +75,28 @@ class Reader(ArgumentConsumer, Generic[ExternalFormat]):
 
         :param filename:    The name of the file to read.
         :return:            An iterator to the instances in that file.
+        """
+        pass
+
+    def read_negative_image_file(self, filename: str) -> Iterator[ExternalFormat]:
+        """
+        Reads an image file as a negative (contains no annotations).
+
+        :param filename:    The name of the image file.
+        :return:            An iterator to the negative instance.
+        """
+        # Attempt to read in the image data
+        image_info = ImageInfo.from_file(filename)
+
+        yield self.image_info_to_external_format(image_info)
+
+    @abstractmethod
+    def image_info_to_external_format(self, image_info: ImageInfo) -> ExternalFormat:
+        """
+        Converts an image-info object for a negative image
+        into the external format.
+
+        :param image_info:  The image info object to convert.
+        :return:            The external format instance.
         """
         pass

@@ -11,6 +11,9 @@ class Writer(ArgumentConsumer, Generic[ExternalFormat]):
     Base class for classes which can write a specific external format to disk.
     """
     def __init__(self, output: str):
+        super().__init__()
+
+        # The output file/directory to write the converted data-set to
         self.output: str = output
 
     @classmethod

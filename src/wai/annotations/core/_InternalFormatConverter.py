@@ -17,6 +17,8 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
     Base class for converters from the internal format to an external format.
     """
     def __init__(self, labels: Optional[List[str]] = None, regex: Optional[Pattern] = None):
+        super().__init__()
+
         # The labels that should be included in the output format.
         # If None, use regex matching (see below)
         self.labels: Optional[List[str]] = labels

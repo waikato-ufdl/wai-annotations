@@ -25,3 +25,9 @@ Changelog
 - Modified requirements to include Cython as this is required in later versions
   of pycocotools. Moved pycocotools to end of dependency list to ensure all
   requirements are met before installation.
+
+0.1.0 (2020-01-??)
+------------------
+
+- Added the ability to specify inputs by glob syntax, and also specify negative
+  images with no annotations.

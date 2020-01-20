@@ -1,23 +1,16 @@
 import os
-from typing import Iterator, Iterable
+from typing import Iterator
 
 from ...core import Reader, ImageInfo
 from ...core.external_formats import VGGExternalFormat
-from ...vgg_utils.configuration import VGGFile
+from ...vgg_utils.configuration import VGGFile, Image, FileAttributes
 
 
 class VGGReader(Reader[VGGExternalFormat]):
     """
     Reader of VGG-format JSON files.
     """
-    def determine_input_files(self, input_path: str) -> Iterable[str]:
-        return input_path,
-
-    @classmethod
-    def input_help_text(cls) -> str:
-        return "JSON-format VGG annotations file"
-
-    def read(self, filename: str) -> Iterator[VGGExternalFormat]:
+    def read_annotation_file(self, filename: str) -> Iterator[VGGExternalFormat]:
         # Read in the file
         vgg_file: VGGFile = VGGFile.load_from_json_file(filename)
 
@@ -36,3 +29,9 @@ class VGGReader(Reader[VGGExternalFormat]):
                     image_data = file.read()
 
             yield ImageInfo(image.filename, image_data), image
+
+    def image_info_to_external_format(self, image_info: ImageInfo) -> VGGExternalFormat:
+        return image_info, Image(filename=image_info.filename,
+                                 size=-1,
+                                 file_attributes=FileAttributes(caption="", public_domain="no", image_url=""),
+                                 regions=[])
