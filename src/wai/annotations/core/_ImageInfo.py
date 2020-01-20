@@ -22,6 +22,25 @@ class ImageInfo:
             else get_image_size(data) if data is not None \
             else None
 
+    @classmethod
+    def from_file(cls, filepath: str) -> 'ImageInfo':
+        """
+        Reads an image-info object from an image file on disk.
+
+        :param filepath:    The file to read.
+        :return:            The image-info object.
+        """
+        # Try to read the image data
+        data = None
+        if os.path.exists(filepath):
+            with open(filepath, "rb") as file:
+                data = file.read()
+
+        # Trim the filename
+        filename = os.path.basename(filepath)
+
+        return ImageInfo(filename, data)
+
     def width(self) -> int:
         """
         Gets the width of the image.
