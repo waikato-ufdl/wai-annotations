@@ -29,6 +29,10 @@ class ROIReader(Reader[ROIExternalFormat]):
             matcher = re.compile(extension_to_regex(constants.DEFAULT_EXTENSION))
 
             image_file = get_associated_image(matcher.match(filename).group(1))
+
+            # Make sure an associated image was found
+            if image_file is None:
+                raise ValueError(f"No associated image found for {filename}")
             
             image_file = os.path.basename(image_file)
 

@@ -16,6 +16,10 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
         # Get the image associated to this report
         image_file = get_associated_image(os.path.splitext(filename)[0])
 
+        # Make sure an image file was found
+        if image_file is None:
+            raise ValueError(f"No associated image found for {filename}")
+
         # Create the image info object
         image_info = ImageInfo.from_file(image_file)
 
