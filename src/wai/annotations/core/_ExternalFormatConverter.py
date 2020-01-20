@@ -5,10 +5,10 @@ from typing import Dict, Optional, Any, Iterable, Iterator
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
 from .external_formats import ExternalFormat
-from .inline import DuplicateImageNames
 from .constants import LABEL_METADATA_KEY
 from ._typing import InternalFormat
 from ._Converter import Converter
+from ._DuplicateImageNames import DuplicateImageNames
 
 
 class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
