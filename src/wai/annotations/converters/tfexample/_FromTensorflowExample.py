@@ -27,7 +27,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
         image_data = extract_feature(instance.features, 'image/encoded')[0]
         image_width = extract_feature(instance.features, 'image/width')[0]
         image_height = extract_feature(instance.features, 'image/height')[0]
-        image_format = ImageFormat.for_extension(extract_feature(instance.features, 'image/format')[0])
+        image_format = ImageFormat.for_extension(decode_utf_8(extract_feature(instance.features, 'image/format')[0]))
 
         # Extract the located object data from the instance
         lefts = extract_feature(instance.features, 'image/object/bbox/xmin')
