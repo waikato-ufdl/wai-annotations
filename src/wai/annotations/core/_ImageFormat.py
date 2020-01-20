@@ -35,28 +35,6 @@ class ImageFormat(Enum):
                          f"({', '.join(chain(*(image_format.value for image_format in ImageFormat)))})")
 
     @classmethod
-    def get_associated_image(cls, filename: str) -> Optional[str]:
-        """
-        Gets an image associated with the given filename, by searching for
-        a file with one of the valid image format extensions.
-
-        :param filename:    The filename to find an image for, without extension.
-        :return:            The filename of the image, None if not found.
-        """
-        # Check each variation of the extension for each format
-        for image_format in ImageFormat:
-            for extension in image_format.value:
-                # Get the hypothetical filename for an image of this format
-                image_filename: str = f"{filename}.{extension}"
-
-                # If an image of this format exists, return it
-                if os.path.exists(image_filename):
-                    return image_filename
-
-        # No image found
-        return None
-
-    @classmethod
     def for_extension(cls, extension: str) -> Optional["ImageFormat"]:
         """
         Gets the image format for the given extension.

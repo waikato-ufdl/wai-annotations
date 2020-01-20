@@ -3,8 +3,9 @@ from typing import Iterator
 
 from wai.common.file.report import loadf, Report
 
-from ...core import Reader, ImageFormat, ImageInfo
+from ...core import Reader, ImageInfo
 from ...core.external_formats import ADAMSExternalFormat
+from ...core.utils import get_associated_image
 
 
 class ADAMSReportReader(Reader[ADAMSExternalFormat]):
@@ -13,7 +14,7 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
     """
     def read_annotation_file(self, filename: str) -> Iterator[ADAMSExternalFormat]:
         # Get the image associated to this report
-        image_file = ImageFormat.get_associated_image(os.path.splitext(filename)[0])
+        image_file = get_associated_image(os.path.splitext(filename)[0])
 
         # Create the image info object
         image_info = ImageInfo.from_file(image_file)
