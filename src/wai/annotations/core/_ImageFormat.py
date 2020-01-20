@@ -42,6 +42,10 @@ class ImageFormat(Enum):
         :param extension:   The extension.
         :return:            The image format.
         """
+        # Remove a leading dot if applicable
+        if extension.startswith("."):
+            extension = extension[1:]
+
         for image_format in ImageFormat:
             if extension in image_format.value:
                 return image_format
