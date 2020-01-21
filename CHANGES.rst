@@ -7,7 +7,7 @@ Changelog
 - Added the ability to specify inputs by glob syntax, and also specify negative
   images with no annotations.
 - Added utility functions for images (image_to_numpyarray, remove_alpha_channel)
-  and for masks (mask_to_polygon, polygon_to_minrect) in module wai.annotations.image_utils
+  and for masks (mask_to_polygon, polygon_to_minrect, polygon_to_lists) in module wai.annotations.image_utils
 - Added --extensions option to control the search order for associated images.
 - Added --verbosity flag to control logging verbosity.
 

@@ -53,3 +53,45 @@ def polygon_to_minrect(poly):
     w = rect[1][0]
     h = rect[1][1]
     return w, h
+
+
+def polygon_to_lists(poly, swap_x_y=False, normalize=False, img_width=1, img_height=1, as_string=False):
+    """
+    Turns a polygon into two lists, one with xs and one with ys. Coordinates can be normalized.
+
+    :param poly: the polygon to process, array of (x,y) pairs
+    :type poly: np.ndarry
+    :param swap_x_y: whether to swap x and y
+    :type swap_x_y: bool
+    :param normalize: whether to return normalized coordinates (requires image width and height parameters)
+    :type normalize: bool
+    :param img_width: the image width to use for normalizing the coordinates
+    :type img_width: int
+    :param img_height: the image height to use for normalizing the coordinates
+    :type img_height: int
+    :param as_string: whether to return the values as string or float
+    :type as_string: bool
+    :return: tuple of one list containing all xs and one containing all ys
+    :rtype: tuple
+    """
+
+    px = []
+    py = []
+
+    for p in poly:
+        if swap_x_y:
+            x = p[1]
+            y = p[0]
+        else:
+            x = p[0]
+            y = p[1]
+        if normalize:
+            x = x / img_width
+            y = y / img_height
+        if as_string:
+            x = str(x)
+            y = str(y)
+        px.append(x)
+        py.append(y)
+
+    return px, py
