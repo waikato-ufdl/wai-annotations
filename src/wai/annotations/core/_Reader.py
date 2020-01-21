@@ -4,15 +4,18 @@ from argparse import ArgumentParser, Namespace
 from typing import Generic, Iterator, Dict, Any, List
 
 from .external_formats import ExternalFormat
+from .logging import StreamLogger, LoggingEnabled
 from .utils import chain_map, recursive_iglob
 from ._ArgumentConsumer import ArgumentConsumer
 from ._ImageInfo import ImageInfo
 
 
-class Reader(ArgumentConsumer, Generic[ExternalFormat]):
+class Reader(ArgumentConsumer, LoggingEnabled, Generic[ExternalFormat]):
     """
     Base class for classes which can read a specific external format from disk.
     """
+    logger_name = "wai.annotations.reader"
+
     def __init__(self, inputs: List[str], negatives: List[str]):
         super().__init__()
 
@@ -42,9 +45,12 @@ class Reader(ArgumentConsumer, Generic[ExternalFormat]):
 
         :return:            An iterator to the instances in the input file/directory.
         """
+        # Create a stream processor to log when we are loading a file
+        stream_log = StreamLogger(self.logger.info, lambda instance: f"Loading file {instance}").process
+
         return itertools.chain(
-            chain_map(self.read_annotation_file, self.annotation_files()),
-            chain_map(self.read_negative_image_file, self.negative_image_files())
+            chain_map(self.read_annotation_file, stream_log(self.annotation_files())),
+            chain_map(self.read_negative_image_file, stream_log(self.negative_image_files()))
         )
 
     def annotation_files(self) -> Iterator[str]:
