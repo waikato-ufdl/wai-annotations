@@ -33,3 +33,5 @@ Changelog
   images with no annotations.
 - Added utility functions for images (image_to_numpyarray, remove_alpha_channel)
   and for masks (mask_to_polygon, polygon_to_minrect) in module wai.annotations.image_utils
+- Added --extensions option to control the search order for associated images.
+- Added --verbosity flag to control logging verbosity.

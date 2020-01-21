@@ -32,11 +32,18 @@ options, which depend on whether it is the input or output of the conversion.
 
 ### Global Options
 
+* `-v`, `--verbosity`: Optional argument to set the logging verbosity of the conversion. Can be
+                       specified multiple times to further increase verbosity.
+
 * `-f`, `--force`: Optional argument to coerce the annotation boundaries into a specific type.
                    Set to `bbox` to coerce polygon mask boundaries into a bounding box that
                    tightly contains all polygon points. Set to `mask` to convert bounding box
                    boundaries into polygon masks by creating a box-shaped polygon matching the
                    original.
+
+* `-e`, `--extensions`: Optional argument to specify the order of preference for image types
+                        when searching for images related to annotations files. Defaults to
+                        `png,jpg` if not specified.
                     
 ### Input Options
 

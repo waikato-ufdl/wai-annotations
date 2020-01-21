@@ -13,10 +13,10 @@ except ImportError as e:
                        "    pip install tensorflow\n"
                        "    pip install tensorflow-gpu") from e
 
+from ..core import Settings, get_settings, set_settings
 from ._components import get_reader_class, get_external_format_converter_class, get_internal_format_converter_class, \
     get_writer_class
 from ._parser import parser
-from ._coercions import coerce_bbox, coerce_mask
 
 
 def main(args: Optional[List[str]] = None):
@@ -27,6 +27,9 @@ def main(args: Optional[List[str]] = None):
     """
     # Parse the arguments
     namespace = parser.parse_args(args)
+
+    # Set any global options
+    set_settings(Settings.instance_from_namespace(namespace))
 
     # Make sure an input and output format were specified
     # (currently no required flag for sub-parsers)
@@ -49,10 +52,8 @@ def main(args: Optional[List[str]] = None):
     input_chain = input_converter.convert_all(reader.load())
 
     # Add a coercion if specified
-    if namespace.force == "bbox":
-        input_chain = map(coerce_bbox, input_chain)
-    elif namespace.force == "mask":
-        input_chain = map(coerce_mask, input_chain)
+    if get_settings().COERCION is not None:
+        input_chain = get_settings().COERCION.process(input_chain)
 
     # Finish the chain with the output components
     writer.save(output_converter.convert_all(input_chain))

@@ -3,6 +3,8 @@ Module which configures the argument parser for the main function.
 """
 from argparse import ArgumentParser
 
+from ..core import Settings
+
 # Import the components that are available to us
 from ._components import components as available_components
 
@@ -10,14 +12,7 @@ from ._components import components as available_components
 parser: ArgumentParser = ArgumentParser()
 
 # Add any global options
-#parser.add_argument(
-#    "-v", "--verbose", action="store_true", dest="verbose", required=False,
-#    help="whether to be more verbose when generating the records")
-
-parser.add_argument(
-    "-f", "--force", dest="force", required=False, choices=["bbox", "mask"],
-    help="forces located objects into a particular boundary type"
-)
+Settings.configure_parser(parser)
 
 # Filter the components into input side...
 input_components = {
