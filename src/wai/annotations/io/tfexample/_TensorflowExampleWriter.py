@@ -6,7 +6,7 @@ import contextlib2
 
 from ...core import Writer
 from ...core.external_formats import TensorflowExampleExternalFormat
-from ...tf_utils import extract_feature, open_sharded_output_tfrecords
+from ...tf_utils import LabelMapAccumulator, open_sharded_output_tfrecords
 
 
 class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
@@ -23,9 +23,6 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
         # The name of the file to write the label map to
         # (in protobuf format)
         self.protobuf_label_map: Optional[str] = protobuf_label_map
-
-        # The label map
-        self._label_map: Dict[str, int] = {}
 
     @classmethod
     def configure_parser(cls, parser: ArgumentParser):
@@ -50,42 +47,12 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
     def output_help_text(cls) -> str:
         return "name of output file for TFRecords"
 
-    def label_map_accumulator(self, instance: TensorflowExampleExternalFormat) -> TensorflowExampleExternalFormat:
-        """
-        Pass-through method which records the label mappings.
-
-        :param instance:    An instance to process.
-        """
-        # Create a method to decode the binary strings
-        def decode_utf_8(bytes_: bytes) -> str:
-            return bytes_.decode("utf-8")
-
-        # Get and decode the labels from the example
-        labels: List[str] = list(map(decode_utf_8, extract_feature(instance.features, 'image/object/class/text')))
-
-        # Get the classes from the example
-        classes: List[int] = extract_feature(instance.features, 'image/object/class/label')
-
-        # Make sure the labels and classes are the same size
-        if len(labels) != len(classes):
-            raise ValueError(f"Number of labels differs from number of classes")
-
-        # Check and add labels/classes to the label map
-        for label, class_ in zip(labels, classes):
-            if label in self._label_map:
-                if self._label_map[label] != class_:
-                    raise RuntimeError(f"'{label}' maps to {self._label_map[label]} already but was "
-                                       f"redefined to {class_}")
-            else:
-                self._label_map[label] = class_
-
-        return instance
-
     def write(self, instances: Iterable[TensorflowExampleExternalFormat], path: str):
         # Reset the label map
+        label_map_accumulator = None
         if self.protobuf_label_map is not None:
-            self._label_map = {}
-            instances = map(self.label_map_accumulator, instances)
+            label_map_accumulator = LabelMapAccumulator()
+            instances = label_map_accumulator.process(instances)
 
         # Sharded writing
         if self.shards > 1:
@@ -104,23 +71,20 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
                     writer.write(instance.SerializeToString())
 
         # Write out the label map as well
-        self.write_protobuf_label_map()
+        if label_map_accumulator is not None:
+            self.write_protobuf_label_map(label_map_accumulator)
 
-    def write_protobuf_label_map(self):
+    def write_protobuf_label_map(self, label_map_accumulator: LabelMapAccumulator):
         """
         Writes the label-to-index mapping to the given file, in
         protobuf format, if an output filename was given.
         """
-        # Abort if no file to write to
-        if self.protobuf_label_map is None:
-            return
-
         # Format the label index map
         protobuf: List[str] = ["item {\n" +
                                f"  id: {index}\n" +
                                f"  name: '{label}'\n" +
                                "}\n"
-                               for label, index in self._label_map.items()]
+                               for label, index in label_map_accumulator.label_map.items()]
 
         # Write the lines to the specified file
         with open(self.protobuf_label_map, 'w') as file:
