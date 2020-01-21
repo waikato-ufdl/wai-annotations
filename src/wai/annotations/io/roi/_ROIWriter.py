@@ -3,7 +3,8 @@ from typing import Iterable, Tuple
 import csv
 
 from ...core import SeparateImageWriter, ImageInfo
-from ...core.external_formats import ROIExternalFormat, ROIObject
+from ...core.external_formats import ROIExternalFormat
+from ...roi_utils import ROIObject
 
 
 class ROIWriter(SeparateImageWriter[ROIExternalFormat]):

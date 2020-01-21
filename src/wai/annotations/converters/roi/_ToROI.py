@@ -5,7 +5,8 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...core import InternalFormatConverter, ImageInfo
 from ...core.constants import LABEL_METADATA_KEY
-from ...core.external_formats import ROIExternalFormat, ROIObject
+from ...core.external_formats import ROIExternalFormat
+from ...roi_utils import ROIObject
 
 
 class ToROI(InternalFormatConverter[ROIExternalFormat]):

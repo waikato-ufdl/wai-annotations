@@ -4,9 +4,9 @@ from typing import Iterator
 import csv
 
 from ...core import Reader, ImageInfo
-from ...core.external_formats import ROIExternalFormat, ROIObject
+from ...core.external_formats import ROIExternalFormat
 from ...core.utils import extension_to_regex, get_associated_image
-from ...roi_utils import constants
+from ...roi_utils import constants, ROIObject
 
 
 class ROIReader(Reader[ROIExternalFormat]):
