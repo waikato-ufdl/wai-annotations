@@ -57,3 +57,6 @@ class ImageFormat(Enum):
         Gets the default extension for the image format.
         """
         return self.name.lower()
+
+    def __str__(self) -> str:
+        return self.get_default_extension()
