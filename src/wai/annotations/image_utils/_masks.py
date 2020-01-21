@@ -60,7 +60,7 @@ def polygon_to_lists(poly, swap_x_y=False, normalize=False, img_width=1, img_hei
     Turns a polygon into two lists, one with xs and one with ys. Coordinates can be normalized.
 
     :param poly: the polygon to process, array of (x,y) pairs
-    :type poly: np.ndarry
+    :type poly: np.ndarray
     :param swap_x_y: whether to swap x and y
     :type swap_x_y: bool
     :param normalize: whether to return normalized coordinates (requires image width and height parameters)
