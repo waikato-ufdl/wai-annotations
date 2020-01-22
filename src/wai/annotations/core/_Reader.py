@@ -1,16 +1,14 @@
 import itertools
 from abc import abstractmethod
-from argparse import ArgumentParser, Namespace
-from typing import Generic, Iterator, Dict, Any, List
+from typing import Generic, Iterator, List
 
-from .external_formats import ExternalFormat
 from .logging import StreamLogger, LoggingEnabled
 from .utils import chain_map, recursive_iglob
-from ._ArgumentConsumer import ArgumentConsumer
 from ._ImageInfo import ImageInfo
+from ._typing import ExternalFormat
 
 
-class Reader(ArgumentConsumer, LoggingEnabled, Generic[ExternalFormat]):
+class Reader(LoggingEnabled, Generic[ExternalFormat]):
     """
     Base class for classes which can read a specific external format from disk.
     """
@@ -24,20 +22,6 @@ class Reader(ArgumentConsumer, LoggingEnabled, Generic[ExternalFormat]):
 
         # The names of images to include in the conversion without annotations
         self.negatives: List[str] = negatives
-
-    @classmethod
-    def configure_parser(cls, parser: ArgumentParser):
-        parser.add_argument(
-            "-i", "--inputs", metavar="files", dest="inputs", required=True, action="append",
-            help="Input image/annotations files (can use glob syntax)")
-        parser.add_argument(
-            "-n", "--negatives", metavar="image", dest="negatives", required=False, action="append", default=[],
-            help="Image files that have no annotations (can use glob syntax)")
-
-    @classmethod
-    def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
-        return {"inputs": namespace.inputs,
-                "negatives": namespace.negatives}
 
     def load(self) -> Iterator[ExternalFormat]:
         """

@@ -2,11 +2,10 @@ from argparse import ArgumentParser, Namespace
 from typing import Tuple, Dict, Any, Optional
 
 from .coercions import Coercion, BoxBoundsCoercion, MaskBoundsCoercion
-from ._ArgumentConsumer import ArgumentConsumer
 from ._ImageFormat import ImageFormat
 
 
-class Settings(ArgumentConsumer):
+class Settings:
     """
     The main settings class for the library. Contains global
     settings.
@@ -57,6 +56,10 @@ class Settings(ArgumentConsumer):
             force=(cls._parse_force(namespace.force)
                    if namespace.force is not None else None)
         )
+
+    @classmethod
+    def instance_from_namespace(cls, namespace: Namespace) -> 'Settings':
+        return cls(**cls.determine_kwargs_from_namespace(namespace))
 
     @classmethod
     def _parse_verbosity(cls, value: int) -> int:

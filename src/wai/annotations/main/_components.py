@@ -3,24 +3,43 @@ Module defining the components available to the main function.
 """
 from typing import Dict, Optional, Tuple, Type, Set
 
-from ..core import Reader, ExternalFormatConverter, InternalFormatConverter, Writer
-from ..converters import *
-from ..io import *
+from ..core.cli import (
+    CommandLineReaderFactory,
+    CommandLineWriterFactory,
+    CommandLineExternalFormatConverterFactory,
+    CommandLineInternalFormatConverterFactory
+)
+from .cli import *
 
 # The type of a specification of the components for a single external format
 ComponentSpec = Tuple[
-    Optional[Type[Reader]],
-    Optional[Type[ExternalFormatConverter]],
-    Optional[Type[InternalFormatConverter]],
-    Optional[Type[Writer]]
+    Optional[Type[CommandLineReaderFactory]],
+    Optional[Type[CommandLineExternalFormatConverterFactory]],
+    Optional[Type[CommandLineInternalFormatConverterFactory]],
+    Optional[Type[CommandLineWriterFactory]]
 ]
 
 components: Dict[str, ComponentSpec] = {
-    "adams": (ADAMSReportReader, FromADAMSReport, ToADAMSReport, ADAMSReportWriter),
-    "tfrecords": (TensorflowExampleReader, FromTensorflowExample, ToTensorflowExample, TensorflowExampleWriter),
-    "coco": (COCOReader, FromCOCO, ToCOCO, COCOWriter),
-    "vgg": (VGGReader, FromVGG, ToVGG, VGGWriter),
-    "roi": (ROIReader, FromROI, ToROI, ROIWriter)
+    "adams": (CommandLineADAMSReportReaderFactory,
+              CommandLineFromADAMSReportFactory,
+              CommandLineToADAMSReportFactory,
+              CommandLineADAMSReportWriterFactory),
+    "coco": (CommandLineCOCOReaderFactory,
+             CommandLineFromCOCOFactory,
+             CommandLineToCOCOFactory,
+             CommandLineCOCOWriterFactory),
+    "roi": (CommandLineROIReaderFactory,
+            CommandLineFromROIFactory,
+            CommandLineToROIFactory,
+            CommandLineROIWriterFactory),
+    "tfrecords": (CommandLineTensorflowExampleReaderFactory,
+                  CommandLineFromTensorflowExampleFactory,
+                  CommandLineToTensorflowExampleFactory,
+                  CommandLineTensorflowExampleWriterFactory),
+    "vgg": (CommandLineVGGReaderFactory,
+            CommandLineFromVGGFactory,
+            CommandLineToVGGFactory,
+            CommandLineVGGWriterFactory)
 }
 
 
@@ -46,57 +65,57 @@ def ensure_format(format: str):
                          f"Available formats are {formats}")
 
 
-def get_reader_class(format: str) -> Optional[Type[Reader]]:
+def get_reader_factory(format: str) -> Optional[Type[CommandLineReaderFactory]]:
     """
-    Gets the reader class for a given format.
+    Gets the reader factory for a given format.
 
     :param format:  The format identifier.
-    :return:        The reader class for the format.
+    :return:        The reader factory for the format.
     """
     # Check the format is known
     ensure_format(format)
 
-    # Get the reader class for the format
+    # Get the reader factory for the format
     return components[format][0]
 
 
-def get_external_format_converter_class(format: str) -> Optional[Type[ExternalFormatConverter]]:
+def get_external_format_converter_factory(format: str) -> Optional[Type[CommandLineExternalFormatConverterFactory]]:
     """
-    Gets the external format converter class for a given format.
+    Gets the external format converter factory for a given format.
 
     :param format:  The format identifier.
-    :return:        The external format converter class for the format.
+    :return:        The external format converter factory for the format.
     """
     # Check the format is known
     ensure_format(format)
 
-    # Get the reader class for the format
+    # Get the external format converter factory for the format
     return components[format][1]
 
 
-def get_internal_format_converter_class(format: str) -> Optional[Type[InternalFormatConverter]]:
+def get_internal_format_converter_factory(format: str) -> Optional[Type[CommandLineInternalFormatConverterFactory]]:
     """
-    Gets the internal format converter class for a given format.
+    Gets the internal format converter factory for a given format.
 
     :param format:  The format identifier.
-    :return:        The internal format converter class for the format.
+    :return:        The internal format converter factory for the format.
     """
     # Check the format is known
     ensure_format(format)
 
-    # Get the reader class for the format
+    # Get the internal format converter factory for the format
     return components[format][2]
 
 
-def get_writer_class(format: str) -> Optional[Type[Writer]]:
+def get_writer_factory(format: str) -> Optional[Type[CommandLineWriterFactory]]:
     """
-    Gets the writer class for a given format.
+    Gets the writer factory for a given format.
 
     :param format:  The format identifier.
-    :return:        The writer class for the format.
+    :return:        The writer factory for the format.
     """
     # Check the format is known
     ensure_format(format)
 
-    # Get the reader class for the format
+    # Get the reader factory for the format
     return components[format][3]

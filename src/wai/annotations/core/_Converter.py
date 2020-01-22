@@ -1,14 +1,12 @@
 from abc import abstractmethod
 from typing import Generic, Iterable, Iterator, TypeVar
 
-from ._ArgumentConsumer import ArgumentConsumer
-
 # The types that the converter converts from and to
 FromFormat = TypeVar("FromFormat")
 ToFormat = TypeVar("ToFormat")
 
 
-class Converter(ArgumentConsumer, Generic[FromFormat, ToFormat]):
+class Converter(Generic[FromFormat, ToFormat]):
     """
     Base class for converters.
     """

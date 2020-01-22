@@ -1,14 +1,11 @@
-import re
 from abc import abstractmethod
-from argparse import ArgumentParser, Namespace
-from typing import Optional, List, Dict, Any, Pattern
+from typing import Optional, List, Pattern
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from .utils import get_object_label
-from .external_formats import ExternalFormat
 from ._Converter import Converter
-from ._typing import InternalFormat
+from ._typing import InternalFormat, ExternalFormat
 from ._ImageInfo import ImageInfo
 
 
@@ -26,26 +23,6 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         # The regex to use to select labels to include when an
         # explicit list of labels is not given
         self.regex: Optional[Pattern] = regex
-
-    @classmethod
-    def configure_parser(cls, parser: ArgumentParser):
-        parser.add_argument(
-            "-l", "--labels", metavar="label1,label2,...", dest="labels", required=False,
-            help="comma-separated list of labels to use", default="")
-
-        parser.add_argument(
-            "-r", "--regexp", metavar="regexp", dest="regexp", required=False,
-            help="regular expression for using only a subset of labels", default="")
-
-    @classmethod
-    def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
-        # Parse the labels
-        labels = list(namespace.labels.split(",")) if len(namespace.labels) > 0 else None
-
-        # Parse the regex
-        regex = re.compile(namespace.regexp) if len(namespace.regexp) > 0 else None
-
-        return {"labels": labels, "regex": regex}
 
     def convert(self, instance: InternalFormat) -> ExternalFormat:
         # Unpack the instance

@@ -5,18 +5,13 @@ import logging
 import traceback
 from typing import List, Optional
 
-# Make sure a tensorflow library is installed
-try:
-    import tensorflow
-except ImportError as e:
-    raise RuntimeError("No tensorflow library found\n"
-                       "Please install either tensorflow or tensorflow-gpu\n"
-                       "    pip install tensorflow\n"
-                       "    pip install tensorflow-gpu") from e
-
 from ..core import Settings, get_settings, set_settings
-from ._components import get_reader_class, get_external_format_converter_class, get_internal_format_converter_class, \
-    get_writer_class
+from ._components import (
+    get_reader_factory,
+    get_external_format_converter_factory,
+    get_internal_format_converter_factory,
+    get_writer_factory
+)
 from ._logging import get_main_logger
 from ._parser import parser
 
@@ -58,10 +53,10 @@ def main(args: Optional[List[str]] = None):
     logger.info(f"Converting from {input_format} to {output_format}")
 
     # Instantiate the components from the provided arguments
-    reader = get_reader_class(input_format).instance_from_namespace(namespace)
-    input_converter = get_external_format_converter_class(input_format).instance_from_namespace(namespace)
-    output_converter = get_internal_format_converter_class(output_format).instance_from_namespace(namespace)
-    writer = get_writer_class(output_format).instance_from_namespace(namespace)
+    reader = get_reader_factory(input_format).instance_from_namespace(namespace)
+    input_converter = get_external_format_converter_factory(input_format).instance_from_namespace(namespace)
+    output_converter = get_internal_format_converter_factory(output_format).instance_from_namespace(namespace)
+    writer = get_writer_factory(output_format).instance_from_namespace(namespace)
 
     # Create the input chain
     input_chain = input_converter.convert_all(reader.load())

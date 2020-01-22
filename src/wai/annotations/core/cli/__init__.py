@@ -1,0 +1,11 @@
+"""
+Package for factories for producing components (readers, writers, etc.)
+from command-line arguments.
+"""
+from ._CommandLineConverterFactory import CommandLineConverterFactory
+from ._CommandLineExternalFormatConverterFactory import CommandLineExternalFormatConverterFactory
+from ._CommandLineFactory import CommandLineFactory
+from ._CommandLineInternalFormatConverterFactory import CommandLineInternalFormatConverterFactory
+from ._CommandLineReaderFactory import CommandLineReaderFactory
+from ._CommandLineSeparateImageWriterFactory import CommandLineSeparateImageWriterFactory
+from ._CommandLineWriterFactory import CommandLineWriterFactory

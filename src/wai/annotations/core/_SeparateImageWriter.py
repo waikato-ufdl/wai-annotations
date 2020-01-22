@@ -1,9 +1,8 @@
 import os
 from abc import ABC, abstractmethod
-from argparse import ArgumentParser, Namespace
-from typing import Dict, Any, Iterable
+from typing import Iterable
 
-from .external_formats import ExternalFormat
+from ._typing import ExternalFormat
 from ._Writer import Writer
 from ._ImageInfo import ImageInfo
 
@@ -17,19 +16,6 @@ class SeparateImageWriter(Writer[ExternalFormat], ABC):
         super().__init__(output)
 
         self.no_images: bool = no_images
-
-    @classmethod
-    def configure_parser(cls, parser: ArgumentParser):
-        super().configure_parser(parser)
-
-        parser.add_argument("--no-images", action="store_true", required=False, dest="no_images",
-                            help="skip the writing of images, outputting only the report files")
-
-    @classmethod
-    def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
-        kwargs = super().determine_kwargs_from_namespace(namespace)
-        kwargs.update(no_images=namespace.no_images)
-        return kwargs
 
     def write(self, instances: Iterable[ExternalFormat], path: str):
         self.write_without_images(map(self.inline_image_writer, instances), path)

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.1.1 (2020-??-??)
+------------------
+
+- Separated command-line option parsing from io/converter classes so that imports
+  unique to specific formats are not required unless using that format.
+- Refactoring of package structure.
+
 0.1.0 (2020-01-22)
 ------------------
 

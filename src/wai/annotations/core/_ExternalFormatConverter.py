@@ -1,14 +1,13 @@
 from abc import abstractmethod
-from argparse import ArgumentParser, Namespace
-from typing import Dict, Optional, Any, Iterable, Iterator
+from typing import Dict, Optional, Iterable, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
-from .external_formats import ExternalFormat
 from .constants import LABEL_METADATA_KEY
 from ._typing import InternalFormat
 from ._Converter import Converter
 from ._DuplicateImageNames import DuplicateImageNames
+from ._typing import ExternalFormat
 
 
 class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
@@ -22,31 +21,6 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
         # The key is the label to replace and the value is the label
         # to replace it with
         self.label_mapping: Optional[Dict[str, str]] = label_mapping
-
-    @classmethod
-    def configure_parser(cls, parser: ArgumentParser):
-        parser.add_argument(
-            "-m", "--mapping", metavar="old=new", dest="mapping", action='append', type=str, required=False,
-            help="mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)",
-            default=list())
-
-    @classmethod
-    def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
-        # Create the empty mapping
-        mapping = {}
-
-        # Add each provided exchange to the mapping
-        for map_string in namespace.mapping:
-            old, new = map_string.split("=")
-
-            # Make sure we don't double-map a label
-            if old in mapping:
-                raise ValueError(f"Multiple mappings specified for label '{old}': "
-                                 f"{mapping[old]}, {new}")
-
-            mapping[old] = new
-
-        return {"label_mapping": mapping}
 
     def convert_all(self, instances: Iterable[ExternalFormat]) -> Iterator[InternalFormat]:
         # Make sure no image is included more than once
