@@ -46,7 +46,7 @@ class Reader(ArgumentConsumer, LoggingEnabled, Generic[ExternalFormat]):
         :return:            An iterator to the instances in the input file/directory.
         """
         # Create a stream processor to log when we are loading a file
-        stream_log = StreamLogger(self.logger.info, lambda instance: f"Loading file {instance}").process
+        stream_log = StreamLogger(self.logger().info, lambda instance: f"Loading file {instance}").process
 
         return itertools.chain(
             chain_map(self.read_annotation_file, stream_log(self.annotation_files())),
