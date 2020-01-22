@@ -33,16 +33,6 @@ class SeparateImageWriter(Writer[ExternalFormat], ABC):
         """
         pass
 
-    @abstractmethod
-    def extract_image_info_from_external_format(self, instance: ExternalFormat) -> ImageInfo:
-        """
-        Extracts an image-info object from the external format of this writer.
-
-        :param instance:    The instance being written.
-        :return:            The image info for the instance.
-        """
-        pass
-
     def inline_image_writer(self, instance: ExternalFormat) -> ExternalFormat:
         """
         Writes images from the pipeline as they are processed.

@@ -2,9 +2,10 @@ from typing import Iterable, Optional, List
 
 import contextlib2
 
-from ...core import Writer
+from ...core import Writer, ImageInfo
 from .._ensure_available import tensorflow as tf
 from .._format import TensorflowExampleExternalFormat
+from .._image_info_from_example import image_info_from_example
 from .._LabelMapAccumulator import LabelMapAccumulator
 from .._open_sharded_output_tfrecords import open_sharded_output_tfrecords
 
@@ -66,3 +67,6 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
         # Write the lines to the specified file
         with open(self.protobuf_label_map, 'w') as file:
             file.writelines(protobuf)
+
+    def extract_image_info_from_external_format(self, instance: TensorflowExampleExternalFormat) -> ImageInfo:
+        return image_info_from_example(instance)

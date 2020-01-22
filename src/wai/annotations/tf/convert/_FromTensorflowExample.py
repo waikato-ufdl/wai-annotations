@@ -1,10 +1,11 @@
 from typing import List
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
-from ...core import ExternalFormatConverter, InternalFormat, ImageInfo, ImageFormat
+from ...core import ExternalFormatConverter, InternalFormat, ImageInfo
 from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY, DEFAULT_PREFIX
 from .._extract_feature import extract_feature
 from .._format import TensorflowExampleExternalFormat
+from .._image_info_from_example import image_info_from_example
 from .._polygon_from_mask import polygon_from_mask
 
 
@@ -18,11 +19,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
             return bytes_.decode("utf-8")
 
         # Extract the image data from the example instance
-        image_filename = decode_utf_8(extract_feature(instance.features, 'image/filename')[0])
-        image_data = extract_feature(instance.features, 'image/encoded')[0]
-        image_width = extract_feature(instance.features, 'image/width')[0]
-        image_height = extract_feature(instance.features, 'image/height')[0]
-        image_format = ImageFormat.for_extension(decode_utf_8(extract_feature(instance.features, 'image/format')[0]))
+        image_info: ImageInfo = image_info_from_example(instance)
 
         # Extract the located object data from the instance
         lefts = extract_feature(instance.features, 'image/object/bbox/xmin')
@@ -37,9 +34,10 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
             masks = [b""] * len(lefts)
 
         located_objects = self.process_located_objects(lefts, rights, tops, bottoms,
-                                                       labels, masks, image_width, image_height)
+                                                       labels, masks,
+                                                       image_info.width(), image_info.height())
 
-        return ImageInfo(image_filename, image_data, image_format, (image_width, image_height)), located_objects
+        return image_info, located_objects
 
     @staticmethod
     def process_located_objects(lefts: List[float],

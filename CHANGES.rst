@@ -7,6 +7,7 @@ Changelog
 - Separated command-line option parsing from io/converter classes so that imports
   unique to specific formats are not required unless using that format.
 - Refactoring of package structure.
+- Added logging of when files are being written.
 
 0.1.0 (2020-01-22)
 ------------------
