@@ -34,8 +34,10 @@ class ToCOCO(InternalFormatConverter[COCOExternalFormat]):
                 polygon.append(float(point.y))
 
         # Calculate the area of the annotation
-        # TODO: Calculate polygon area if object is mask bound
-        area = float(located_object.get_rectangle().area())
+        if located_object.has_polygon():
+            area = located_object.get_polygon().area()
+        else:
+            area = float(located_object.get_rectangle().area())
 
         return Annotation(id=0, image_id=0, category_id=0,  # Will be calculated at write-time
                           segmentation=[polygon] if len(polygon) > 0 else [],

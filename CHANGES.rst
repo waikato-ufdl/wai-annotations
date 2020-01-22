@@ -8,6 +8,8 @@ Changelog
   unique to specific formats are not required unless using that format.
 - Refactoring of package structure.
 - Added logging of when files are being written.
+- Conversion to COCO format now report polygon mask area, rather than just bounding-
+  box area.
 
 0.1.0 (2020-01-22)
 ------------------
