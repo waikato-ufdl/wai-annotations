@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.0 (2020-01-??)
+0.1.0 (2020-01-22)
 ------------------
 
 - Added the ability to specify inputs by glob syntax, and also specify negative
