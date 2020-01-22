@@ -42,8 +42,8 @@ options, which depend on whether it is the input or output of the conversion.
                    original.
 
 * `-e`, `--extensions`: Optional argument to specify the order of preference for image types
-                        when searching for images related to annotations files. Defaults to
-                        `png,jpg` if not specified.
+                        when searching for images related to annotations files. Should be a
+                        comma-separated list of extensions. Defaults to `png,jpg` if not specified.
                     
 ### Input Options
 
