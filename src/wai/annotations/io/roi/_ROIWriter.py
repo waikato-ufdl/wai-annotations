@@ -4,7 +4,7 @@ import csv
 
 from ...core import SeparateImageWriter, ImageInfo
 from ...core.external_formats import ROIExternalFormat
-from ...roi_utils import ROIObject
+from ...roi_utils import ROIObject, combine_dicts
 
 
 class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
@@ -28,14 +28,23 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
             # Format the report filename
             filename: str = self.filename_from_image_filename(image_info.filename)
 
+            # Format each ROI object as a dictionary
+            roi_dicts, headers = combine_dicts(map(ROIObject.as_dict, roi_objects))
+
+            # Put the headers in order
+            headers = tuple(header for header in ROIObject.keywords
+                            if header in headers or header in ROIObject.required_keyword_set)
+
+            # Add the filename header
+            headers = "file", *headers
+
             # Write the CSV file
             with open(os.path.join(path, filename), "w") as file:
-                csv_writer = csv.DictWriter(file, self.header())
+                csv_writer = csv.DictWriter(file, headers)
                 csv_writer.writeheader()
-                for roi_object in roi_objects:
-                    row = roi_object.as_dict()
-                    row.update(file=image_info.filename)
-                    csv_writer.writerow(row)
+                for roi_dict in roi_dicts:
+                    roi_dict.update(file=image_info.filename)
+                    csv_writer.writerow(roi_dict)
 
     def extract_image_info_from_external_format(self, instance: ROIExternalFormat) -> ImageInfo:
         # Unpack the instance
@@ -51,11 +60,3 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
         :return:                The ROI CSV filename.
         """
         return f"{os.path.splitext(image_filename)[0]}-roi.csv"
-
-    def header(self) -> Tuple[str, ...]:
-        """
-        Gets the ROI header.
-
-        :return:    The header.
-        """
-        return ("file", *ROIObject.keywords())

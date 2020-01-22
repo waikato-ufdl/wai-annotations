@@ -10,6 +10,7 @@ Changelog
   and for masks (mask_to_polygon, polygon_to_minrect, polygon_to_lists) in module wai.annotations.image_utils
 - Added --extensions option to control the search order for associated images.
 - Added --verbosity flag to control logging verbosity.
+- Added polygon mask support to the ROI format.
 
 0.0.4 (2020-01-15)
 ------------------

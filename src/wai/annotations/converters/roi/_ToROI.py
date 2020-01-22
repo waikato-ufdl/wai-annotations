@@ -6,7 +6,7 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from ...core import InternalFormatConverter, ImageInfo
 from ...core.constants import LABEL_METADATA_KEY
 from ...core.external_formats import ROIExternalFormat
-from ...roi_utils import ROIObject
+from ...roi_utils import ROIObject, roi_polygon, min_rect_from_roi_polygon
 
 
 class ToROI(InternalFormatConverter[ROIExternalFormat]):
@@ -80,14 +80,30 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
         if label not in self._label_map:
             self._label_map[label] = len(self._label_map)
 
-        return ROIObject(float(rectangle.left()),
-                         float(rectangle.top()),
-                         float(rectangle.right()),
-                         float(rectangle.bottom()),
-                         rectangle.left() / image_width,
-                         rectangle.top() / image_height,
-                         rectangle.right() / image_width,
-                         rectangle.bottom() / image_height,
-                         self._label_map[label],
-                         label,
-                         1.0)
+        # Create keyword arguments from the required attributes
+        kwargs = dict(x0=float(rectangle.left()),
+                      y0=float(rectangle.top()),
+                      x1=float(rectangle.right()),
+                      y1=float(rectangle.bottom()),
+                      x0n=rectangle.left() / image_width,
+                      y0n=rectangle.top() / image_height,
+                      x1n=rectangle.right() / image_width,
+                      y1n=rectangle.bottom() / image_height,
+                      label=self._label_map[label],
+                      label_str=label,
+                      score=1.0)
+
+        # If there is a polygon, add them as keyword arguments
+        if located_object.has_polygon():
+            poly_x, poly_y = roi_polygon(located_object.get_polygon())
+            minrect_w, minrect_h = min_rect_from_roi_polygon(poly_x, poly_y)
+            kwargs.update(poly_x=poly_x,
+                          poly_y=poly_y,
+                          poly_xn=list(map(lambda x: x / image_width, poly_x)),
+                          poly_yn=list(map(lambda y: y / image_height, poly_y)),
+                          minrect_w=minrect_w,
+                          minrect_h=minrect_h)
+
+        return ROIObject(**kwargs)
+
+
