@@ -29,12 +29,15 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
             # Format each ROI object as a dictionary
             roi_dicts, headers = combine_dicts(map(ROIObject.as_dict, roi_objects))
 
-            # Put the headers in order
+            # Extract the non-standard headers
+            non_standard_headers = headers - ROIObject.keyword_set
+
+            # Put the standard headers in order
             headers = tuple(header for header in ROIObject.keywords
                             if header in headers or header in ROIObject.required_keyword_set)
 
             # Add the filename header
-            headers = "file", *headers
+            headers = "file", *headers, *non_standard_headers
 
             # Write the CSV file
             with open(os.path.join(path, filename), "w") as file:

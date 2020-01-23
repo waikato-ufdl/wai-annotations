@@ -32,7 +32,8 @@ class ROIObject(LoggingEnabled):
                  label: int, label_str: str, score: float,
                  poly_x: Optional[List[float]] = None, poly_y: Optional[List[float]] = None,
                  poly_xn: Optional[List[float]] = None, poly_yn: Optional[List[float]] = None,
-                 minrect_w: Optional[float] = None, minrect_h: Optional[float] = None):
+                 minrect_w: Optional[float] = None, minrect_h: Optional[float] = None,
+                 **non_standard_kwargs):
         self.x0: float = x0
         self.y0: float = y0
         self.x1: float = x1
@@ -50,6 +51,13 @@ class ROIObject(LoggingEnabled):
         self.poly_yn: Optional[List[float]] = poly_yn
         self.minrect_w: Optional[float] = minrect_w
         self.minrect_h: Optional[float] = minrect_h
+
+        # Capture any additional columns
+        self.non_standard_kwargs = non_standard_kwargs
+
+        # "file" is a reserved keyword for the ROI file format
+        if "file" in non_standard_kwargs:
+            raise NameError(f"'file' is reserved for the ROI file format, can't be in the non-standard keywords")
 
         # Make sure all of the polygon lists are the same length
         self.ensure_polygon_list_lengths()
@@ -123,6 +131,8 @@ class ROIObject(LoggingEnabled):
             # Add the string representation of the value to the dict
             result[keyword] = value
 
+        result.update(**self.non_standard_kwargs)
+
         return result
 
     @classmethod
@@ -138,11 +148,8 @@ class ROIObject(LoggingEnabled):
 
         # Process each dictionary item in turn
         for keyword, value in dict.items():
-            # Ignore unexpected keywords
-            if keyword not in cls.keyword_set:
-                # Log anything other than "file" which we know will be in there
-                if keyword != "file":
-                    cls.logger().info(f"Unexpected keyword '{keyword}' in ROI dictionary, ignoring")
+            # Ignore the file keyword
+            if keyword == "file":
                 continue
 
             # Add the value to the kwargs

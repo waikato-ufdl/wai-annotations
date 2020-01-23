@@ -5,7 +5,7 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects
 from .._ensure_available import tensorflow as tf
 
 from ...core import InternalFormatConverter, ImageInfo
-from ...core.constants import LABEL_METADATA_KEY
+from ...core.utils import get_object_label
 from .._format import TensorflowExampleExternalFormat
 from .._make_feature import make_feature
 from .._mask_from_polygon import mask_from_polygon
@@ -100,12 +100,8 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
         classes = []
         masks = []
         for located_object in located_objects:
-            # Make sure the object has a label
-            if LABEL_METADATA_KEY not in located_object.metadata:
-                continue
-
             # Get the object label
-            label = located_object.metadata[LABEL_METADATA_KEY]
+            label = get_object_label(located_object)
 
             # Skip unknown labels if given a specific set, or add it
             # if using auto-labeling

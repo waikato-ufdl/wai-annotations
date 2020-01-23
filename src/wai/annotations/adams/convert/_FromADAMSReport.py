@@ -4,7 +4,8 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.file.report import Report
 
 from ...core import ExternalFormatConverter, InternalFormat
-from .._prefixes import find_all_prefixes, add_prefix_as_metadata
+from ...core.utils import set_object_prefix
+from .._prefixes import find_all_prefixes
 from .._format import ADAMSExternalFormat
 
 
@@ -46,7 +47,8 @@ class FromADAMSReport(ExternalFormatConverter[ADAMSExternalFormat]):
             located_objects_for_prefix = LocatedObjects.from_report(report, prefix)
 
             # Add the prefix to the meta-data of the objects
-            add_prefix_as_metadata(prefix, located_objects_for_prefix)
+            for located_object in located_objects_for_prefix:
+                set_object_prefix(located_object, prefix)
 
             # Add the objects to the final set
             located_objects += located_objects_for_prefix

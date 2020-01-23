@@ -3,7 +3,7 @@ from typing import Set, Dict
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.file.report import Report
 
-from ..core.constants import PREFIX_METADATA_KEY
+from ..core.utils import get_object_prefix, set_object_prefix
 
 
 def find_all_prefixes(report: Report) -> Set[str]:
@@ -28,17 +28,6 @@ def find_all_prefixes(report: Report) -> Set[str]:
     return prefixes
 
 
-def add_prefix_as_metadata(prefix: str, located_objects: LocatedObjects):
-    """
-    Adds the prefix as a meta-data field to each located object.
-
-    :param prefix:              The prefix.
-    :param located_objects:     The located objects.
-    """
-    for located_object in located_objects:
-        located_object.metadata[PREFIX_METADATA_KEY] = prefix
-
-
 def divide_by_prefix(located_objects: LocatedObjects) -> Dict[str, LocatedObjects]:
     """
     Divides a single set of located objects into sub-sets where
@@ -53,7 +42,7 @@ def divide_by_prefix(located_objects: LocatedObjects) -> Dict[str, LocatedObject
     # Process each object into the map
     for located_object in located_objects:
         # Get the object's prefix
-        prefix: str = located_object.metadata[PREFIX_METADATA_KEY]
+        prefix: str = get_object_prefix(located_object)
 
         # Create a new group for the prefix the first time we encounter it
         if prefix not in prefix_objects:
@@ -72,5 +61,4 @@ def remove_prefix_metadata(located_objects: LocatedObjects):
     :param located_objects:     The located objects.
     """
     for located_object in located_objects:
-        if PREFIX_METADATA_KEY in located_object.metadata:
-            del located_object.metadata[PREFIX_METADATA_KEY]
+        set_object_prefix(located_object, None)

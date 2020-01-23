@@ -2,7 +2,7 @@ from typing import List
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...core import ExternalFormatConverter, InternalFormat, ImageInfo
-from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY, DEFAULT_PREFIX
+from ...core.utils import set_object_label
 from .._extract_feature import extract_feature
 from .._format import TensorflowExampleExternalFormat
 from .._image_info_from_example import image_info_from_example
@@ -73,8 +73,8 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
             height = round(bottom * image_height) - y + 1
 
             # Create the located object
-            located_object: LocatedObject = LocatedObject(x, y, width, height, **{LABEL_METADATA_KEY: label,
-                                                                                  PREFIX_METADATA_KEY: DEFAULT_PREFIX})
+            located_object: LocatedObject = LocatedObject(x, y, width, height)
+            set_object_label(located_object, label)
 
             if len(mask) != 0:
                 located_object.set_polygon(polygon_from_mask(mask))

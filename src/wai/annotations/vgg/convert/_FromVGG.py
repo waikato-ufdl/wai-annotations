@@ -1,7 +1,7 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...core import ExternalFormatConverter, InternalFormat
-from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY, DEFAULT_PREFIX
+from ...core.utils import set_object_label
 from ..configuration import Region, PolygonShapeAttributes
 from .._format import VGGExternalFormat
 from .._shape_attributes import from_polygon_shape_attributes, from_rect_shape_attributes
@@ -36,8 +36,8 @@ class FromVGG(ExternalFormatConverter[VGGExternalFormat]):
             polygon = None
 
         # Create the located object
-        located_object = LocatedObject(x, y, width, height, **{LABEL_METADATA_KEY: label,
-                                                               PREFIX_METADATA_KEY: DEFAULT_PREFIX})
+        located_object = LocatedObject(x, y, width, height)
+        set_object_label(located_object, label)
 
         # Add the polygon if there is one
         if polygon is not None:

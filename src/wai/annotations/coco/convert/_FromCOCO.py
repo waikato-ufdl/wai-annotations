@@ -1,9 +1,9 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.geometry import Polygon, Point
 
-from ...coco.configuration import Annotation
 from ...core import ExternalFormatConverter, InternalFormat
-from ...core.constants import LABEL_METADATA_KEY, PREFIX_METADATA_KEY
+from ...core.utils import set_object_label, set_object_prefix
+from ..configuration import Annotation
 from .._format import COCOExternalFormat
 
 
@@ -31,9 +31,9 @@ class FromCOCO(ExternalFormatConverter[COCOExternalFormat]):
         located_object = LocatedObject(round(annotation.bbox[0]),
                                        round(annotation.bbox[1]),
                                        round(annotation.bbox[2]),
-                                       round(annotation.bbox[3]),
-                                       **{LABEL_METADATA_KEY: label,
-                                          PREFIX_METADATA_KEY: prefix})
+                                       round(annotation.bbox[3]))
+        set_object_label(located_object, label)
+        set_object_prefix(located_object, prefix)
 
         # Create the polygon if there is one
         points = []

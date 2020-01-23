@@ -3,7 +3,7 @@ from typing import Dict, Optional, List, Pattern, Tuple
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...core import InternalFormatConverter, ImageInfo
-from ...core.constants import LABEL_METADATA_KEY
+from ...core.utils import get_object_label, get_object_prefix, get_object_metadata
 from .._format import ROIExternalFormat
 from .._min_rect_from_roi_polygon import min_rect_from_roi_polygon
 from .._roi_polygon import roi_polygon
@@ -58,7 +58,7 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
         rectangle = located_object.get_rectangle()
 
         # Get the object's label
-        label = located_object.metadata[LABEL_METADATA_KEY]
+        label = get_object_label(located_object)
 
         # Add the label to the label map if it's not already present
         if label not in self._label_map:
@@ -87,5 +87,11 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
                           poly_yn=list(map(lambda y: y / image_height, poly_y)),
                           minrect_w=minrect_w,
                           minrect_h=minrect_h)
+
+        # Set the non-standard keywords
+        prefix = get_object_prefix(located_object, True)
+        if prefix is not None:
+            kwargs.update(prefix=prefix)
+        kwargs.update(**get_object_metadata(located_object))
 
         return ROIObject(**kwargs)

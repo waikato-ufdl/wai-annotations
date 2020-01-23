@@ -3,7 +3,7 @@ from typing import Dict, Optional, Iterable, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
-from .constants import LABEL_METADATA_KEY
+from .utils import get_object_label, set_object_label
 from ._typing import InternalFormat
 from ._Converter import Converter
 from ._DuplicateImageNames import DuplicateImageNames
@@ -61,13 +61,13 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
 
         # Process each object
         for located_object in located_objects:
-            # If the object doesn't have a label, skip it
-            if LABEL_METADATA_KEY not in located_object.metadata:
-                continue
-
             # Get the object's current label
-            label: str = located_object.metadata[LABEL_METADATA_KEY]
+            label: Optional[str] = get_object_label(located_object, True)
+
+            # If the object doesn't have a label, skip it
+            if label is None:
+                continue
 
             # If there is a mapping for this label, change it
             if label in self.label_mapping:
-                located_object.metadata[LABEL_METADATA_KEY] = self.label_mapping[label]
+                set_object_label(located_object, self.label_mapping[label])

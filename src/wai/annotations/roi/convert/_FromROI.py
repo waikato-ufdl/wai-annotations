@@ -1,7 +1,7 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...core import ExternalFormatConverter, InternalFormat
-from ...core.constants import PREFIX_METADATA_KEY, LABEL_METADATA_KEY, DEFAULT_PREFIX
+from ...core.utils import set_object_label, set_object_metadata, set_object_prefix
 from .._format import ROIExternalFormat
 from .._polygon_from_roi_object import polygon_from_roi_object
 from .._ROIObject import ROIObject
@@ -28,9 +28,16 @@ class FromROI(ExternalFormatConverter[ROIExternalFormat]):
         located_object = LocatedObject(round(roi_object.x0),
                                        round(roi_object.y0),
                                        round(roi_object.x1 - roi_object.x0),
-                                       round(roi_object.y1 - roi_object.y0),
-                                       **{LABEL_METADATA_KEY: roi_object.label_str,
-                                          PREFIX_METADATA_KEY: DEFAULT_PREFIX})
+                                       round(roi_object.y1 - roi_object.y0))
+
+        set_object_label(located_object, roi_object.label_str)
+
+        # Set any non-standard keywords as meta-data
+        metadata = roi_object.non_standard_kwargs.copy()
+        if "prefix" in metadata:
+            set_object_prefix(located_object, metadata["prefix"])
+            del metadata["prefix"]
+        set_object_metadata(located_object, **metadata)
 
         # Add the polygon
         if roi_object.has_polygon():

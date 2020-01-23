@@ -10,6 +10,7 @@ Changelog
 - Added logging of when files are being written.
 - Conversion to COCO format now report polygon mask area, rather than just bounding-
   box area.
+- Added support for non-standard keywords to the ROI format.
 
 0.1.0 (2020-01-22)
 ------------------

@@ -25,8 +25,11 @@ class Writer(LoggingEnabled, Generic[ExternalFormat]):
         :param instances:   The instances to write to disk.
         """
         # Create a stream processor to log when we are writing a file
-        stream_log = StreamLogger(self.logger().info,
-                                  lambda instance: f"Saving annotations for {self.extract_image_info_from_external_format(instance).filename}").process
+        stream_log = StreamLogger(
+            self.logger().info,
+            lambda instance:
+            f"Saving annotations for "
+            f"{self.extract_image_info_from_external_format(instance).filename}").process
 
         self.write(stream_log(instances), self.output)
 
