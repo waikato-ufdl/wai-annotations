@@ -3,7 +3,7 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from ...core import ExternalFormatConverter, InternalFormat
 from ...core.utils import set_object_label, set_object_metadata, set_object_prefix
 from .._format import ROIExternalFormat
-from .._polygon_from_roi_object import polygon_from_roi_object
+from ..utils import polygon_from_roi_object
 from .._ROIObject import ROIObject
 
 

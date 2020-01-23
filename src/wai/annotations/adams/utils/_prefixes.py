@@ -1,9 +1,12 @@
+"""
+Utility functions for working with object prefixes in ADAMS reports.
+"""
 from typing import Set, Dict
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.file.report import Report
 
-from ..core.utils import get_object_prefix, set_object_prefix
+from ...core.utils import get_object_prefix, set_object_prefix
 
 
 def find_all_prefixes(report: Report) -> Set[str]:

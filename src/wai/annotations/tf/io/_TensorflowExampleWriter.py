@@ -4,10 +4,8 @@ import contextlib2
 
 from ...core import Writer, ImageInfo
 from .._ensure_available import tensorflow as tf
+from ..utils import image_info_from_example, LabelMapAccumulator, open_sharded_output_tfrecords
 from .._format import TensorflowExampleExternalFormat
-from .._image_info_from_example import image_info_from_example
-from .._LabelMapAccumulator import LabelMapAccumulator
-from .._open_sharded_output_tfrecords import open_sharded_output_tfrecords
 
 
 class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):

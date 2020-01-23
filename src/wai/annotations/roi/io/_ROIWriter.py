@@ -3,9 +3,8 @@ from typing import Iterable
 import csv
 
 from ...core import SeparateImageWriter, ImageInfo
-from .._combine_dicts import combine_dicts
+from ..utils import combine_dicts, roi_filename_for_image
 from .._format import ROIExternalFormat
-from .._roi_filename_for_image import roi_filename_for_image
 from .._ROIObject import ROIObject
 
 

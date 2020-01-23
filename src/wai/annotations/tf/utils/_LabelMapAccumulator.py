@@ -1,8 +1,8 @@
 from typing import Iterable, List, Dict
 
-from ..core import InlineStreamProcessor
+from ...core import InlineStreamProcessor
+from .._format import TensorflowExampleExternalFormat
 from ._extract_feature import extract_feature
-from ._format import TensorflowExampleExternalFormat
 
 
 class LabelMapAccumulator(InlineStreamProcessor[TensorflowExampleExternalFormat]):

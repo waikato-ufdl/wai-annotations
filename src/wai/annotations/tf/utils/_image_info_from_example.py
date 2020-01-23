@@ -1,6 +1,6 @@
-from ..core import ImageInfo, ImageFormat
+from ...core import ImageInfo, ImageFormat
+from .._format import TensorflowExampleExternalFormat
 from ._extract_feature import extract_feature
-from ._format import TensorflowExampleExternalFormat
 
 
 def image_info_from_example(instance: TensorflowExampleExternalFormat):

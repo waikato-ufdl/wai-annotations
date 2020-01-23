@@ -1,6 +1,6 @@
 from wai.common.geometry import Polygon, Point
 
-from ._ROIObject import ROIObject
+from .._ROIObject import ROIObject
 
 
 def polygon_from_roi_object(roi_object: ROIObject) -> Polygon:

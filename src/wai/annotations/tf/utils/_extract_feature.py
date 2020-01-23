@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from ._ensure_available import tensorflow as tf
+from .._ensure_available import tensorflow as tf
 
 
 def extract_feature(features: tf.train.Features, name: str) -> Union[List[bytes], List[int], List[float]]:

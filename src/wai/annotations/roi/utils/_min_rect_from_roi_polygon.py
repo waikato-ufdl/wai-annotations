@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from ..image_utils import polygon_to_minrect
+from ...image_utils import polygon_to_minrect
 
 
 def min_rect_from_roi_polygon(poly_x: List[float], poly_y: List[float]) -> Tuple[float, float]:

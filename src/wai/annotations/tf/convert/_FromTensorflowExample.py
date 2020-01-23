@@ -3,10 +3,8 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ...core import ExternalFormatConverter, InternalFormat, ImageInfo
 from ...core.utils import set_object_label
-from .._extract_feature import extract_feature
+from ..utils import extract_feature, image_info_from_example, polygon_from_mask
 from .._format import TensorflowExampleExternalFormat
-from .._image_info_from_example import image_info_from_example
-from .._polygon_from_mask import polygon_from_mask
 
 
 class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFormat]):

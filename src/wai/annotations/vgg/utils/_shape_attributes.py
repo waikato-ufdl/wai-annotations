@@ -3,7 +3,7 @@ from typing import Tuple, Union
 from wai.common.adams.imaging.locateobjects import LocatedObject
 from wai.common.geometry import Polygon, Point
 
-from .configuration import PolygonShapeAttributes, RectShapeAttributes
+from ..configuration import PolygonShapeAttributes, RectShapeAttributes
 
 
 def from_polygon_shape_attributes(shape_attributes: PolygonShapeAttributes) -> Tuple[int, int, int, int, Polygon]:

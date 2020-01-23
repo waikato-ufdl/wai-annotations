@@ -4,7 +4,7 @@ from ...core import ExternalFormatConverter, InternalFormat
 from ...core.utils import set_object_label
 from ..configuration import Region, PolygonShapeAttributes
 from .._format import VGGExternalFormat
-from .._shape_attributes import from_polygon_shape_attributes, from_rect_shape_attributes
+from ..utils import from_polygon_shape_attributes, from_rect_shape_attributes
 
 
 class FromVGG(ExternalFormatConverter[VGGExternalFormat]):

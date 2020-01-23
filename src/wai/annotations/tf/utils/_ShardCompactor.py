@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from ..core import InlineStreamProcessor
+from ...core import InlineStreamProcessor
 from ._sharded_filenames import sharded_filename_params
 
 

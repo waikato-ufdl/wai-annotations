@@ -4,7 +4,7 @@ from ...core import InternalFormatConverter, ImageInfo
 from ...core.utils import get_object_label, get_object_prefix
 from ..configuration import *
 from .._format import VGGExternalFormat
-from .._shape_attributes import get_shape_attributes
+from ..utils import get_shape_attributes
 
 
 class ToVGG(InternalFormatConverter[VGGExternalFormat]):

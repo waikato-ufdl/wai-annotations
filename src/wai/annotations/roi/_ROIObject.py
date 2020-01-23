@@ -136,18 +136,18 @@ class ROIObject(LoggingEnabled):
         return result
 
     @classmethod
-    def from_dict(cls, dict: Dict[str, str]) -> "ROIObject":
+    def from_dict(cls, roi_dict: Dict[str, str]) -> "ROIObject":
         """
         Creates an object instance from the given dictionary.
 
-        :param dict:    The dict.
-        :return:        A ROIObject instance.
+        :param roi_dict:    The dict.
+        :return:            A ROIObject instance.
         """
         # Create a set of keyword arguments
         kwargs = {}
 
         # Process each dictionary item in turn
-        for keyword, value in dict.items():
+        for keyword, value in roi_dict.items():
             # Ignore the file keyword
             if keyword == "file":
                 continue

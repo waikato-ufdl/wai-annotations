@@ -6,10 +6,8 @@ from .._ensure_available import tensorflow as tf
 
 from ...core import InternalFormatConverter, ImageInfo
 from ...core.utils import get_object_label
+from ..utils import make_feature, mask_from_polygon, negative_example
 from .._format import TensorflowExampleExternalFormat
-from .._make_feature import make_feature
-from .._mask_from_polygon import mask_from_polygon
-from .._negative_example import negative_example
 
 
 class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalFormat]):

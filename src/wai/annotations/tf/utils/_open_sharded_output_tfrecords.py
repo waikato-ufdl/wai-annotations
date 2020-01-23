@@ -1,5 +1,4 @@
-from ._ensure_available import tensorflow as tf
-
+from .._ensure_available import tensorflow as tf
 from ._sharded_filenames import format_sharded_filename
 
 

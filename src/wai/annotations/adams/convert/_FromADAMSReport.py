@@ -5,7 +5,7 @@ from wai.common.file.report import Report
 
 from ...core import ExternalFormatConverter, InternalFormat
 from ...core.utils import set_object_prefix
-from .._prefixes import find_all_prefixes
+from ..utils import find_all_prefixes
 from .._format import ADAMSExternalFormat
 
 

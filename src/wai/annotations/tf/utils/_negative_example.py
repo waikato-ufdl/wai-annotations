@@ -1,6 +1,5 @@
-from ._ensure_available import tensorflow as tf
-
-from ..core import ImageInfo
+from ...core import ImageInfo
+from .._ensure_available import tensorflow as tf
 from ._make_feature import make_feature
 
 

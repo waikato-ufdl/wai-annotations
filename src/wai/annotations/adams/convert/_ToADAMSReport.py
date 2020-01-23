@@ -3,7 +3,7 @@ from wai.common.file.report import Report
 
 from ...core import InternalFormatConverter, ImageInfo
 from .._format import ADAMSExternalFormat
-from .._prefixes import divide_by_prefix, remove_prefix_metadata
+from ..utils import divide_by_prefix, remove_prefix_metadata
 
 
 class ToADAMSReport(InternalFormatConverter[ADAMSExternalFormat]):

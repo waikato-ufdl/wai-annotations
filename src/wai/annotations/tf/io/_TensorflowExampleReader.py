@@ -5,9 +5,7 @@ from .._ensure_available import tensorflow as tf
 
 from ...core import Reader, ImageInfo
 from .._format import TensorflowExampleExternalFormat
-from .._negative_example import negative_example
-from .._sharded_filenames import is_shard_filename, get_all_sharded_filenames
-from .._ShardCompactor import ShardCompactor
+from ..utils import negative_example, is_shard_filename, get_all_sharded_filenames, ShardCompactor
 
 
 class TensorflowExampleReader(Reader[TensorflowExampleExternalFormat]):
