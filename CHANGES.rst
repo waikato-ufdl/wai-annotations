@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.1 (2020-??-??)
+0.1.1 (2020-01-23)
 ------------------
 
 - Separated command-line option parsing from io/converter classes so that imports
