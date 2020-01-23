@@ -8,4 +8,4 @@ def roi_filename_for_image(image_filename: str) -> str:
     :param image_filename:  The image filename.
     :return:                The ROI CSV filename.
     """
-    return f"{os.path.splitext(image_filename)[0]}-roi.csv"
+    return f"{os.path.splitext(image_filename)[0]}-rois.csv"
