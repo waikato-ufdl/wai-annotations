@@ -2,6 +2,7 @@
 Package for factories for producing components (readers, writers, etc.)
 from command-line arguments.
 """
+# Abstract
 from ._CommandLineConverterFactory import CommandLineConverterFactory
 from ._CommandLineExternalFormatConverterFactory import CommandLineExternalFormatConverterFactory
 from ._CommandLineFactory import CommandLineFactory
@@ -9,3 +10,33 @@ from ._CommandLineInternalFormatConverterFactory import CommandLineInternalForma
 from ._CommandLineReaderFactory import CommandLineReaderFactory
 from ._CommandLineSeparateImageWriterFactory import CommandLineSeparateImageWriterFactory
 from ._CommandLineWriterFactory import CommandLineWriterFactory
+
+# ADAMS
+from ._CommandLineFromADAMSReportFactory import CommandLineFromADAMSReportFactory
+from ._CommandLineToADAMSReportFactory import CommandLineToADAMSReportFactory
+from ._CommandLineADAMSReportReaderFactory import CommandLineADAMSReportReaderFactory
+from ._CommandLineADAMSReportWriterFactory import CommandLineADAMSReportWriterFactory
+
+# COCO
+from ._CommandLineFromCOCOFactory import CommandLineFromCOCOFactory
+from ._CommandLineToCOCOFactory import CommandLineToCOCOFactory
+from ._CommandLineCOCOReaderFactory import CommandLineCOCOReaderFactory
+from ._CommandLineCOCOWriterFactory import CommandLineCOCOWriterFactory
+
+# ROI
+from ._CommandLineFromROIFactory import CommandLineFromROIFactory
+from ._CommandLineToROIFactory import CommandLineToROIFactory
+from ._CommandLineROIReaderFactory import CommandLineROIReaderFactory
+from ._CommandLineROIWriterFactory import CommandLineROIWriterFactory
+
+# Tensorflow Records
+from ._CommandLineFromTensorflowExampleFactory import CommandLineFromTensorflowExampleFactory
+from ._CommandLineToTensorflowExampleFactory import CommandLineToTensorflowExampleFactory
+from ._CommandLineTensorflowExampleReaderFactory import CommandLineTensorflowExampleReaderFactory
+from ._CommandLineTensorflowExampleWriterFactory import CommandLineTensorflowExampleWriterFactory
+
+# VGG
+from ._CommandLineFromVGGFactory import CommandLineFromVGGFactory
+from ._CommandLineToVGGFactory import CommandLineToVGGFactory
+from ._CommandLineVGGReaderFactory import CommandLineVGGReaderFactory
+from ._CommandLineVGGWriterFactory import CommandLineVGGWriterFactory

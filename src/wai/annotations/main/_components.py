@@ -3,13 +3,7 @@ Module defining the components available to the main function.
 """
 from typing import Dict, Optional, Tuple, Type, Set
 
-from ..core.cli import (
-    CommandLineReaderFactory,
-    CommandLineWriterFactory,
-    CommandLineExternalFormatConverterFactory,
-    CommandLineInternalFormatConverterFactory
-)
-from .cli import *
+from ..core.cli import *
 
 # The type of a specification of the components for a single external format
 ComponentSpec = Tuple[
