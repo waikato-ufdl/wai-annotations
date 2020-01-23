@@ -1,11 +1,9 @@
 import os
-import re
-from typing import Iterator
+from typing import Iterator, List, Optional
 import csv
 
 from ...core import Reader, ImageInfo
-from ...core.utils import extension_to_regex, get_associated_image
-from .. import constants
+from ..utils import get_associated_image_from_filename
 from .._format import ROIExternalFormat
 from .._ROIObject import ROIObject
 
@@ -14,6 +12,14 @@ class ROIReader(Reader[ROIExternalFormat]):
     """
     Reader of ROI-format CSV files.
     """
+    def __init__(self,
+                 inputs: List[str], negatives: List[str],
+                 prefix: Optional[str] = None, suffix: Optional[str] = None):
+        super().__init__(inputs, negatives)
+
+        self.prefix: Optional[str] = prefix
+        self.suffix: Optional[str] = suffix
+
     def read_annotation_file(self, filename: str) -> Iterator[ROIExternalFormat]:
         # Read in the file
         with open(filename, "r") as file:
@@ -27,15 +33,7 @@ class ROIReader(Reader[ROIExternalFormat]):
         if len(roi_dicts) > 0:
             image_file = roi_dicts[0]["file"]
         else:
-            matcher = re.compile(extension_to_regex(constants.DEFAULT_EXTENSION))
-
-            image_file = get_associated_image(matcher.match(filename).group(1))
-
-            # Make sure an associated image was found
-            if image_file is None:
-                raise ValueError(f"No associated image found for {filename}")
-            
-            image_file = os.path.basename(image_file)
+            image_file = get_associated_image_from_filename(filename, self.prefix, self.suffix)
 
         # Get the full path to the image
         image_path = os.path.join(os.path.dirname(filename), image_file)
