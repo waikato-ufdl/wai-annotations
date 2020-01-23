@@ -13,4 +13,11 @@ def get_library_root_logger() -> logging.Logger:
 
     :return:    The logger.
     """
-    return logging.getLogger(ROOT_LOGGER_NAME)
+    # Get the library root logger
+    logger = logging.getLogger(ROOT_LOGGER_NAME)
+
+    # Add a null handler to it so that applications not using logging
+    # don't complain
+    logger.addHandler(logging.NullHandler())
+
+    return logger
