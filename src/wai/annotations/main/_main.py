@@ -5,6 +5,8 @@ import logging
 import traceback
 from typing import List, Optional
 
+from wai.common.logging import create_standard_logger, DEBUG_HANDLER_NAME
+
 from ..core import Settings, get_settings, set_settings
 from ._components import (
     get_reader_factory,
@@ -12,7 +14,6 @@ from ._components import (
     get_internal_format_converter_factory,
     get_writer_factory
 )
-from ._logging import get_main_logger
 from ._parser import parser
 
 
@@ -23,7 +24,10 @@ def main(args: Optional[List[str]] = None):
     :param args:    The CLI arguments to the program.
     """
     # Setup logging
-    logger = get_main_logger()
+    logger = create_standard_logger()
+    for handler in logger.handlers:
+        if handler.name == DEBUG_HANDLER_NAME:
+            handler.addFilter(lambda record: record.name != 'PIL.PngImagePlugin')
 
     # Parse the arguments
     namespace = parser.parse_args(args)
