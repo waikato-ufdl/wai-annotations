@@ -1,5 +1,5 @@
 import os
-from typing import Iterable
+from typing import Iterable, Optional
 import csv
 
 from ...core import SeparateImageWriter, ImageInfo
@@ -12,6 +12,14 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
     """
     Writer of ROI CSV annotations.
     """
+    def __init__(self,
+                 output: str, no_images: bool = False,
+                 prefix: Optional[str] = None, suffix: Optional[str] = None):
+        super().__init__(output, no_images)
+
+        self.prefix: Optional[str] = prefix
+        self.suffix: Optional[str] = suffix
+
     def write_without_images(self, instances: Iterable[ROIExternalFormat], path: str):
         # Path must be a directory
         if not os.path.isdir(path):
@@ -23,7 +31,7 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
             image_info, roi_objects = instance
 
             # Format the report filename
-            filename: str = roi_filename_for_image(image_info.filename)
+            filename: str = roi_filename_for_image(image_info.filename, self.prefix, self.suffix)
 
             # Format each ROI object as a dictionary
             roi_dicts, headers = combine_dicts(map(ROIObject.as_dict, roi_objects))
