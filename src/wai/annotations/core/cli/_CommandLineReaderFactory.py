@@ -14,7 +14,7 @@ class CommandLineReaderFactory(CommandLineFactory[Reader], ABC):
     def configure_parser(cls, parser: ArgumentParser):
         parser.add_argument(
             "-i", "--inputs", metavar="files", dest="inputs", required=True, action="append",
-            help="Input image/annotations files (can use glob syntax)")
+            help="Input annotations files (can use glob syntax)")
         parser.add_argument(
             "-n", "--negatives", metavar="image", dest="negatives", required=False, action="append", default=[],
             help="Image files that have no annotations (can use glob syntax)")
