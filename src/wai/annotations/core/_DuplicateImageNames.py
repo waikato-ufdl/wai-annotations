@@ -18,7 +18,7 @@ class DuplicateImageNames(InlineStreamProcessor[InternalFormat]):
 
         # If we've seen it, raise an error
         if image_name in self._seen_names:
-            raise ValueError(f"Image named '{image_name}' appear multiple times during conversion")
+            raise ValueError(f"Image named '{image_name}' appeared multiple times during conversion")
 
         # Add the name to the set of seen images
         self._seen_names.add(image_name)
