@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.1.2 (2020-01-24)
+------------------
+
+- Fixed default filename for ROI format ("-rois.csv" rather than "-roi.csv").
+- Added the ability to specify a prefix and suffix for reading/writing ROI files.
+- Logging changes.
+- Moved utilities for each format into their own sub-package.
+- Added reader options to read input files from list files.
+
 0.1.1 (2020-01-23)
 ------------------
 
