@@ -47,13 +47,24 @@ options, which depend on whether it is the input or output of the conversion.
                     
 ### Input Options
 
-* `-i`, `--inputs`: Required argument specifying the input files to convert. Can be specified
+* `-i`, `--inputs`: Optional argument specifying the input files to convert. Can be specified
                     multiple times to build up the set of input files. Uses glob syntax to match
                     multiple files at once. Formats: all.
                    
 * `-n`, `--negatives`: Optional argument specifying images to include in the converted data-set as
                        negative examples (contains no annotations). Can be specified multiple times
-                       and use glob syntax, same as `--inputs`. Formats: all.
+                       and uses glob syntax, same as `--inputs`. Formats: all.
+                       
+* `-I`, `--input-files`: Optional argument specifying the input files to convert. Unlike `-inputs`,
+                         each matched file is read from disk as a text file containing a list of input
+                         files to convert. Can be specified multiple times to build up the set of input
+                         files. Uses glob syntax to match multiple files at once. Formats: all.
+                         
+* `-N`, `--negative-files`: Optional argument specifying images to include in the converted data-set as
+                            negative examples (contains no annotations). Unlike `-negatives`, each matched
+                            file is read from disk as a text file containing a list of negative files to
+                            convert. Can be specified multiple times and uses glob syntax, same as
+                            `--inputs`. Formats: all.
 
 * `-m`, `--mapping`: Optional argument specifying a mapping from one label to another. Specify as
                      `old=new`, where `old` is the current label in the input files and `new` is the
@@ -64,6 +75,12 @@ options, which depend on whether it is the input or output of the conversion.
                      
 * `-p`, `--prefixes`: Optional comma-separated list of object prefixes to look for in ADAMS report files.
                       If not specified, all object prefixes are converted. Formats: `adams`.
+                      
+* `--prefix`, `--suffix`: Optional prefix/suffix to consider when reading ROI annotation files. Defaults
+                          to the empty string and `-rois.csv` respectively. Only useful for finding the
+                          image associated to an empty annotations file. See the options of the same
+                          names under Output Options for an example of how this works, but here it is
+                          applied in reverse to get the original image name. Formats: `roi`.
 
 ### Output Options
 
@@ -99,6 +116,12 @@ options, which depend on whether it is the input or output of the conversion.
                       
 * `-d`, `--image-dimensions`: Optional argument specifying the width and height to use for images that can't
                               infer this information from the input data. Formats: `roi`.
+                      
+* `--prefix`, `--suffix`: Optional prefix/suffix to attach to the filename used when writing ROI annotation
+                          files. Defaults to the empty string and `-rois.csv` respectively. For example, if
+                          the image filename was `my-image.png`, and the options `--prefix=annotations-for-`
+                          and `--suffix=-in-roi-format.csv` were supplied, the annotations file would be
+                          `annotations-for-my-image-in-roi-format.csv`. Formats: `roi`.
 
 ## Examples
 
