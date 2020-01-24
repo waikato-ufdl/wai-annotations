@@ -3,7 +3,7 @@ from abc import abstractmethod
 from typing import Generic, Iterator, List
 
 from .logging import StreamLogger, LoggingEnabled
-from .utils import chain_map, recursive_iglob
+from .utils import chain_map, recursive_iglob, read_file_list
 from ._ImageInfo import ImageInfo
 from ._typing import ExternalFormat
 
@@ -14,14 +14,26 @@ class Reader(LoggingEnabled, Generic[ExternalFormat]):
     """
     logger_name = "wai.annotations.reader"
 
-    def __init__(self, inputs: List[str], negatives: List[str]):
+    def __init__(self,
+                 inputs: List[str], negatives: List[str],
+                 input_files: List[str], negative_files: List[str]):
         super().__init__()
 
-        # The name of the input files/directories to read from
+        # The name of the input annotation files to read from
         self.inputs: List[str] = inputs
 
         # The names of images to include in the conversion without annotations
         self.negatives: List[str] = negatives
+
+        # The names of files to load input lists from
+        self.input_files: List[str] = input_files
+
+        # The names of files to load negative lists from
+        self.negative_files: List[str] = negative_files
+
+        # Warn the user if no input files were specified
+        if len(inputs) + len(negatives) + len(input_files) + len(negative_files) == 0:
+            self.logger().warning("No input files selected to convert")
 
     def load(self) -> Iterator[ExternalFormat]:
         """
@@ -44,7 +56,10 @@ class Reader(LoggingEnabled, Generic[ExternalFormat]):
 
         :return:    The iterator of filenames.
         """
-        return chain_map(recursive_iglob, self.inputs)
+        return itertools.chain(
+            chain_map(recursive_iglob, self.inputs),
+            chain_map(read_file_list, chain_map(recursive_iglob, self.input_files))
+        )
 
     def negative_image_files(self) -> Iterator[str]:
         """
@@ -53,7 +68,10 @@ class Reader(LoggingEnabled, Generic[ExternalFormat]):
 
         :return:    The iterator of filenames.
         """
-        return chain_map(recursive_iglob, self.negatives)
+        return itertools.chain(
+            chain_map(recursive_iglob, self.negatives),
+            chain_map(read_file_list, chain_map(recursive_iglob, self.negative_files))
+        )
 
     @abstractmethod
     def read_annotation_file(self, filename: str) -> Iterator[ExternalFormat]:
