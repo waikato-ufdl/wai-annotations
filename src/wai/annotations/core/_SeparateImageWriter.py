@@ -4,7 +4,6 @@ from typing import Iterable
 
 from ._typing import ExternalFormat
 from ._Writer import Writer
-from ._ImageInfo import ImageInfo
 
 
 class SeparateImageWriter(Writer[ExternalFormat], ABC):
