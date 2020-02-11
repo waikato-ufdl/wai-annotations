@@ -14,8 +14,9 @@ class ROIReader(Reader[ROIExternalFormat]):
     """
     def __init__(self,
                  inputs: List[str], negatives: List[str],
+                 input_files: List[str], negative_files: List[str],
                  prefix: Optional[str] = None, suffix: Optional[str] = None):
-        super().__init__(inputs, negatives)
+        super().__init__(inputs, negatives, input_files, negative_files)
 
         self.prefix: Optional[str] = prefix
         self.suffix: Optional[str] = suffix
