@@ -7,8 +7,6 @@ class ROIObject(LoggingEnabled):
     """
     Holds a detected object from a ROI file.
     """
-    logger_name = "wai.annotations.ROIObject"
-
     # The ordered required arguments to ROIObject
     required_keywords = ("x0", "y0", "x1", "y1",
                          "x0n", "y0n", "x1n", "y1n",

@@ -12,8 +12,6 @@ class Reader(LoggingEnabled, Generic[ExternalFormat]):
     """
     Base class for classes which can read a specific external format from disk.
     """
-    logger_name = "wai.annotations.reader"
-
     def __init__(self,
                  inputs: List[str], negatives: List[str],
                  input_files: List[str], negative_files: List[str]):
@@ -33,7 +31,7 @@ class Reader(LoggingEnabled, Generic[ExternalFormat]):
 
         # Warn the user if no input files were specified
         if len(inputs) + len(negatives) + len(input_files) + len(negative_files) == 0:
-            self.logger().warning("No input files selected to convert")
+            self.logger.warning("No input files selected to convert")
 
     def load(self) -> Iterator[ExternalFormat]:
         """
@@ -42,7 +40,7 @@ class Reader(LoggingEnabled, Generic[ExternalFormat]):
         :return:            An iterator to the instances in the input file/directory.
         """
         # Create a stream processor to log when we are loading a file
-        stream_log = StreamLogger(self.logger().info, lambda instance: f"Loading file {instance}").process
+        stream_log = StreamLogger(self.logger.info, lambda instance: f"Loading file {instance}").process
 
         return itertools.chain(
             chain_map(self.read_annotation_file, stream_log(self.annotation_files())),

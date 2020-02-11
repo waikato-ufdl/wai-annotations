@@ -10,8 +10,6 @@ class Writer(LoggingEnabled, Generic[ExternalFormat]):
     """
     Base class for classes which can write a specific external format to disk.
     """
-    logger_name = "wai.annotations.writer"
-
     def __init__(self, output: str):
         super().__init__()
 
@@ -26,7 +24,7 @@ class Writer(LoggingEnabled, Generic[ExternalFormat]):
         """
         # Create a stream processor to log when we are writing a file
         stream_log = StreamLogger(
-            self.logger().info,
+            self.logger.info,
             lambda instance:
             f"Saving annotations for "
             f"{self.extract_image_info_from_external_format(instance).filename}").process
