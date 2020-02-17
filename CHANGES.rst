@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.1.4 (2020-02-18)
+------------------
+
+- Added compatibility layer for Tensorflow V1.
+- Now ensures Tensorflow is in eager execution mode.
+
 0.1.3 (2020-02-12)
 ------------------
 

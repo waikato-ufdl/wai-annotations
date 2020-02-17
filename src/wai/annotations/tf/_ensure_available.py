@@ -8,3 +8,7 @@ except ImportError as e:
                        "Please install either tensorflow or tensorflow-gpu\n"
                        "    pip install tensorflow\n"
                        "    pip install tensorflow-gpu") from e
+
+# Ensure we're in eager execution mode
+from .compat import ensure_eager_execution
+ensure_eager_execution()
