@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
-from ..core import Settings, get_settings, set_settings
+from ..core import Settings, get_settings, set_settings, ZeroAreaDiscarder
 from ._components import (
     get_reader_factory,
     get_external_format_converter_factory,
@@ -64,6 +64,10 @@ def main(args: Optional[List[str]] = None):
 
     # Create the input chain
     input_chain = input_converter.convert_all(reader.load())
+
+    # Discard any zero-area annotations if selected
+    if not get_settings().INCLUDE_ZERO_AREA:
+        input_chain = ZeroAreaDiscarder().process(input_chain)
 
     # Add a coercion if specified
     if get_settings().COERCION is not None:

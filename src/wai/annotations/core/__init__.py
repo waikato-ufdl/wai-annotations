@@ -12,3 +12,4 @@ from ._SeparateImageWriter import SeparateImageWriter
 from ._Settings import Settings, get_settings, set_settings
 from ._typing import InternalFormat
 from ._Writer import Writer
+from ._ZeroAreaDiscarder import ZeroAreaDiscarder

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.1.5 (2020-02-??)
+------------------
+
+- Conversions now automatically discard annotations with zero area, can be reverted
+  with ``--include-zero-area`` flag.
+
 0.1.4 (2020-02-18)
 ------------------
 

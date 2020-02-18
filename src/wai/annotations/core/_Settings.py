@@ -19,16 +19,21 @@ class Settings:
     # The coercion to apply to annotations
     COERCION: Optional[Coercion] = property(lambda self: self._coercion)
 
+    # Whether to include zero-area annotations
+    INCLUDE_ZERO_AREA: bool = property(lambda self: self._include_zero_area)
+
     def __init__(self,
                  verbosity: Optional[int] = None,
                  image_format_preference_order: Optional[Tuple[ImageFormat, ...]] = None,
-                 force: Optional[Coercion] = None):
+                 force: Optional[Coercion] = None,
+                 include_zero_area: Optional[bool] = None):
         super().__init__()
 
         self._verbosity: int = verbosity if verbosity is not None else 10
         self._image_format_preference_order: Tuple[ImageFormat, ...] = image_format_preference_order \
             if image_format_preference_order is not None else (ImageFormat.PNG, ImageFormat.JPG)
         self._coercion: Optional[Coercion] = force
+        self._include_zero_area: bool = include_zero_area if include_zero_area is not None else False
 
     @classmethod
     def configure_parser(cls, parser: ArgumentParser):
@@ -46,6 +51,11 @@ class Settings:
             help="image format extensions in order of preference"
         )
 
+        parser.add_argument(
+            "--include-zero-area", dest="include_zero_area", required=False, action="store_true",
+            help="whether to process annotations which have zero width/height (excluded by default)"
+        )
+
     @classmethod
     def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
         return dict(
@@ -54,7 +64,8 @@ class Settings:
             image_format_preference_order=(cls._parse_extensions(namespace.extensions)
                                            if namespace.extensions is not None else None),
             force=(cls._parse_force(namespace.force)
-                   if namespace.force is not None else None)
+                   if namespace.force is not None else None),
+            include_zero_area=namespace.include_zero_area
         )
 
     @classmethod

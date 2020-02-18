@@ -44,6 +44,9 @@ options, which depend on whether it is the input or output of the conversion.
 * `-e`, `--extensions`: Optional argument to specify the order of preference for image types
                         when searching for images related to annotations files. Should be a
                         comma-separated list of extensions. Defaults to `png,jpg` if not specified.
+                        
+* `--include-zero-area`: Optional argument to disable the dropping of zero-area annotations, which
+                         is the default behaviour.
                     
 ### Input Options
 
