@@ -88,7 +88,7 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
                           minrect_h=minrect_h)
 
         # Set the non-standard keywords
-        prefix = get_object_prefix(located_object, True)
+        prefix = get_object_prefix(located_object, None)
         if prefix is not None:
             kwargs.update(prefix=prefix)
         kwargs.update(**get_object_metadata(located_object))

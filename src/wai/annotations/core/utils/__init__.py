@@ -7,8 +7,10 @@ from ._get_associated_image import get_associated_image
 from ._get_files_from_directory import get_files_from_directory
 from ._get_image_size import get_image_size
 from ._metadata import (
+    object_has_label,
     get_object_label,
     set_object_label,
+    object_has_prefix,
     get_object_prefix,
     set_object_prefix,
     get_object_metadata,

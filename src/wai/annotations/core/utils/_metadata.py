@@ -1,7 +1,7 @@
 """
 Module for working with meta-data on located objects.
 """
-from typing import Dict, Optional
+from typing import Dict, Optional, TypeVar, Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObject
 from wai.common.adams.imaging.locateobjects import constants
@@ -32,20 +32,33 @@ RESERVED_METADATA_KEYS = frozenset((
     PREFIX_METADATA_KEY
 ))
 
+# The type of the default value
+DefaultType = TypeVar("DefaultType")
 
-def get_object_label(located_object: LocatedObject, no_default: bool = False) -> Optional[str]:
+
+def object_has_label(located_object: LocatedObject) -> bool:
+    """
+    Whether the located object has a label set.
+
+    :param located_object:  The located object.
+    :return:                True if it has a label.
+    """
+    return LABEL_METADATA_KEY in located_object.metadata
+
+
+def get_object_label(located_object: LocatedObject,
+                     default: DefaultType = DEFAULT_LABEL) -> Union[str, DefaultType]:
     """
     Gets the label of a located object.
 
     :param located_object:  The located object.
-    :param no_default:      Don't return the standard default value if none is set.
-    :return:                The object's label.
+    :param default:         The value to return if no label is set.
+    :return:                The object's label, or the default if none is set.
     """
-    return (
-        located_object.metadata[LABEL_METADATA_KEY] if LABEL_METADATA_KEY in located_object.metadata
-        else DEFAULT_LABEL if not no_default
-        else None
-    )
+    if not object_has_label(located_object):
+        return default
+
+    return located_object.metadata[LABEL_METADATA_KEY]
 
 
 def set_object_label(located_object: LocatedObject, label: Optional[str]):
@@ -62,19 +75,29 @@ def set_object_label(located_object: LocatedObject, label: Optional[str]):
         located_object.metadata[LABEL_METADATA_KEY] = label
 
 
-def get_object_prefix(located_object: LocatedObject, no_default: bool = False) -> Optional[str]:
+def object_has_prefix(located_object: LocatedObject) -> bool:
+    """
+    Whether the located object has a prefix set.
+
+    :param located_object:  The located object.
+    :return:                True if it has a prefix.
+    """
+    return PREFIX_METADATA_KEY in located_object.metadata
+
+
+def get_object_prefix(located_object: LocatedObject,
+                      default: DefaultType = DEFAULT_PREFIX) -> Union[str, DefaultType]:
     """
     Gets the prefix of a located object.
 
     :param located_object:  The located object.
-    :param no_default:      Don't return the standard default value if none is set.
+    :param default:         The value to return if no prefix is set.
     :return:                The object's prefix.
     """
-    return (
-        located_object.metadata[PREFIX_METADATA_KEY] if PREFIX_METADATA_KEY in located_object.metadata
-        else DEFAULT_PREFIX if not no_default
-        else None
-    )
+    if not object_has_prefix(located_object):
+        return default
+
+    return located_object.metadata[PREFIX_METADATA_KEY]
 
 
 def set_object_prefix(located_object: LocatedObject, prefix: Optional[str]):

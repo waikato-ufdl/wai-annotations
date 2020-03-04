@@ -1,13 +1,14 @@
 Changelog
 =========
 
-0.1.5 (2020-02-??)
+0.2.0 (2020-02-??)
 ------------------
 
 - Conversions now automatically discard annotations with zero area, can be reverted
   with ``--include-zero-area`` flag.
 - `image_utils.mask_to_polygon` can now work with a view of the mask instead of
   the full mask to speed up the polygon detection
+- Modified utilities for getting labels/prefixes to be able to specify a default value.
 
 0.1.4 (2020-02-18)
 ------------------

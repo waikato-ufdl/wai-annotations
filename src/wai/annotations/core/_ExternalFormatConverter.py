@@ -62,7 +62,7 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
         # Process each object
         for located_object in located_objects:
             # Get the object's current label
-            label: Optional[str] = get_object_label(located_object, True)
+            label: Optional[str] = get_object_label(located_object, None)
 
             # If the object doesn't have a label, skip it
             if label is None:
