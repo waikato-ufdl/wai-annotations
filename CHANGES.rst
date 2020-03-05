@@ -9,6 +9,8 @@ Changelog
 - `image_utils.mask_to_polygon` can now work with a view of the mask instead of
   the full mask to speed up the polygon detection
 - Modified utilities for getting labels/prefixes to be able to specify a default value.
+- Upgraded wai.common requirement to v0.0.24.
+- Added requirement for wai.json v0.0.4.
 
 0.1.4 (2020-02-18)
 ------------------

@@ -32,11 +32,12 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.1.5",
+    version="0.2.0",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
         "wai.common",
+        "wai.json",
         "Cython",
         "Pillow",
         "contextlib2",
