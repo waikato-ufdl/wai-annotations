@@ -44,6 +44,24 @@ def get_formats() -> Set[str]:
     return set(components.keys())
 
 
+def get_available_input_formats() -> Set[str]:
+    """
+    Gets the set of formats available for input.
+    """
+    return {format
+            for format, available_components in components.items()
+            if available_components[0] is not None and available_components[1] is not None}
+
+
+def get_available_output_formats() -> Set[str]:
+    """
+    Gets the set of formats available for output.
+    """
+    return {format
+            for format, available_components in components.items()
+            if available_components[2] is not None and available_components[3] is not None}
+
+
 def ensure_format(format: str, input: Optional[bool] = None):
     """
     Raises an error if the format is not known.
