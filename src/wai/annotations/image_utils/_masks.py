@@ -4,7 +4,7 @@ import cv2
 import math
 
 
-def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin=5):
+def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin=5, fully_connected='low'):
     """
     Determines the contour of the object in the mask.
     Uses skimage.measure.find_contours to achieve this:
@@ -23,6 +23,8 @@ def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin
     :type view: tuple
     :param view_margin: the margin in pixels to enlarge the view with in each direction
     :type view_margin: int
+    :param fully_connected: whether regions of high or low values should be fully-connected at isthmuses
+    :type fully_connected: str
     :return: the polygon(s) describing the detected object(s): each contour is an ndarray of shape (n, 2),
              consisting of n (x, y) coordinates along the contour
     :rtype: np.ndarray
@@ -45,7 +47,7 @@ def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin
         view_mask = act_mask[slice(y0,y1+1,1), slice(x0,x1+1,1)]
         act_mask = view_mask
 
-    polys = measure.find_contours(act_mask, mask_threshold)
+    polys = measure.find_contours(act_mask, mask_threshold, fully_connected)
 
     if mask_nth > 1:
         for poly in polys:
