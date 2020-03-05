@@ -12,13 +12,16 @@ class VGGReader(Reader[VGGExternalFormat]):
     """
     def read_annotation_file(self, filename: str) -> Iterator[VGGExternalFormat]:
         # Read in the file
-        vgg_file: VGGFile = VGGFile.load_from_json_file(filename)
+        vgg_file: VGGFile = VGGFile.load_json_from_file(filename)
 
         # Create the path to the directory
         path = os.path.dirname(filename)
 
         # Each image yields an instance
-        for image in vgg_file._additional_properties.values():
+        for key in vgg_file:
+            # Get the image
+            image = vgg_file[key]
+
             # Get the image associated to this entry
             image_file = os.path.join(path, image.filename)
 

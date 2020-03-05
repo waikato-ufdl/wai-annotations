@@ -12,7 +12,7 @@ class COCOReader(Reader[COCOExternalFormat]):
     """
     def read_annotation_file(self, filename: str) -> Iterator[COCOExternalFormat]:
         # Read in the file
-        coco_file: COCOFile = COCOFile.load_from_json_file(filename)
+        coco_file: COCOFile = COCOFile.load_json_from_file(filename)
 
         # Get the mapping from category ID to label
         label_lookup = {category.id: category.name for category in coco_file.categories}

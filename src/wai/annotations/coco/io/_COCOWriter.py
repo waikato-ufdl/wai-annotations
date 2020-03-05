@@ -86,7 +86,7 @@ class COCOWriter(SeparateImageWriter[COCOExternalFormat]):
                 coco_file.annotations.append(annotation)
 
         # Save the file
-        coco_file.save_to_json_file(self.output)
+        coco_file.save_json_to_file(path)
 
     def create_license(self) -> License:
         """

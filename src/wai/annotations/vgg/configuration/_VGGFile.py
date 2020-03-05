@@ -6,5 +6,5 @@ from ._Image import Image
 
 class VGGFile(JSONObject["VGGFile"]):
     @classmethod
-    def additional_properties_validation(cls) -> Property:
-        return Image.as_property()
+    def _additional_properties_validation(cls) -> Property:
+        return Image.as_property(optional=True)

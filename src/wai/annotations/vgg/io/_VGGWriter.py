@@ -22,7 +22,7 @@ class VGGWriter(SeparateImageWriter[VGGExternalFormat]):
             images[f"{image.filename}-1"] = image
 
         # Save the file
-        VGGFile(**images).save_to_json_file(self.output)
+        VGGFile(**images).save_json_to_file(path)
 
     def extract_image_info_from_external_format(self, instance: VGGExternalFormat) -> ImageInfo:
         # Unpack the instance
