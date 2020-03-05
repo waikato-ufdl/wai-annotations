@@ -75,7 +75,12 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
             set_object_label(located_object, label)
 
             if len(mask) != 0:
-                located_object.set_polygon(polygon_from_mask(mask))
+                located_object.set_polygon(
+                    polygon_from_mask(
+                        mask,
+                        (left * image_width, top * image_height, right * image_width, bottom * image_height)
+                    )
+                )
 
             # Add the object to the list
             located_objects.append(located_object)

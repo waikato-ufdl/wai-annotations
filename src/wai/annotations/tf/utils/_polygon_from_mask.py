@@ -1,16 +1,19 @@
 import io
+from typing import Tuple
 
 import numpy as np
-from skimage import measure
 import PIL
 from wai.common.geometry import Polygon, Point
 
+from ...image_utils import mask_to_polygon
 
-def polygon_from_mask(mask: bytes) -> Polygon:
+
+def polygon_from_mask(mask: bytes, view: Tuple[float, float, float, float]) -> Polygon:
     """
     Converts the PNG format mask into a polygon.
 
     :param mask:    The PNG mask.
+    :param view:    The area inside the mask to look for the polygon (left, top, right, bottom).
     :return:        A polygon.
     """
     # Decode the PNG
@@ -20,7 +23,9 @@ def polygon_from_mask(mask: bytes) -> Polygon:
     binary_mask = np.asarray(image)
 
     # Use find_contours to find the (only) polygon in the bit-mask
-    poly_array = measure.find_contours(binary_mask, 0.9, "high")[0]
+    poly_array = mask_to_polygon(binary_mask, 0.9,
+                                 view=view,
+                                 fully_connected="high")[0]
 
     # Convert to a Polygon
     polygon = Polygon()
