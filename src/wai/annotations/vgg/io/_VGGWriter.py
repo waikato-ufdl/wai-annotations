@@ -1,20 +1,15 @@
 from typing import Iterable
 
-from ...core import SeparateImageWriter, ImageInfo
+from ...core import JSONWriter, ImageInfo
 from ..configuration import VGGFile
 from .._format import VGGExternalFormat
 
 
-class VGGWriter(SeparateImageWriter[VGGExternalFormat]):
+class VGGWriter(JSONWriter[VGGExternalFormat]):
     """
     Writer of VGG-format JSON files.
     """
-    def __init__(self, output: str, no_images: bool = False, pretty: bool = False):
-        super().__init__(output, no_images)
-
-        self._pretty: bool = pretty
-
-    def write_without_images(self, instances: Iterable[VGGExternalFormat], path: str):
+    def create_json_object(self, instances: Iterable[VGGExternalFormat]) -> VGGFile:
         # Create a map of images
         images = {}
 
@@ -26,14 +21,10 @@ class VGGWriter(SeparateImageWriter[VGGExternalFormat]):
             # Add the image to the map
             images[f"{image.filename}-1"] = image
 
-        # Save the file
-        VGGFile(**images).save_json_to_file(path, 2 if self._pretty else None)
+        return VGGFile(**images)
 
     def extract_image_info_from_external_format(self, instance: VGGExternalFormat) -> ImageInfo:
         # Unpack the instance
         image_info, image = instance
 
         return image_info
-
-    def expects_file(self) -> bool:
-        return True

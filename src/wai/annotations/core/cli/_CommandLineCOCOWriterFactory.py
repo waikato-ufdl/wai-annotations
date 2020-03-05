@@ -1,16 +1,16 @@
 from argparse import ArgumentParser, Namespace
 from typing import Type, Dict, Any
 
-from ...core.cli import CommandLineSeparateImageWriterFactory
-from ...core import SeparateImageWriter
+from .._JSONWriter import JSONWriter
+from ._CommandLineJSONWriterFactory import CommandLineJSONWriterFactory
 
 
-class CommandLineCOCOWriterFactory(CommandLineSeparateImageWriterFactory):
+class CommandLineCOCOWriterFactory(CommandLineJSONWriterFactory):
     """
     Command-line factory that produces COCOWriter writers.
     """
     @classmethod
-    def related_class(cls) -> Type[SeparateImageWriter]:
+    def related_class(cls) -> Type[JSONWriter]:
         from ...coco.io import COCOWriter
         return COCOWriter
 

@@ -7,6 +7,7 @@ from ._ImageFormat import ImageFormat
 from ._ImageInfo import ImageInfo
 from ._InlineStreamProcessor import InlineStreamProcessor
 from ._InternalFormatConverter import InternalFormatConverter
+from ._JSONWriter import JSONWriter
 from ._Reader import Reader
 from ._SeparateImageWriter import SeparateImageWriter
 from ._Settings import Settings, get_settings, set_settings

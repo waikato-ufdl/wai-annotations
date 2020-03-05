@@ -1,7 +1,7 @@
 import datetime
 from typing import Iterable, Dict
 
-from ...core import SeparateImageWriter, ImageInfo
+from ...core import JSONWriter, ImageInfo
 from ..configuration import COCOFile, Image, Category, Info, License
 from .._format import COCOExternalFormat
 
@@ -10,21 +10,22 @@ DEFAULT_LICENSE_NAME: str = "default"
 DEFAULT_LICENSE_URL: str = ""
 
 
-class COCOWriter(SeparateImageWriter[COCOExternalFormat]):
+class COCOWriter(JSONWriter[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
     def __init__(self,
                  output: str,
                  no_images: bool = False,
+                 pretty: bool = False,
                  license_name: str = "",
                  license_url: str = ""):
-        super().__init__(output, no_images)
+        super().__init__(output, no_images, pretty)
 
         self.license_name: str = license_name
         self.license_url: str = license_url
 
-    def write_without_images(self, instances: Iterable[COCOExternalFormat], path: str):
+    def create_json_object(self, instances: Iterable[COCOExternalFormat]) -> COCOFile:
         # Get the current time
         now = datetime.datetime.now()
 
@@ -85,8 +86,7 @@ class COCOWriter(SeparateImageWriter[COCOExternalFormat]):
                 # Add the annotation
                 coco_file.annotations.append(annotation)
 
-        # Save the file
-        coco_file.save_json_to_file(path)
+        return coco_file
 
     def create_license(self) -> License:
         """
@@ -104,6 +104,3 @@ class COCOWriter(SeparateImageWriter[COCOExternalFormat]):
         image_info, annotations, labels, prefixes = instance
 
         return image_info
-
-    def expects_file(self) -> bool:
-        return True

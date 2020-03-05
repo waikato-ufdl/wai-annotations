@@ -125,6 +125,9 @@ options, which depend on whether it is the input or output of the conversion.
                           the image filename was `my-image.png`, and the options `--prefix=annotations-for-`
                           and `--suffix=-in-roi-format.csv` were supplied, the annotations file would be
                           `annotations-for-my-image-in-roi-format.csv`. Formats: `roi`.
+                          
+* `--pretty`: Optional flag for JSON-based formats which tells them to output their JSON files with pretty indentation.
+              If not included, JSON files are saved in compact-form instead. Formats: `coco`, `vgg`.
 
 ## Examples
 
