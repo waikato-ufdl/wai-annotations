@@ -6,53 +6,71 @@ from argparse import ArgumentParser
 from ..core import Settings
 
 # Import the components that are available to us
-from ._components import components as available_components
+from ._components import (
+    get_available_input_formats,
+    get_available_output_formats,
+    get_reader_factory,
+    get_external_format_converter_factory,
+    get_internal_format_converter_factory,
+    get_writer_factory
+)
 
-# Create the unconfigured parser
-parser: ArgumentParser = ArgumentParser()
 
-# Add any global options
-Settings.configure_parser(parser)
+def configure_input_parser(parser: ArgumentParser, format: str):
+    """
+    Configures an argument parser with the input options
+    of a particular format.
 
-# Filter the components into input side...
-input_components = {
-    name: components[:2]
-    for name, components in available_components.items()
-    if components[0] is not None and components[1] is not None
-}
+    :param parser:  The parser to configure.
+    :param format:  The input format to configure for.
+    """
+    get_reader_factory(format).configure_parser(parser)
+    get_external_format_converter_factory(format).configure_parser(parser)
 
-# ...and output side
-output_components = {
-    name: components[2:]
-    for name, components in available_components.items()
-    if components[2] is not None and components[3] is not None
-}
 
-# Create a first level sub-parser set for selecting the input type
-input_subparsers = parser.add_subparsers(dest="input_type")
+def configure_output_parser(parser: ArgumentParser, format: str):
+    """
+    Configures an argument parser with the output options
+    of a particular format.
 
-# Add each available input type to the parser
-for input_type, reader_and_converter in input_components.items():
-    # Unpack the reader and converter
-    reader, input_converter = reader_and_converter
+    :param parser:  The parser to configure.
+    :param format:  The output format to configure for.
+    """
+    get_internal_format_converter_factory(format).configure_parser(parser)
+    get_writer_factory(format).configure_parser(parser)
 
-    # Create a sub-parser for this input type
-    input_subparser = input_subparsers.add_parser(input_type)
 
-    # Configure the sub-parser using the components
-    reader.configure_parser(input_subparser)
-    input_converter.configure_parser(input_subparser)
+def get_main_parser() -> ArgumentParser:
+    """
+    Gets the argument parser for the main function.
 
-    # Create a second level sub-parser set for selecting the output type
-    output_subparsers = input_subparser.add_subparsers(dest="output_type")
+    :return:    The parser.
+    """
+    # Create the unconfigured parser
+    parser: ArgumentParser = ArgumentParser()
 
-    for output_type, converter_and_writer in output_components.items():
-        # Unpack the converter and writer
-        writer, output_converter = converter_and_writer
+    # Add any global options
+    Settings.configure_parser(parser)
 
-        # Create a sub-parser for this output type
-        output_subparser = output_subparsers.add_parser(output_type)
+    # Create a first level sub-parser set for selecting the input type
+    input_subparsers = parser.add_subparsers(dest="input_type")
+
+    # Add each available input type to the parser
+    for input_format in get_available_input_formats():
+        # Create a sub-parser for this input type
+        input_subparser = input_subparsers.add_parser(input_format)
 
         # Configure the sub-parser using the components
-        writer.configure_parser(output_subparser)
-        output_converter.configure_parser(output_subparser)
+        configure_input_parser(input_subparser, input_format)
+
+        # Create a second level sub-parser set for selecting the output type
+        output_subparsers = input_subparser.add_subparsers(dest="output_type")
+
+        for output_format in get_available_output_formats():
+            # Create a sub-parser for this output type
+            output_subparser = output_subparsers.add_parser(output_format)
+
+            # Configure the sub-parser using the components
+            configure_output_parser(output_subparser, output_format)
+
+    return parser

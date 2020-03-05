@@ -8,3 +8,8 @@ from ._components import (
     get_writer_factory
 )
 from ._main import main, sys_main
+from ._parser import (
+    configure_input_parser,
+    configure_output_parser,
+    get_main_parser
+)

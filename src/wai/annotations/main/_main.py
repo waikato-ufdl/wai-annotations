@@ -14,7 +14,7 @@ from ._components import (
     get_internal_format_converter_factory,
     get_writer_factory
 )
-from ._parser import parser
+from ._parser import get_main_parser
 
 
 def main(args: Optional[List[str]] = None):
@@ -30,7 +30,7 @@ def main(args: Optional[List[str]] = None):
             handler.addFilter(lambda record: record.name != 'PIL.PngImagePlugin')
 
     # Parse the arguments
-    namespace = parser.parse_args(args)
+    namespace = get_main_parser().parse_args(args)
 
     # Set the logger verbosity from the arguments
     if namespace.verbosity == 1:
