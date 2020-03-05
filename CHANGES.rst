@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2.0 (2020-02-??)
+0.2.0 (2020-03-06)
 ------------------
 
 - Conversions now automatically discard annotations with zero area, can be reverted
