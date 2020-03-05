@@ -1,9 +1,10 @@
 import numpy as np
 from skimage import measure
 import cv2
+import math
 
 
-def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1):
+def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin=5):
     """
     Determines the contour of the object in the mask.
     Uses skimage.measure.find_contours to achieve this:
@@ -17,6 +18,11 @@ def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1):
     :param mask_nth: the contour tracing can be slow for large masks, by using only every nth row/col, this
                      can be sped up dramatically
     :type mask_nth: int
+    :param view: the view of the mask to use in order to speed up polygon calculation, e.g., a bounding box
+                 (x0, y0, x1, y1), with x1/y1 being included
+    :type view: tuple
+    :param view_margin: the margin in pixels to enlarge the view with in each direction
+    :type view_margin: int
     :return: the polygon(s) describing the detected object(s): each contour is an ndarray of shape (n, 2),
              consisting of n (x, y) coordinates along the contour
     :rtype: np.ndarray
@@ -25,14 +31,33 @@ def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1):
     if mask_nth > 1:
         rows = np.array(range(0, mask.shape[0], mask_nth))
         cols = np.array(range(0, mask.shape[1], mask_nth))
-        mask_small = mask[np.ix_(rows, cols)]
+        act_mask = mask[np.ix_(rows, cols)]
     else:
-        mask_small = mask
-    polys = measure.find_contours(mask_small, mask_threshold)
+        act_mask = mask
+
+    x0 = None
+    y0 = None
+    if view is not None:
+        x0 = max(0, int(math.floor(view[0])) - view_margin)
+        y0 = max(0, int(math.floor(view[1])) - view_margin)
+        x1 = min(act_mask.shape[1], int(math.ceil(view[2])) + view_margin)
+        y1 = min(act_mask.shape[0], int(math.ceil(view[3])) + view_margin)
+        view_mask = act_mask[slice(y0,y1+1,1), slice(x0,x1+1,1)]
+        act_mask = view_mask
+
+    polys = measure.find_contours(act_mask, mask_threshold)
+
     if mask_nth > 1:
         for poly in polys:
             for i, p in enumerate(poly):
                 poly[i] = p*mask_nth
+
+    if x0 is not None:
+        for poly in polys:
+            for i, p in enumerate(poly):
+                poly[i, 0] += y0
+                poly[i, 1] += x0
+
     return polys
 
 

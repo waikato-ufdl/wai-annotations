@@ -6,6 +6,8 @@ Changelog
 
 - Conversions now automatically discard annotations with zero area, can be reverted
   with ``--include-zero-area`` flag.
+- `image_utils.mask_to_polygon` can now work with a view of the mask instead of
+  the full mask to speed up the polygon detection
 
 0.1.4 (2020-02-18)
 ------------------
