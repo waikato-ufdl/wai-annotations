@@ -68,3 +68,6 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
 
     def extract_image_info_from_external_format(self, instance: TensorflowExampleExternalFormat) -> ImageInfo:
         return image_info_from_example(instance)
+
+    def expects_file(self) -> bool:
+        return True

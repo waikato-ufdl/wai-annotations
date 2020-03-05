@@ -59,3 +59,6 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
         image_info, roi_objects = instance
 
         return image_info
+
+    def expects_file(self) -> bool:
+        return False

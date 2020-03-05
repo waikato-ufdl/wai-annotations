@@ -104,3 +104,6 @@ class COCOWriter(SeparateImageWriter[COCOExternalFormat]):
         image_info, annotations, labels, prefixes = instance
 
         return image_info
+
+    def expects_file(self) -> bool:
+        return True

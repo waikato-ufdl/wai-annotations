@@ -29,3 +29,6 @@ class VGGWriter(SeparateImageWriter[VGGExternalFormat]):
         image_info, image = instance
 
         return image_info
+
+    def expects_file(self) -> bool:
+        return True

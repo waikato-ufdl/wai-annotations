@@ -10,10 +10,6 @@ from .. import constants
 
 class ADAMSReportWriter(SeparateImageWriter[ADAMSExternalFormat]):
     def write_without_images(self, instances: Iterable[ADAMSExternalFormat], path: str):
-        # Path must be a directory
-        if not os.path.isdir(path):
-            raise ValueError(f"{path} is not a directory, or does not exist")
-
         # Write each instance
         for instance in instances:
             # Unpack the instance
@@ -30,3 +26,6 @@ class ADAMSReportWriter(SeparateImageWriter[ADAMSExternalFormat]):
         image_info, report = instance
 
         return image_info
+
+    def expects_file(self) -> bool:
+        return False
