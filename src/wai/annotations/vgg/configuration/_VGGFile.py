@@ -1,10 +1,10 @@
-from wai.common.json.configuration import Configuration, SubConfiguration
-from wai.common.json.configuration.property import Property
+from wai.json.object import JSONObject
+from wai.json.object.property import Property
 
 from ._Image import Image
 
 
-class VGGFile(Configuration["VGGFile"]):
+class VGGFile(JSONObject["VGGFile"]):
     @classmethod
     def additional_properties_validation(cls) -> Property:
-        return SubConfiguration(configuration_type=Image)
+        return Image.as_property()

@@ -1,8 +1,8 @@
-from wai.common.json.configuration import Configuration
-from wai.common.json.configuration.property import NumberProperty, StringProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import NumberProperty, StringProperty
 
 
-class License(Configuration["License"]):
+class License(JSONObject["License"]):
     id: int = NumberProperty(integer_only=True)
     name: str = StringProperty()
     url: str = StringProperty()

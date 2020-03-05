@@ -1,8 +1,8 @@
-from wai.common.json.configuration import Configuration
-from wai.common.json.configuration.property import NumberProperty, StringProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import NumberProperty, StringProperty
 
 
-class Info(Configuration["Info"]):
+class Info(JSONObject["Info"]):
     year: int = NumberProperty(integer_only=True)
     version: str = StringProperty()
     description: str = StringProperty()

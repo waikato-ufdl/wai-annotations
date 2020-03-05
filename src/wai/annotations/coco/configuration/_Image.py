@@ -1,8 +1,8 @@
-from wai.common.json.configuration import Configuration
-from wai.common.json.configuration.property import NumberProperty, StringProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import NumberProperty, StringProperty
 
 
-class Image(Configuration["Image"]):
+class Image(JSONObject["Image"]):
     id: int = NumberProperty(integer_only=True)
     width: int = NumberProperty(integer_only=True)
     height: int = NumberProperty(integer_only=True)

@@ -1,16 +1,16 @@
 from typing import List
 
-from wai.common.json.configuration import Configuration, SubConfiguration
-from wai.common.json.configuration.property import StringProperty, NumberProperty, ArrayProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import StringProperty, NumberProperty, ArrayProperty
 
 from ._FileAttributes import FileAttributes
 from ._Region import Region
 
 
-class Image(Configuration["Image"]):
+class Image(JSONObject["Image"]):
     filename: str = StringProperty()
     size: int = NumberProperty(integer_only=True)
-    file_attributes: FileAttributes = SubConfiguration(configuration_type=FileAttributes)
+    file_attributes: FileAttributes = FileAttributes.as_property()
     regions: List[Region] = ArrayProperty(
-        element_property=SubConfiguration(configuration_type=Region)
+        element_property=Region.as_property()
     )

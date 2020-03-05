@@ -1,8 +1,8 @@
-from wai.common.json.configuration import Configuration
-from wai.common.json.configuration.property import StringProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import StringProperty
 
 
-class FileAttributes(Configuration["FileAttributes"]):
+class FileAttributes(JSONObject["FileAttributes"]):
     caption: str = StringProperty()
     public_domain: str = StringProperty()
     image_url: str = StringProperty()

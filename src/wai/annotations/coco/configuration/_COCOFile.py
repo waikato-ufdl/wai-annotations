@@ -1,7 +1,7 @@
 from typing import List
 
-from wai.common.json.configuration import Configuration, SubConfiguration
-from wai.common.json.configuration.property import ArrayProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import ArrayProperty
 
 from ._Info import Info
 from ._Image import Image
@@ -10,17 +10,17 @@ from ._License import License
 from ._Category import Category
 
 
-class COCOFile(Configuration["COCOFile"]):
-    info: Info = SubConfiguration(configuration_type=Info)
+class COCOFile(JSONObject["COCOFile"]):
+    info: Info = Info.as_property()
     images: List[Image] = ArrayProperty(
-        element_property=SubConfiguration(configuration_type=Image)
+        element_property=Image.as_property()
     )
     annotations: List[Annotation] = ArrayProperty(
-        element_property=SubConfiguration(configuration_type=Annotation)
+        element_property=Annotation.as_property()
     )
     licenses: List[License] = ArrayProperty(
-        element_property=SubConfiguration(configuration_type=License)
+        element_property=License.as_property()
     )
     categories: List[Category] = ArrayProperty(
-        element_property=SubConfiguration(configuration_type=Category)
+        element_property=Category.as_property()
     )

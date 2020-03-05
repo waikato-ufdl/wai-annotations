@@ -1,10 +1,10 @@
 from typing import List
 
-from wai.common.json.configuration import Configuration
-from wai.common.json.configuration.property import NumberProperty, ArrayProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import NumberProperty, ArrayProperty
 
 
-class Annotation(Configuration["Annotation"]):
+class Annotation(JSONObject["Annotation"]):
     id: int = NumberProperty(integer_only=True)
     image_id: int = NumberProperty(integer_only=True)
     category_id: int = NumberProperty(integer_only=True)

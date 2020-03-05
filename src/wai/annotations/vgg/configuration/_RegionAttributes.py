@@ -1,10 +1,10 @@
-from wai.common.json.configuration import Configuration, SubConfiguration
-from wai.common.json.configuration.property import StringProperty
+from wai.json.object import JSONObject
+from wai.json.object.property import StringProperty
 
 from ._ImageQuality import ImageQuality
 
 
-class RegionAttributes(Configuration["RegionAttributes"]):
+class RegionAttributes(JSONObject["RegionAttributes"]):
     name: str = StringProperty()
     type: str = StringProperty()
-    image_quality: ImageQuality = SubConfiguration(configuration_type=ImageQuality)
+    image_quality: ImageQuality = ImageQuality.as_property()
