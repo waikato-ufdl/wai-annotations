@@ -30,7 +30,8 @@ def main(args: Optional[List[str]] = None):
             handler.addFilter(lambda record: record.name != 'PIL.PngImagePlugin')
 
     # Parse the arguments
-    namespace = get_main_parser().parse_args(args)
+    parser = get_main_parser()
+    namespace = parser.parse_args(args)
 
     # Set the logger verbosity from the arguments
     if namespace.verbosity == 1:
