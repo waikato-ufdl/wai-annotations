@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from os import listdir
-from os.path import isdir, dirname, join
+from os.path import isdir, dirname, join, basename
 from tempfile import TemporaryDirectory
 from typing import Generic, Iterable, Iterator, IO, Tuple
 
@@ -77,7 +77,7 @@ class Writer(LoggingEnabled, Generic[ExternalFormat]):
         # Create a temporary directory to write into
         with TemporaryDirectory() as dir:
             # Determine the directory/path to write to
-            path = dir if not self.expects_file() else join(dir, "annotations")
+            path = dir if not self.expects_file() else join(dir, basename(self.output))
 
             # Write the instances to the temporary directory
             self.write(instances, path)
