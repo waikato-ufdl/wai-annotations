@@ -2,11 +2,10 @@ from abc import ABC
 from argparse import ArgumentParser, Namespace
 from typing import Dict, Any
 
-from .._JSONWriter import JSONWriter
 from ._CommandLineSeparateImageWriterFactory import CommandLineSeparateImageWriterFactory
 
 
-class CommandLineJSONWriterFactory(CommandLineSeparateImageWriterFactory[JSONWriter], ABC):
+class CommandLineJSONWriterFactory(CommandLineSeparateImageWriterFactory, ABC):
     """
     Base class for command-line factories that produce JSON writers.
     """
