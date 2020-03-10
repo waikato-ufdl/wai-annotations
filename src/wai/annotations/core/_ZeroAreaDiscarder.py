@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
+from wai.common.adams.imaging.locateobjects import LocatedObjects
 
 from ._InlineStreamProcessor import InlineStreamProcessor
 from ._typing import InternalFormat
