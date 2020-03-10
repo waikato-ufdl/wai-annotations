@@ -6,6 +6,9 @@ Changelog
 
 - VGG/COCO formats can now take a ``--pretty`` flag to pretty-print their JSON annotations.
 - Upgraded wai.common requirement to v0.0.25.
+- `image_utils.lists_to_polygon` method converts lists of X and Y coordinates into a `planar.Polygon`
+- `image_utils.polygon_to_bbox` method returns the x0,y0,x1,y1 coordinates of the bounding box around
+  the supplied `planar.Polygon` object
 
 0.2.0 (2020-03-06)
 ------------------

@@ -42,6 +42,7 @@ setup(
         "Pillow",
         "contextlib2",
         "numpy",
+        "planar",
         "scikit-image",
         "pycocotools",
         "opencv-python",
