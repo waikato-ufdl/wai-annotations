@@ -1,6 +1,10 @@
 import itertools
 from abc import abstractmethod
-from typing import Generic, Iterator, List
+from argparse import Namespace
+from typing import Generic, Iterator, List, Union
+
+from wai.common.cli import CLIInstantiable, OptionsList
+from wai.common.cli.options import ClassOption
 
 from .logging import StreamLogger, LoggingEnabled
 from .utils import chain_map, recursive_iglob, read_file_list
@@ -8,29 +12,47 @@ from ._ImageInfo import ImageInfo
 from ._typing import ExternalFormat
 
 
-class Reader(LoggingEnabled, Generic[ExternalFormat]):
+class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     """
     Base class for classes which can read a specific external format from disk.
     """
-    def __init__(self,
-                 inputs: List[str], negatives: List[str],
-                 input_files: List[str], negative_files: List[str]):
-        super().__init__()
+    # The name of the input annotation files to read from
+    inputs: List[str] = ClassOption(
+        "-i", "--inputs",
+        type=str,
+        metavar="files", action="append",
+        help="Input annotations files (can use glob syntax)"
+    )
 
-        # The name of the input annotation files to read from
-        self.inputs: List[str] = inputs
+    # The names of images to include in the conversion without annotations
+    negatives: List[str] = ClassOption(
+        "-n", "--negatives",
+        type=str,
+        metavar="image", action="append",
+        help="Image files that have no annotations (can use glob syntax)"
+    )
 
-        # The names of images to include in the conversion without annotations
-        self.negatives: List[str] = negatives
+    # The names of files to load input lists from
+    input_files: List[str] = ClassOption(
+        "-I", "--input-files",
+        type=str,
+        action="append",
+        help="Files containing lists of input annotation files (can use glob syntax)"
+    )
 
-        # The names of files to load input lists from
-        self.input_files: List[str] = input_files
+    # The names of files to load negative lists from
+    negative_files: List[str] = ClassOption(
+        "-N", "--negative-files",
+        type=str,
+        action="append",
+        help="Files containing lists of negative images (can use glob syntax)"
+    )
 
-        # The names of files to load negative lists from
-        self.negative_files: List[str] = negative_files
+    def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
+        super().__init__(namespace)
 
         # Warn the user if no input files were specified
-        if len(inputs) + len(negatives) + len(input_files) + len(negative_files) == 0:
+        if len(self.inputs) + len(self.negatives) + len(self.input_files) + len(self.negative_files) == 0:
             self.logger.warning("No input files selected to convert")
 
     def load(self) -> Iterator[ExternalFormat]:

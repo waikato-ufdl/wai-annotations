@@ -28,3 +28,7 @@ class VGGWriter(JSONWriter[VGGExternalFormat]):
         image_info, image = instance
 
         return image_info
+
+    @classmethod
+    def output_help_text(cls) -> str:
+        return "output file to write annotations to (images are placed in same directory)"

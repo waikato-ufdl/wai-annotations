@@ -2,22 +2,41 @@ from abc import abstractmethod
 from os import listdir
 from os.path import isdir, dirname, join, basename
 from tempfile import TemporaryDirectory
-from typing import Generic, Iterable, Iterator, IO, Tuple
+from typing import Generic, Iterable, Iterator, IO, Tuple, Optional
+
+from wai.common.cli import CLIInstantiable
+from wai.common.cli.options import ClassOption, Option
 
 from .logging import LoggingEnabled, StreamLogger
 from ._ImageInfo import ImageInfo
 from ._typing import ExternalFormat
 
 
-class Writer(LoggingEnabled, Generic[ExternalFormat]):
+class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     """
     Base class for classes which can write a specific external format to disk.
     """
-    def __init__(self, output: str):
-        super().__init__()
+    output = ClassOption("-o", "--output",
+                         type=str,
+                         metavar="dir_or_file", required=True)
 
-        # The output file/directory to write the converted data-set to
-        self.output: str = output
+    @classmethod
+    def get_help_text_for_option(cls, option: Option) -> Optional[str]:
+        if option is cls.output:
+            return cls.output_help_text()
+
+        return None
+
+    @classmethod
+    @abstractmethod
+    def output_help_text(cls) -> str:
+        """
+        Gets the help text describing what type of path the 'output' option
+        expects and how it is interpreted.
+
+        :return:    The help text.
+        """
+        pass
 
     def save(self, instances: Iterable[ExternalFormat]):
         """

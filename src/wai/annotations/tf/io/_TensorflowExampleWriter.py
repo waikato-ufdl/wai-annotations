@@ -1,6 +1,8 @@
-from typing import Iterable, Optional, List
+from typing import Iterable, List
 
 import contextlib2
+
+from wai.common.cli.options import ClassOption
 
 from ...core import Writer, ImageInfo
 from .._ensure_available import tensorflow as tf
@@ -12,16 +14,12 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
     """
     Writer of Tensorflow example records.
     """
-    def __init__(self, output: str, shards: int = 1, protobuf_label_map: Optional[str] = None):
-        super().__init__(output)
-
-        # The number of shards to use for sharded output
-        # (<= 1 means unsharded output)
-        self.shards: int = shards
-
-        # The name of the file to write the label map to
-        # (in protobuf format)
-        self.protobuf_label_map: Optional[str] = protobuf_label_map
+    shards = ClassOption("-s", "--shards",
+                         metavar="num", required=False, type=int,
+                         help="number of shards to split the images into")
+    protobuf_label_map = ClassOption("-p", "--protobuf",
+                                     metavar="file", required=False, type=str,
+                                     help="for storing the label strings and IDs")
 
     def write(self, instances: Iterable[TensorflowExampleExternalFormat], path: str):
         # Reset the label map
@@ -31,7 +29,7 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
             instances = label_map_accumulator.process(instances)
 
         # Sharded writing
-        if self.shards > 1:
+        if self.shards is not None and self.shards > 1:
             with contextlib2.ExitStack() as exit_stack:
                 # Open the output file for sharded writing
                 writers = open_sharded_output_tfrecords(exit_stack, path, self.shards)
@@ -71,3 +69,7 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
 
     def expects_file(self) -> bool:
         return True
+
+    @classmethod
+    def output_help_text(cls) -> str:
+        return "name of output file for TFRecords"

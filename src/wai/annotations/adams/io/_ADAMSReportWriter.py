@@ -29,3 +29,7 @@ class ADAMSReportWriter(SeparateImageWriter[ADAMSExternalFormat]):
 
     def expects_file(self) -> bool:
         return False
+
+    @classmethod
+    def output_help_text(cls) -> str:
+        return "output directory to write files to"

@@ -1,6 +1,8 @@
-from typing import Tuple, List, Dict, Optional, Pattern
+from argparse import Namespace
+from typing import Tuple, List, Dict, Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
+from wai.common.cli import OptionsList
 
 from .._ensure_available import tensorflow as tf
 
@@ -14,13 +16,12 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
     """
     Converter from the internal format to Tensorflow Examples.
     """
-    def __init__(self, labels: Optional[List[str]] = None, regex: Optional[Pattern] = None):
-        super().__init__(labels, regex)
+    def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
+        super().__init__(namespace)
 
         # Lookup to keep track of the labels we've seen and the classes
         # we've assigned to them
-        self._label_class_lookup: Dict[str, int] = {label: index for index, label in enumerate(self.labels, 1)} \
-            if self.labels is not None else {}
+        self._label_class_lookup: Dict[str, int] = {label: index for index, label in enumerate(self.labels, 1)}
 
     def convert_unpacked(self,
                          image_info: ImageInfo,

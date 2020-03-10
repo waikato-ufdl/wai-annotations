@@ -36,7 +36,7 @@ setup(
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
-        "wai.common>=0.0.24,<0.1",
+        "wai.common>=0.0.25,<0.1",
         "wai.json>=0.0.4,<0.1",
         "Cython",
         "Pillow",

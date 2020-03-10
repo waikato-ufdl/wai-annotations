@@ -1,6 +1,8 @@
 import os
-from typing import Iterator, List, Optional
+from typing import Iterator
 import csv
+
+from wai.common.cli.options import ClassOption
 
 from ...core import Reader, ImageInfo
 from ..utils import get_associated_image_from_filename
@@ -12,14 +14,10 @@ class ROIReader(Reader[ROIExternalFormat]):
     """
     Reader of ROI-format CSV files.
     """
-    def __init__(self,
-                 inputs: List[str], negatives: List[str],
-                 input_files: List[str], negative_files: List[str],
-                 prefix: Optional[str] = None, suffix: Optional[str] = None):
-        super().__init__(inputs, negatives, input_files, negative_files)
-
-        self.prefix: Optional[str] = prefix
-        self.suffix: Optional[str] = suffix
+    reader_prefix = ClassOption("--prefix", type=str,
+                                help="the prefix for output filenames (default = '')")
+    reader_suffix = ClassOption("--suffix", type=str,
+                                help="the suffix for output filenames (default = '-rois.csv')")
 
     def read_annotation_file(self, filename: str) -> Iterator[ROIExternalFormat]:
         # Read in the file
@@ -34,7 +32,7 @@ class ROIReader(Reader[ROIExternalFormat]):
         if len(roi_dicts) > 0:
             image_file = roi_dicts[0]["file"]
         else:
-            image_file = get_associated_image_from_filename(filename, self.prefix, self.suffix)
+            image_file = get_associated_image_from_filename(filename, self.reader_prefix, self.reader_suffix)
 
         # Get the full path to the image
         image_path = os.path.join(os.path.dirname(filename), image_file)

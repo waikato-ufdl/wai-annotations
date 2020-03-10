@@ -1,6 +1,8 @@
 import os
-from typing import Iterable, Optional
+from typing import Iterable
 import csv
+
+from wai.common.cli.options import ClassOption
 
 from ...core import SeparateImageWriter, ImageInfo
 from ..utils import combine_dicts, roi_filename_for_image
@@ -12,13 +14,8 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
     """
     Writer of ROI CSV annotations.
     """
-    def __init__(self,
-                 output: str, no_images: bool = False,
-                 prefix: Optional[str] = None, suffix: Optional[str] = None):
-        super().__init__(output, no_images)
-
-        self.prefix: Optional[str] = prefix
-        self.suffix: Optional[str] = suffix
+    writer_prefix = ClassOption("--prefix", type=str, help="the prefix for output filenames (default = '')")
+    writer_suffix = ClassOption("--suffix", type=str, help="the suffix for output filenames (default = '-rois.csv')")
 
     def write_without_images(self, instances: Iterable[ROIExternalFormat], path: str):
         # Path must be a directory
@@ -31,7 +28,7 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
             image_info, roi_objects = instance
 
             # Format the report filename
-            filename: str = roi_filename_for_image(image_info.filename, self.prefix, self.suffix)
+            filename: str = roi_filename_for_image(image_info.filename, self.writer_prefix, self.writer_suffix)
 
             # Format each ROI object as a dictionary
             roi_dicts, headers = combine_dicts(map(ROIObject.as_dict, roi_objects))
@@ -62,3 +59,7 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
 
     def expects_file(self) -> bool:
         return False
+
+    @classmethod
+    def output_help_text(cls) -> str:
+        return "output directory to write files to"

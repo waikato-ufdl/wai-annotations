@@ -1,7 +1,10 @@
 from abc import abstractmethod
-from typing import Dict, Optional, Iterable, Iterator
+from argparse import Namespace
+from typing import Optional, Iterable, Iterator, Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
+from wai.common.cli import CLIInstantiable, OptionsList
+from wai.common.cli.options import ClassOption
 
 from .utils import get_object_label, set_object_label
 from ._typing import InternalFormat
@@ -10,17 +13,34 @@ from ._DuplicateImageNames import DuplicateImageNames
 from ._typing import ExternalFormat
 
 
-class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
+class ExternalFormatConverter(CLIInstantiable, Converter[ExternalFormat, InternalFormat]):
     """
     Base class for converters from an external format to the internal format.
     """
-    def __init__(self, label_mapping: Optional[Dict[str, str]] = None):
-        super().__init__()
+    # An optional mapping to replace/consolidate object labels.
+    # The key is the label to replace and the value is the label
+    # to replace it with
+    label_mapping = ClassOption(
+        "-m", "--mapping",
+        type=str,
+        metavar="old=new", action='append',
+        help="mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)"
+    )
 
-        # An optional mapping to replace/consolidate object labels.
-        # The key is the label to replace and the value is the label
-        # to replace it with
-        self.label_mapping: Optional[Dict[str, str]] = label_mapping
+    def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
+        super().__init__(namespace)
+
+        # Create the label mapping
+        self._label_mapping = {}
+        for map_string in self.label_mapping:
+            old, new = map_string.split("=")
+
+            # Make sure we don't double-map a label
+            if old in self._label_mapping:
+                raise ValueError(f"Multiple mappings specified for label '{old}': "
+                                 f"{self._label_mapping[old]}, {new}")
+
+            self._label_mapping[old] = new
 
     def convert_all(self, instances: Iterable[ExternalFormat]) -> Iterator[InternalFormat]:
         # Make sure no image is included more than once
@@ -56,7 +76,7 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
         :param located_objects:     The parsed objects
         """
         # Do nothing if no mapping provided
-        if self.label_mapping is None:
+        if len(self._label_mapping) == 0:
             return
 
         # Process each object
@@ -69,5 +89,5 @@ class ExternalFormatConverter(Converter[ExternalFormat, InternalFormat]):
                 continue
 
             # If there is a mapping for this label, change it
-            if label in self.label_mapping:
-                set_object_label(located_object, self.label_mapping[label])
+            if label in self._label_mapping:
+                set_object_label(located_object, self._label_mapping[label])

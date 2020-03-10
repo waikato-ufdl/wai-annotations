@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Iterable
 
+from wai.common.cli.options import FlagOption
+
 from wai.json.object import JSONObject
 
 from ._SeparateImageWriter import SeparateImageWriter
@@ -11,10 +13,7 @@ class JSONWriter(SeparateImageWriter[ExternalFormat], ABC):
     """
     Base class for writers that write their annotations out as a single JSON file.
     """
-    def __init__(self, output: str, no_images: bool = False, pretty: bool = False):
-        super().__init__(output, no_images)
-
-        self.pretty: bool = pretty
+    pretty = FlagOption("--pretty", help="whether to pretty-print the output")
 
     def write_without_images(self, instances: Iterable[ExternalFormat], path: str):
         # Create the JSON object from the instances

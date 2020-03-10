@@ -3,37 +3,39 @@ Module defining the components available to the main function.
 """
 from typing import Dict, Optional, Tuple, Type, Set
 
+from wai.common.cli import CLIFactory
+
 from ..core.cli import *
 
 # The type of a specification of the components for a single external format
 ComponentSpec = Tuple[
-    Optional[Type[CommandLineReaderFactory]],
-    Optional[Type[CommandLineExternalFormatConverterFactory]],
-    Optional[Type[CommandLineInternalFormatConverterFactory]],
-    Optional[Type[CommandLineWriterFactory]]
+    Optional[Type[CLIFactory]],
+    Optional[Type[CLIFactory]],
+    Optional[Type[CLIFactory]],
+    Optional[Type[CLIFactory]]
 ]
 
 components: Dict[str, ComponentSpec] = {
-    "adams": (CommandLineADAMSReportReaderFactory,
-              CommandLineFromADAMSReportFactory,
-              CommandLineToADAMSReportFactory,
-              CommandLineADAMSReportWriterFactory),
-    "coco": (CommandLineCOCOReaderFactory,
-             CommandLineFromCOCOFactory,
-             CommandLineToCOCOFactory,
-             CommandLineCOCOWriterFactory),
-    "roi": (CommandLineROIReaderFactory,
-            CommandLineFromROIFactory,
-            CommandLineToROIFactory,
-            CommandLineROIWriterFactory),
-    "tfrecords": (CommandLineTensorflowExampleReaderFactory,
-                  CommandLineFromTensorflowExampleFactory,
-                  CommandLineToTensorflowExampleFactory,
-                  CommandLineTensorflowExampleWriterFactory),
-    "vgg": (CommandLineVGGReaderFactory,
-            CommandLineFromVGGFactory,
-            CommandLineToVGGFactory,
-            CommandLineVGGWriterFactory)
+    "adams": (ADAMSReportReaderCLIFactory,
+              FromADAMSReportCLIFactory,
+              ToADAMSReportCLIFactory,
+              ADAMSReportWriterCLIFactory),
+    "coco": (COCOReaderCLIFactory,
+             FromCOCOCLIFactory,
+             ToCOCOCLIFactory,
+             COCOWriterCLIFactory),
+    "roi": (ROIReaderCLIFactory,
+            FromROICLIFactory,
+            ToROICLIFactory,
+            ROIWriterCLIFactory),
+    "tfrecords": (TensorflowExampleReaderCLIFactory,
+                  FromTensorflowExampleCLIFactory,
+                  ToTensorflowExampleCLIFactory,
+                  TensorflowExampleWriterCLIFactory),
+    "vgg": (VGGReaderCLIFactory,
+            FromVGGCLIFactory,
+            ToVGGCLIFactory,
+            VGGWriterCLIFactory)
 }
 
 
@@ -91,7 +93,7 @@ def ensure_format(format: str, input: Optional[bool] = None):
                          f"{check_string} format")
 
 
-def get_reader_factory(format: str) -> Optional[Type[CommandLineReaderFactory]]:
+def get_reader_factory(format: str) -> Optional[Type[CLIFactory]]:
     """
     Gets the reader factory for a given format.
 
@@ -105,7 +107,7 @@ def get_reader_factory(format: str) -> Optional[Type[CommandLineReaderFactory]]:
     return components[format][0]
 
 
-def get_external_format_converter_factory(format: str) -> Optional[Type[CommandLineExternalFormatConverterFactory]]:
+def get_external_format_converter_factory(format: str) -> Optional[Type[CLIFactory]]:
     """
     Gets the external format converter factory for a given format.
 
@@ -119,7 +121,7 @@ def get_external_format_converter_factory(format: str) -> Optional[Type[CommandL
     return components[format][1]
 
 
-def get_internal_format_converter_factory(format: str) -> Optional[Type[CommandLineInternalFormatConverterFactory]]:
+def get_internal_format_converter_factory(format: str) -> Optional[Type[CLIFactory]]:
     """
     Gets the internal format converter factory for a given format.
 
@@ -133,7 +135,7 @@ def get_internal_format_converter_factory(format: str) -> Optional[Type[CommandL
     return components[format][2]
 
 
-def get_writer_factory(format: str) -> Optional[Type[CommandLineWriterFactory]]:
+def get_writer_factory(format: str) -> Optional[Type[CLIFactory]]:
     """
     Gets the writer factory for a given format.
 

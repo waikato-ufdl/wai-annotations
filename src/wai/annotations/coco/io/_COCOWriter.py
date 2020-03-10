@@ -1,6 +1,8 @@
 import datetime
 from typing import Iterable, Dict
 
+from wai.common.cli.options import ClassOption
+
 from ...core import JSONWriter, ImageInfo
 from ..configuration import COCOFile, Image, Category, Info, License
 from .._format import COCOExternalFormat
@@ -14,16 +16,8 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
-    def __init__(self,
-                 output: str,
-                 no_images: bool = False,
-                 pretty: bool = False,
-                 license_name: str = "",
-                 license_url: str = ""):
-        super().__init__(output, no_images, pretty)
-
-        self.license_name: str = license_name
-        self.license_url: str = license_url
+    license_name: str = ClassOption("--license-name", type=str, help="the license of the images")
+    license_url: str = ClassOption("--license-url", type=str, help="the license of the images")
 
     def create_json_object(self, instances: Iterable[COCOExternalFormat]) -> COCOFile:
         # Get the current time
@@ -96,11 +90,15 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
         :return:    The license.
         """
         return License(id=1,
-                       name=self.license_name if self.license_name != "" else DEFAULT_LICENSE_NAME,
-                       url=self.license_url if self.license_url != "" else DEFAULT_LICENSE_URL)
+                       name=self.license_name if self.license_name is not None else DEFAULT_LICENSE_NAME,
+                       url=self.license_url if self.license_url is not None else DEFAULT_LICENSE_URL)
 
     def extract_image_info_from_external_format(self, instance: COCOExternalFormat) -> ImageInfo:
         # Unpack the instance
         image_info, annotations, labels, prefixes = instance
 
         return image_info
+
+    @classmethod
+    def output_help_text(cls) -> str:
+        return "output file to write annotations to (images are placed in same directory)"

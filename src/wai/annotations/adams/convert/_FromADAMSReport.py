@@ -1,6 +1,7 @@
-from typing import Optional, Dict, List, Set
+from typing import Set
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
+from wai.common.cli.options import ClassOption
 from wai.common.file.report import Report
 
 from ...core import ExternalFormatConverter, InternalFormat
@@ -13,19 +14,18 @@ class FromADAMSReport(ExternalFormatConverter[ADAMSExternalFormat]):
     """
     Converter from ADAMS report-style annotations to internal format.
     """
-    def __init__(self,
-                 label_mapping: Optional[Dict[str, str]] = None,
-                 prefixes: Optional[List[str]] = None):
-        super().__init__(label_mapping)
-
-        self.prefixes: Optional[List[str]] = prefixes
+    prefixes = ClassOption(
+        "-p", "--prefixes",
+        type=str,
+        nargs="+",
+        help="prefixes to parse")
 
     def _convert(self, instance: ADAMSExternalFormat) -> InternalFormat:
         # Unpack the external format
         image_info, report = instance
 
         # Default to all prefixes if none provided
-        prefixes = set(self.prefixes) if self.prefixes is not None else find_all_prefixes(report)
+        prefixes = set(self.prefixes) if len(self.prefixes) > 0 else find_all_prefixes(report)
 
         return image_info, self.get_located_objects_from_report(report, prefixes)
 

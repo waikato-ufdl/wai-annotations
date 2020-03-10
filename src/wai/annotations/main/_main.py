@@ -58,10 +58,10 @@ def main(args: Optional[List[str]] = None):
     logger.info(f"Converting from {input_format} to {output_format}")
 
     # Instantiate the components from the provided arguments
-    reader = get_reader_factory(input_format).instance_from_namespace(namespace)
-    input_converter = get_external_format_converter_factory(input_format).instance_from_namespace(namespace)
-    output_converter = get_internal_format_converter_factory(output_format).instance_from_namespace(namespace)
-    writer = get_writer_factory(output_format).instance_from_namespace(namespace)
+    reader = get_reader_factory(input_format).instantiate(namespace)
+    input_converter = get_external_format_converter_factory(input_format).instantiate(namespace)
+    output_converter = get_internal_format_converter_factory(output_format).instantiate(namespace)
+    writer = get_writer_factory(output_format).instantiate(namespace)
 
     # Create the input chain
     input_chain = input_converter.convert_all(reader.load())

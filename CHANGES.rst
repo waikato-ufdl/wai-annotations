@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - VGG/COCO formats can now take a ``--pretty`` flag to pretty-print their JSON annotations.
+- Upgraded wai.common requirement to v0.0.25.
 
 0.2.0 (2020-03-06)
 ------------------

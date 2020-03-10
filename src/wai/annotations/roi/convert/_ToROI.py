@@ -1,6 +1,9 @@
-from typing import Dict, Optional, List, Pattern, Tuple
+from argparse import Namespace
+from typing import Dict, Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
+from wai.common.cli import OptionsList
+from wai.common.cli.options import ClassOption
 
 from ...core import InternalFormatConverter, ImageInfo
 from ...core.utils import get_object_label, get_object_prefix, get_object_metadata
@@ -13,14 +16,16 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
     """
     Converter from internal format to ROI annotations.
     """
-    def __init__(self,
-                 labels: Optional[List[str]] = None,
-                 regex: Optional[Pattern] = None,
-                 image_size: Optional[Tuple[int, int]] = None
-                 ):
-        super().__init__(labels, regex)
+    image_size = ClassOption(
+        "-d", "--image-dimensions",
+        type=int,
+        nargs=2,
+        metavar=("WIDTH", "HEIGHT"),
+        help="image dimensions to use if none can be inferred"
+    )
 
-        self.image_size: Optional[Tuple[int, int]] = image_size
+    def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
+        super().__init__(namespace)
 
         self._label_map: Dict[str, int] = {}
 

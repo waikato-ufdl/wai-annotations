@@ -2,6 +2,8 @@ import os
 from abc import ABC, abstractmethod
 from typing import Iterable
 
+from wai.common.cli.options import FlagOption
+
 from ._typing import ExternalFormat
 from ._Writer import Writer
 
@@ -11,10 +13,8 @@ class SeparateImageWriter(Writer[ExternalFormat], ABC):
     Writer for external formats where the image is stored separately
     to the annotations.
     """
-    def __init__(self, output: str, no_images: bool = False):
-        super().__init__(output)
-
-        self.no_images: bool = no_images
+    no_images = FlagOption("--no-images",
+                            help="skip the writing of images, outputting only the report files")
 
     def write(self, instances: Iterable[ExternalFormat], path: str):
         self.write_without_images(map(self.inline_image_writer, instances), path)

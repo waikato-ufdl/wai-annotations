@@ -1,7 +1,11 @@
 from abc import abstractmethod
-from typing import Optional, List, Pattern
+from argparse import Namespace
+from re import compile
+from typing import List, Union, Pattern
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
+from wai.common.cli import CLIInstantiable, OptionsList
+from wai.common.cli.options import ClassOption
 
 from .utils import get_object_label
 from ._Converter import Converter
@@ -9,20 +13,28 @@ from ._typing import InternalFormat, ExternalFormat
 from ._ImageInfo import ImageInfo
 
 
-class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
+class InternalFormatConverter(CLIInstantiable, Converter[InternalFormat, ExternalFormat]):
     """
     Base class for converters from the internal format to an external format.
     """
-    def __init__(self, labels: Optional[List[str]] = None, regex: Optional[Pattern] = None):
-        super().__init__()
+    # The labels that should be included in the output format.
+    # If None, use regex matching (see below)
+    labels = ClassOption("-l", "--labels",
+                         type=str,
+                         nargs="+",
+                         help="labels to use")
 
-        # The labels that should be included in the output format.
-        # If None, use regex matching (see below)
-        self.labels: Optional[List[str]] = labels
+    # The regex to use to select labels to include when an
+    # explicit list of labels is not given
+    regex = ClassOption("-r", "--regexp",
+                        type=str,
+                        metavar="regexp",
+                        help="regular expression for using only a subset of labels")
 
-        # The regex to use to select labels to include when an
-        # explicit list of labels is not given
-        self.regex: Optional[Pattern] = regex
+    def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
+        super().__init__(namespace)
+
+        self._pattern: Pattern = compile(self.regex) if self.regex is not None else None
 
     def convert(self, instance: InternalFormat) -> ExternalFormat:
         # Unpack the instance
@@ -71,14 +83,14 @@ class InternalFormatConverter(Converter[InternalFormat, ExternalFormat]):
         :param label:   The label to test.
         :return:        True if the label matches, false if not.
         """
-        if self.labels is None and self.regex is None:
+        if len(self.labels) == 0 and self._pattern is None:
             return True
-        elif self.labels is None:
-            return bool(self.regex.match(label))
-        elif self.regex is None:
+        elif len(self.labels) == 0:
+            return bool(self._pattern.match(label))
+        elif self._pattern is None:
             return label in self.labels
         else:
-            return bool(self.regex.match(label)) or label in self.labels
+            return bool(self._pattern.match(label)) or label in self.labels
 
     def filter_object(self, located_object: LocatedObject) -> bool:
         """
