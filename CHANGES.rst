@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2.1 (2020-03-??)
+0.2.1 (2020-03-11)
 ------------------
 
 - VGG/COCO formats can now take a ``--pretty`` flag to pretty-print their JSON annotations.
