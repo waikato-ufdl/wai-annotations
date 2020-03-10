@@ -76,7 +76,7 @@ options, which depend on whether it is the input or output of the conversion.
                      `new` label. It is an error to specify multiple `new` labels for the same `old`
                      label. Formats: all.
                      
-* `-p`, `--prefixes`: Optional comma-separated list of object prefixes to look for in ADAMS report files.
+* `-p`, `--prefixes`: Optional list of object prefixes to look for in ADAMS report files.
                       If not specified, all object prefixes are converted. Formats: `adams`.
                       
 * `--prefix`, `--suffix`: Optional prefix/suffix to consider when reading ROI annotation files. Defaults
@@ -90,9 +90,9 @@ options, which depend on whether it is the input or output of the conversion.
 * `-o`, `--output`: Required argument specifying the output file or directory to save the converted
                     annotations into. Formats: all.
                     
-* `-l`, `--labels`: Optional comma-separated list specifying the labels to include in the output format.
-                    If omitted, all labels are included, subject to parsing the `--regexp` option. Labels
-                    tested are those after the mapping stage specified by `--mapping`. Formats: all.
+* `-l`, `--labels`: Optional list specifying the labels to include in the output format. If omitted, all
+                    labels are included, subject to parsing the `--regexp` option. Labels tested are those
+                    after the mapping stage specified by `--mapping`. Formats: all.
                     
 * `-r`, `--regexp`: Optional argument specifying a regular expression to use to match labels that should
                     be included in the output format. If omitted, all labels are included, subject to
