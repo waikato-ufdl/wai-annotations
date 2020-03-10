@@ -7,7 +7,8 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
-from wai.common.cli.options._ClassOption import ClassOption
+from wai.common.cli.options._TypedOption import TypedOption
+from builtins import str
 
 
 class FromTensorflowExampleCLIFactory(CLIFactory):
@@ -15,7 +16,7 @@ class FromTensorflowExampleCLIFactory(CLIFactory):
     Factory which instantiates the FromTensorflowExample class.
     """
     # Options
-    label_mapping = ClassOption('-m', '--mapping', type=str, action='append', help='mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)', metavar='old=new')
+    label_mapping = TypedOption('-m', '--mapping', type=str, action='append', help='mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)', metavar='old=new')
 
     @classmethod
     def production_class(self, namespace: Namespace) -> Type[CLIInstantiable]:

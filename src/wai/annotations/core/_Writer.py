@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 from typing import Generic, Iterable, Iterator, IO, Tuple, Optional
 
 from wai.common.cli import CLIInstantiable
-from wai.common.cli.options import ClassOption, Option
+from wai.common.cli.options import TypedOption, Option
 
 from .logging import LoggingEnabled, StreamLogger
 from ._ImageInfo import ImageInfo
@@ -16,7 +16,7 @@ class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     """
     Base class for classes which can write a specific external format to disk.
     """
-    output = ClassOption("-o", "--output",
+    output = TypedOption("-o", "--output",
                          type=str,
                          metavar="dir_or_file", required=True)
 

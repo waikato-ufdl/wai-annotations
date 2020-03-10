@@ -7,7 +7,9 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
-from wai.common.cli.options._ClassOption import ClassOption
+from wai.common.cli.options._TypedOption import TypedOption
+from builtins import str
+from builtins import int
 
 
 class TensorflowExampleWriterCLIFactory(CLIFactory):
@@ -15,9 +17,9 @@ class TensorflowExampleWriterCLIFactory(CLIFactory):
     Factory which instantiates the TensorflowExampleWriter class.
     """
     # Options
-    output = ClassOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
-    protobuf_label_map = ClassOption('-p', '--protobuf', type=str, required=False, help='for storing the label strings and IDs', metavar='file')
-    shards = ClassOption('-s', '--shards', type=int, required=False, help='number of shards to split the images into', metavar='num')
+    output = TypedOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
+    protobuf_label_map = TypedOption('-p', '--protobuf', type=str, required=False, help='for storing the label strings and IDs', metavar='file')
+    shards = TypedOption('-s', '--shards', type=int, required=False, help='number of shards to split the images into', metavar='num')
 
     @classmethod
     def production_class(self, namespace: Namespace) -> Type[CLIInstantiable]:

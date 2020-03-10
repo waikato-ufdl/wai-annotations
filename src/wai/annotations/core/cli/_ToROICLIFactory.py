@@ -7,7 +7,9 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
-from wai.common.cli.options._ClassOption import ClassOption
+from wai.common.cli.options._TypedOption import TypedOption
+from builtins import int
+from builtins import str
 
 
 class ToROICLIFactory(CLIFactory):
@@ -15,9 +17,9 @@ class ToROICLIFactory(CLIFactory):
     Factory which instantiates the ToROI class.
     """
     # Options
-    image_size = ClassOption('-d', '--image-dimensions', type=int, nargs=2, help='image dimensions to use if none can be inferred', metavar=('WIDTH', 'HEIGHT'))
-    labels = ClassOption('-l', '--labels', type=str, nargs='+', help='labels to use')
-    regex = ClassOption('-r', '--regexp', type=str, help='regular expression for using only a subset of labels', metavar='regexp')
+    image_size = TypedOption('-d', '--image-dimensions', type=int, nargs=2, help='image dimensions to use if none can be inferred', metavar=('WIDTH', 'HEIGHT'))
+    labels = TypedOption('-l', '--labels', type=str, nargs='+', help='labels to use')
+    regex = TypedOption('-r', '--regexp', type=str, help='regular expression for using only a subset of labels', metavar='regexp')
 
     @classmethod
     def production_class(self, namespace: Namespace) -> Type[CLIInstantiable]:

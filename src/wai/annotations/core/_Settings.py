@@ -1,131 +1,49 @@
-from argparse import ArgumentParser, Namespace
-from typing import Tuple, Dict, Any, Optional
+from logging import WARNING, INFO, DEBUG
+from typing import Optional
 
-from .coercions import Coercion, BoxBoundsCoercion, MaskBoundsCoercion
+from wai.common import ClassRegistry
+from wai.common.cli import CLIInstantiable
+from wai.common.cli.options import CountOption, TypedOption, FlagOption, ClassOption
+from wai.common.cli.util import TranslationTable
+
+from .coercions import MaskBoundsCoercion, BoxBoundsCoercion
 from ._ImageFormat import ImageFormat
 
 
-class Settings:
+class Settings(CLIInstantiable):
     """
     The main settings class for the library. Contains global
     settings.
     """
     # The verbosity of logging to implement
-    VERBOSITY: int = property(lambda self: self._verbosity)
+    VERBOSITY = CountOption(
+        "-v",
+        translation=TranslationTable(WARNING, INFO, DEBUG),
+        help="whether to be more verbose when generating the records"
+    )
 
     # The order of preference of image formats
-    IMAGE_FORMAT_PREFERENCE_ORDER: Tuple[ImageFormat, ...] = property(lambda self: self._image_format_preference_order)
+    IMAGE_FORMAT_PREFERENCE_ORDER = TypedOption(
+        "-e", "--extensions",
+        type=ImageFormat,
+        nargs=2,
+        metavar="FORMAT",
+        default=[ImageFormat.PNG, ImageFormat.JPG],
+        help="image format extensions in order of preference"
+    )
 
     # The coercion to apply to annotations
-    COERCION: Optional[Coercion] = property(lambda self: self._coercion)
+    COERCION = ClassOption(
+        "-f", "--force",
+        registry=ClassRegistry().alias(MaskBoundsCoercion, "mask").alias(BoxBoundsCoercion, "bbox"),
+        help="forces located objects into a particular boundary type"
+    )
 
     # Whether to include zero-area annotations
-    INCLUDE_ZERO_AREA: bool = property(lambda self: self._include_zero_area)
-
-    def __init__(self,
-                 verbosity: Optional[int] = None,
-                 image_format_preference_order: Optional[Tuple[ImageFormat, ...]] = None,
-                 force: Optional[Coercion] = None,
-                 include_zero_area: Optional[bool] = None):
-        super().__init__()
-
-        self._verbosity: int = verbosity if verbosity is not None else 10
-        self._image_format_preference_order: Tuple[ImageFormat, ...] = image_format_preference_order \
-            if image_format_preference_order is not None else (ImageFormat.PNG, ImageFormat.JPG)
-        self._coercion: Optional[Coercion] = force
-        self._include_zero_area: bool = include_zero_area if include_zero_area is not None else False
-
-    @classmethod
-    def configure_parser(cls, parser: ArgumentParser):
-        parser.add_argument(
-            "-v", action="count", dest="verbosity", required=False,
-            help="whether to be more verbose when generating the records")
-
-        parser.add_argument(
-            "-f", "--force", dest="force", required=False, choices=["bbox", "mask"],
-            help="forces located objects into a particular boundary type"
-        )
-
-        parser.add_argument(
-            "-e", "--extensions", dest="extensions", required=False,
-            help="image format extensions in order of preference"
-        )
-
-        parser.add_argument(
-            "--include-zero-area", dest="include_zero_area", required=False, action="store_true",
-            help="whether to process annotations which have zero width/height (excluded by default)"
-        )
-
-    @classmethod
-    def determine_kwargs_from_namespace(cls, namespace: Namespace) -> Dict[str, Any]:
-        return dict(
-            verbosity=(cls._parse_verbosity(namespace.verbosity)
-                       if namespace.verbosity is not None else None),
-            image_format_preference_order=(cls._parse_extensions(namespace.extensions)
-                                           if namespace.extensions is not None else None),
-            force=(cls._parse_force(namespace.force)
-                   if namespace.force is not None else None),
-            include_zero_area=namespace.include_zero_area
-        )
-
-    @classmethod
-    def instance_from_namespace(cls, namespace: Namespace) -> 'Settings':
-        return cls(**cls.determine_kwargs_from_namespace(namespace))
-
-    @classmethod
-    def _parse_verbosity(cls, value: int) -> int:
-        """
-        Parses the --verbosity option.
-
-        :param value:   The integer count of the number of times the option was specified.
-        :return:        The verbosity value.
-        """
-        return value * 10
-
-    @classmethod
-    def _parse_extensions(cls, value: str) -> Tuple[ImageFormat, ...]:
-        """
-        Parses the --extensions option.
-
-        :param value:   The string value given at the command line.
-        :return:        The image format preference order.
-        """
-        # Split the string into the individual formats
-        format_strings = value.split(",")
-
-        # Parse the format strings
-        parsed_formats = tuple(map(ImageFormat.for_extension, format_strings))
-
-        # Make sure all formats were recognised
-        for parsed_format, format_string in zip(parsed_formats, format_strings):
-            if parsed_format is None:
-                raise ValueError(f"Image format preference order contains unrecognised "
-                                 f"format '{format_string}'")
-
-        # Make sure there are no duplicate formats
-        seen = set()
-        for parsed_format in parsed_formats:
-            if parsed_format in seen:
-                raise ValueError(f"Image format preference order contains duplicate specification "
-                                 f"of '{parsed_format}' format")
-            seen.add(parsed_format)
-
-        return parsed_formats
-
-    @classmethod
-    def _parse_force(cls, value: str) -> Optional[Coercion]:
-        """
-        Parses the --force option.
-
-        :param value:   The string value given at the command line.
-        :return:        The (possible) coercion.
-        """
-        if value == "bbox":
-            return BoxBoundsCoercion()
-        elif value == "mask":
-            return MaskBoundsCoercion()
-
-        raise ValueError(f"Unrecognised value for force: {value}")
+    INCLUDE_ZERO_AREA = FlagOption(
+        "--include-zero-area",
+        help="whether to process annotations which have zero width/height (excluded by default)"
+    )
 
 
 # The global settings instance

@@ -3,7 +3,7 @@ from typing import Dict, Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import OptionsList
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from ...core import InternalFormatConverter, ImageInfo
 from ...core.utils import get_object_label, get_object_prefix, get_object_metadata
@@ -16,7 +16,7 @@ class ToROI(InternalFormatConverter[ROIExternalFormat]):
     """
     Converter from internal format to ROI annotations.
     """
-    image_size = ClassOption(
+    image_size = TypedOption(
         "-d", "--image-dimensions",
         type=int,
         nargs=2,

@@ -7,8 +7,9 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
+from wai.common.cli.options._TypedOption import TypedOption
+from builtins import str
 from wai.common.cli.options._FlagOption import FlagOption
-from wai.common.cli.options._ClassOption import ClassOption
 
 
 class COCOWriterCLIFactory(CLIFactory):
@@ -16,10 +17,10 @@ class COCOWriterCLIFactory(CLIFactory):
     Factory which instantiates the COCOWriter class.
     """
     # Options
-    license_name = ClassOption('--license-name', type=str, help='the license of the images')
-    license_url = ClassOption('--license-url', type=str, help='the license of the images')
+    license_name = TypedOption('--license-name', type=str, help='the license of the images')
+    license_url = TypedOption('--license-url', type=str, help='the license of the images')
     no_images = FlagOption('--no-images', help='skip the writing of images, outputting only the report files')
-    output = ClassOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
+    output = TypedOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
     pretty = FlagOption('--pretty', help='whether to pretty-print the output')
 
     @classmethod

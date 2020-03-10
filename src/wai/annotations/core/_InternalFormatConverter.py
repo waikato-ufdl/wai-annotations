@@ -5,7 +5,7 @@ from typing import List, Union, Pattern
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import CLIInstantiable, OptionsList
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from .utils import get_object_label
 from ._Converter import Converter
@@ -19,14 +19,14 @@ class InternalFormatConverter(CLIInstantiable, Converter[InternalFormat, Externa
     """
     # The labels that should be included in the output format.
     # If None, use regex matching (see below)
-    labels = ClassOption("-l", "--labels",
+    labels = TypedOption("-l", "--labels",
                          type=str,
                          nargs="+",
                          help="labels to use")
 
     # The regex to use to select labels to include when an
     # explicit list of labels is not given
-    regex = ClassOption("-r", "--regexp",
+    regex = TypedOption("-r", "--regexp",
                         type=str,
                         metavar="regexp",
                         help="regular expression for using only a subset of labels")

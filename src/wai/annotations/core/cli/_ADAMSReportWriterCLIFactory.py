@@ -7,8 +7,9 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
-from wai.common.cli.options._ClassOption import ClassOption
 from wai.common.cli.options._FlagOption import FlagOption
+from wai.common.cli.options._TypedOption import TypedOption
+from builtins import str
 
 
 class ADAMSReportWriterCLIFactory(CLIFactory):
@@ -17,7 +18,7 @@ class ADAMSReportWriterCLIFactory(CLIFactory):
     """
     # Options
     no_images = FlagOption('--no-images', help='skip the writing of images, outputting only the report files')
-    output = ClassOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
+    output = TypedOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
 
     @classmethod
     def production_class(self, namespace: Namespace) -> Type[CLIInstantiable]:

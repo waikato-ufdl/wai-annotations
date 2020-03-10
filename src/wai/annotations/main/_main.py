@@ -8,6 +8,7 @@ from typing import List, Optional
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
 from ..core import Settings, get_settings, set_settings, ZeroAreaDiscarder
+from ..core.coercions import BoxBoundsCoercion, MaskBoundsCoercion
 from ._components import (
     get_reader_factory,
     get_external_format_converter_factory,
@@ -33,16 +34,13 @@ def main(args: Optional[List[str]] = None):
     parser = get_main_parser()
     namespace = parser.parse_args(args)
 
+    # Set any global options
+    set_settings(Settings(namespace))
+
     # Set the logger verbosity from the arguments
-    if namespace.verbosity == 1:
-        logger.setLevel(logging.INFO)
-    elif namespace.verbosity is not None:
-        logger.setLevel(logging.DEBUG)
+    logger.setLevel(get_settings().VERBOSITY)
 
     logger.debug(f"ARGS:\n" + "\n".join(f"{name}={value}" for name, value in vars(namespace).items()))
-
-    # Set any global options
-    set_settings(Settings.instance_from_namespace(namespace))
 
     # Make sure an input and output format were specified
     # (currently no required flag for sub-parsers)
@@ -71,8 +69,9 @@ def main(args: Optional[List[str]] = None):
         input_chain = ZeroAreaDiscarder().process(input_chain)
 
     # Add a coercion if specified
+
     if get_settings().COERCION is not None:
-        input_chain = get_settings().COERCION.process(input_chain)
+        input_chain = get_settings().COERCION().process(input_chain)
 
     # Finish the chain with the output components
     writer.save(output_converter.convert_all(input_chain))

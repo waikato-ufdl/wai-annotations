@@ -2,7 +2,7 @@ import os
 from typing import Iterator
 import csv
 
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from ...core import Reader, ImageInfo
 from ..utils import get_associated_image_from_filename
@@ -14,9 +14,9 @@ class ROIReader(Reader[ROIExternalFormat]):
     """
     Reader of ROI-format CSV files.
     """
-    reader_prefix = ClassOption("--prefix", type=str,
+    reader_prefix = TypedOption("--prefix", type=str,
                                 help="the prefix for output filenames (default = '')")
-    reader_suffix = ClassOption("--suffix", type=str,
+    reader_suffix = TypedOption("--suffix", type=str,
                                 help="the suffix for output filenames (default = '-rois.csv')")
 
     def read_annotation_file(self, filename: str) -> Iterator[ROIExternalFormat]:

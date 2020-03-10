@@ -2,7 +2,7 @@ from typing import Iterable, List
 
 import contextlib2
 
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from ...core import Writer, ImageInfo
 from .._ensure_available import tensorflow as tf
@@ -14,10 +14,10 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
     """
     Writer of Tensorflow example records.
     """
-    shards = ClassOption("-s", "--shards",
+    shards = TypedOption("-s", "--shards",
                          metavar="num", required=False, type=int,
                          help="number of shards to split the images into")
-    protobuf_label_map = ClassOption("-p", "--protobuf",
+    protobuf_label_map = TypedOption("-p", "--protobuf",
                                      metavar="file", required=False, type=str,
                                      help="for storing the label strings and IDs")
 

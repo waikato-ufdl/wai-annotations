@@ -1,7 +1,7 @@
 import datetime
 from typing import Iterable, Dict
 
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from ...core import JSONWriter, ImageInfo
 from ..configuration import COCOFile, Image, Category, Info, License
@@ -16,8 +16,8 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
-    license_name: str = ClassOption("--license-name", type=str, help="the license of the images")
-    license_url: str = ClassOption("--license-url", type=str, help="the license of the images")
+    license_name: str = TypedOption("--license-name", type=str, help="the license of the images")
+    license_url: str = TypedOption("--license-url", type=str, help="the license of the images")
 
     def create_json_object(self, instances: Iterable[COCOExternalFormat]) -> COCOFile:
         # Get the current time

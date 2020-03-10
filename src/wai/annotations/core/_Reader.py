@@ -4,7 +4,7 @@ from argparse import Namespace
 from typing import Generic, Iterator, List, Union
 
 from wai.common.cli import CLIInstantiable, OptionsList
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from .logging import StreamLogger, LoggingEnabled
 from .utils import chain_map, recursive_iglob, read_file_list
@@ -17,7 +17,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     Base class for classes which can read a specific external format from disk.
     """
     # The name of the input annotation files to read from
-    inputs: List[str] = ClassOption(
+    inputs: List[str] = TypedOption(
         "-i", "--inputs",
         type=str,
         metavar="files", action="append",
@@ -25,7 +25,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     )
 
     # The names of images to include in the conversion without annotations
-    negatives: List[str] = ClassOption(
+    negatives: List[str] = TypedOption(
         "-n", "--negatives",
         type=str,
         metavar="image", action="append",
@@ -33,7 +33,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     )
 
     # The names of files to load input lists from
-    input_files: List[str] = ClassOption(
+    input_files: List[str] = TypedOption(
         "-I", "--input-files",
         type=str,
         action="append",
@@ -41,7 +41,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     )
 
     # The names of files to load negative lists from
-    negative_files: List[str] = ClassOption(
+    negative_files: List[str] = TypedOption(
         "-N", "--negative-files",
         type=str,
         action="append",

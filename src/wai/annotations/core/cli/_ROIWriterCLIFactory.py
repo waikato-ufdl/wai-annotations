@@ -7,8 +7,9 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
-from wai.common.cli.options._ClassOption import ClassOption
 from wai.common.cli.options._FlagOption import FlagOption
+from wai.common.cli.options._TypedOption import TypedOption
+from builtins import str
 
 
 class ROIWriterCLIFactory(CLIFactory):
@@ -17,9 +18,9 @@ class ROIWriterCLIFactory(CLIFactory):
     """
     # Options
     no_images = FlagOption('--no-images', help='skip the writing of images, outputting only the report files')
-    output = ClassOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
-    writer_prefix = ClassOption('--prefix', type=str, help="the prefix for output filenames (default = '')")
-    writer_suffix = ClassOption('--suffix', type=str, help="the suffix for output filenames (default = '-rois.csv')")
+    output = TypedOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
+    writer_prefix = TypedOption('--prefix', type=str, help="the prefix for output filenames (default = '')")
+    writer_suffix = TypedOption('--suffix', type=str, help="the suffix for output filenames (default = '-rois.csv')")
 
     @classmethod
     def production_class(self, namespace: Namespace) -> Type[CLIInstantiable]:

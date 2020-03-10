@@ -4,7 +4,7 @@ from typing import Optional, Iterable, Iterator, Union
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli import CLIInstantiable, OptionsList
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from .utils import get_object_label, set_object_label
 from ._typing import InternalFormat
@@ -20,7 +20,7 @@ class ExternalFormatConverter(CLIInstantiable, Converter[ExternalFormat, Interna
     # An optional mapping to replace/consolidate object labels.
     # The key is the label to replace and the value is the label
     # to replace it with
-    label_mapping = ClassOption(
+    label_mapping = TypedOption(
         "-m", "--mapping",
         type=str,
         metavar="old=new", action='append',

@@ -1,7 +1,7 @@
 from typing import Set
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 from wai.common.file.report import Report
 
 from ...core import ExternalFormatConverter, InternalFormat
@@ -14,7 +14,7 @@ class FromADAMSReport(ExternalFormatConverter[ADAMSExternalFormat]):
     """
     Converter from ADAMS report-style annotations to internal format.
     """
-    prefixes = ClassOption(
+    prefixes = TypedOption(
         "-p", "--prefixes",
         type=str,
         nargs="+",

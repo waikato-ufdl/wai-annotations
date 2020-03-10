@@ -3,8 +3,10 @@ from enum import Enum
 from typing import Optional
 from itertools import chain
 
+from wai.common.cli import CLIRepresentable
 
-class ImageFormat(Enum):
+
+class ImageFormat(CLIRepresentable, Enum):
     """
     Class enumerating the types of images we can work with. Each enumeration's
     value is a tuple of possible file extensions for that image type.
@@ -60,3 +62,15 @@ class ImageFormat(Enum):
 
     def __str__(self) -> str:
         return self.get_default_extension()
+
+    def cli_repr(self) -> str:
+        return self.get_default_extension()
+
+    @classmethod
+    def from_cli_repr(cls, cli_string: str) -> 'ImageFormat':
+        image_format = cls.for_extension(cli_string)
+
+        if image_format is None:
+            raise ValueError(f"Unrecognised image format '{cli_string}'")
+
+        return image_format

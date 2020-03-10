@@ -2,7 +2,7 @@ import os
 from typing import Iterable
 import csv
 
-from wai.common.cli.options import ClassOption
+from wai.common.cli.options import TypedOption
 
 from ...core import SeparateImageWriter, ImageInfo
 from ..utils import combine_dicts, roi_filename_for_image
@@ -14,8 +14,8 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
     """
     Writer of ROI CSV annotations.
     """
-    writer_prefix = ClassOption("--prefix", type=str, help="the prefix for output filenames (default = '')")
-    writer_suffix = ClassOption("--suffix", type=str, help="the suffix for output filenames (default = '-rois.csv')")
+    writer_prefix = TypedOption("--prefix", type=str, help="the prefix for output filenames (default = '')")
+    writer_suffix = TypedOption("--suffix", type=str, help="the suffix for output filenames (default = '-rois.csv')")
 
     def write_without_images(self, instances: Iterable[ROIExternalFormat], path: str):
         # Path must be a directory
