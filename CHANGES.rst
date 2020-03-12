@@ -14,6 +14,7 @@ Changelog
   the polygon for speed increase.
 - Added ``--mask-threshold`` option to tfrecords input which sets the probability to consider
   the mask inside the polygon.
+- Internal format is now an object rather than a tuple.
 
 0.2.2 (2020-03-11)
 ------------------
