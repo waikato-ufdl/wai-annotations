@@ -5,10 +5,10 @@ each of the component classes.
 from wai.common.cli import CLIFactory, CLIInstantiable
 
 # The formats to generate factories for
-FORMATS = {"adams", "coco", "roi", "tf", "vgg"}
+FORMATS = ["coco", "vgg", "roi", "adams", "tf"]
 
 # The sub-packages where to find classes requiring factories
-PACKAGES = {"io", "convert"}
+PACKAGES = ["io", "convert"]
 
 # The header to write at the beginning of each generated file
 HEADER = (
