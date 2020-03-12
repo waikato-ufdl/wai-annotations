@@ -1,5 +1,7 @@
 from typing import List
+
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
+from wai.common.cli.options import TypedOption
 
 from ...core import ExternalFormatConverter, InternalFormat, ImageInfo
 from ...core.utils import set_object_label
@@ -11,6 +13,14 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
     """
     Converter from Tensorflow Examples to the internal format.
     """
+    sample_stride = TypedOption(
+        "--sample-stride",
+        type=int,
+        default=1,
+        metavar="STRIDE",
+        help="the stride to use when calculating polygons from masks"
+    )
+
     def _convert(self, instance: TensorflowExampleExternalFormat) -> InternalFormat:
         # Define a UTF-8 decoder
         def decode_utf_8(bytes_: bytes) -> str:
@@ -37,8 +47,8 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
 
         return image_info, located_objects
 
-    @staticmethod
-    def process_located_objects(lefts: List[float],
+    def process_located_objects(self,
+                                lefts: List[float],
                                 rights: List[float],
                                 tops: List[float],
                                 bottoms: List[float],
@@ -78,7 +88,8 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
                 located_object.set_polygon(
                     polygon_from_mask(
                         mask,
-                        (left * image_width, top * image_height, right * image_width, bottom * image_height)
+                        (left * image_width, top * image_height, right * image_width, bottom * image_height),
+                        self.sample_stride
                     )
                 )
 

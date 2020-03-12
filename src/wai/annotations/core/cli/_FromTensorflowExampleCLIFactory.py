@@ -9,6 +9,7 @@ from wai.common.meta.typing import VAR_ARGS_TYPE
 
 from wai.common.cli.options._TypedOption import TypedOption
 from builtins import str
+from builtins import int
 
 
 class FromTensorflowExampleCLIFactory(CLIFactory):
@@ -17,6 +18,7 @@ class FromTensorflowExampleCLIFactory(CLIFactory):
     """
     # Options
     label_mapping = TypedOption('-m', '--mapping', type=str, action='append', help='mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)', metavar='old=new')
+    sample_stride = TypedOption('--sample-stride', type=int, default=1, help='the stride to use when calculating polygons from masks', metavar='STRIDE')
 
     @classmethod
     def production_class(self, namespace: Namespace) -> Type[CLIInstantiable]:

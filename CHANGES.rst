@@ -10,6 +10,8 @@ Changelog
 - Added ``--comments`` option for ROI writer to insert comments at the beginning
   of written files.
 - Input directories read all contained files ending in ``.report`` when using ``adams`` format.
+- Added ``--sample-stride`` option to tfrecords input which sub-samples the mask when generating
+  the polygon for speed increase.
 
 0.2.2 (2020-03-11)
 ------------------

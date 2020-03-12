@@ -93,6 +93,12 @@ options, which depend on whether it is the input or output of the conversion.
                           image associated to an empty annotations file. See the options of the same
                           names under Output Options for an example of how this works, but here it is
                           applied in reverse to get the original image name. Formats: `roi`.
+                          
+* `--sample-stride`: Optional integer which uses a lower-resolution view of the mask to generate
+                     a polygon for the annotation. E.g. a value of 2 would look at every second
+                     pixel in the mask (in both x- and y-directions). This in theory results in
+                     a more-coarsely-grained polygon but at the benefit of taking less time to
+                     compute. Formats: `tfrecords`.
 
 ### Output Options
 
