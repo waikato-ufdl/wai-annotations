@@ -1,21 +1,19 @@
 """
 Module containing the main entry point functions for converting annotations.
 """
-import logging
 import traceback
 from typing import List, Optional
 
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
 from ..core import Settings, get_settings, set_settings, ZeroAreaDiscarder
-from ..core.coercions import BoxBoundsCoercion, MaskBoundsCoercion
 from ._components import (
     get_reader_factory,
     get_external_format_converter_factory,
     get_internal_format_converter_factory,
     get_writer_factory
 )
-from ._parser import get_main_parser
+from ._parser import MainParserConfigurer
 
 
 def main(args: Optional[List[str]] = None):
@@ -31,7 +29,7 @@ def main(args: Optional[List[str]] = None):
             handler.addFilter(lambda record: record.name != 'PIL.PngImagePlugin')
 
     # Parse the arguments
-    parser = get_main_parser()
+    parser = MainParserConfigurer.get_configured_parser()
     namespace = parser.parse_args(args)
 
     # Set any global options
