@@ -13,6 +13,14 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
     """
     Converter from Tensorflow Examples to the internal format.
     """
+    mask_threshold = TypedOption(
+        "--mask-threshold",
+        type=float,
+        default=0.9,
+        metavar="THRESHOLD",
+        help="the threshold to use when calculating polygons from masks"
+    )
+
     sample_stride = TypedOption(
         "--sample-stride",
         type=int,
@@ -89,6 +97,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
                     polygon_from_mask(
                         mask,
                         (left * image_width, top * image_height, right * image_width, bottom * image_height),
+                        self.mask_threshold,
                         self.sample_stride
                     )
                 )

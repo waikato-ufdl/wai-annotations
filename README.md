@@ -100,6 +100,10 @@ options, which depend on whether it is the input or output of the conversion.
                      a more-coarsely-grained polygon but at the benefit of taking less time to
                      compute. Formats: `tfrecords`.
 
+* `--mask-threshold`: Optional value between 0.0 and 1.0 which determines the mask values that are
+                      considered inside the polygon when generating a polygon from the mask.
+                      Formats: `tfrecords`.
+
 ### Output Options
 
 * `-o`, `--output`: Required argument specifying the output file or directory to save the converted

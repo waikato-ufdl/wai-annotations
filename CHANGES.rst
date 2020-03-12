@@ -12,6 +12,8 @@ Changelog
 - Input directories read all contained files ending in ``.report`` when using ``adams`` format.
 - Added ``--sample-stride`` option to tfrecords input which sub-samples the mask when generating
   the polygon for speed increase.
+- Added ``--mask-threshold`` option to tfrecords input which sets the probability to consider
+  the mask inside the polygon.
 
 0.2.2 (2020-03-11)
 ------------------
