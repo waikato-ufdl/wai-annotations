@@ -4,7 +4,7 @@ Changelog
 0.2.3 (2020-03-??)
 ------------------
 
-- Upgraded wai.common requirement to v0.0.27.
+- Upgraded wai.common requirement to v0.0.28.
 - Separated main settings from library settings.
 - Changed ``--include-zero-area`` flag to min/max width/height/area flags.
 - Added ``--comments`` option for ROI writer to insert comments at the beginning
