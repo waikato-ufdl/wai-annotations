@@ -91,6 +91,7 @@ env.bak/
 venv.bak/
 venv3.7/
 venv-test/
+venv-jupyter/
 
 # Spyder project settings
 .spyderproject
