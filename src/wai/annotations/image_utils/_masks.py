@@ -51,15 +51,13 @@ def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin
     polys = measure.find_contours(act_mask, mask_threshold, fully_connected)
 
     if x0 is not None:
+        offset = np.array([[y0, x0]])
         for poly in polys:
-            for i, p in enumerate(poly):
-                poly[i, 0] += y0
-                poly[i, 1] += x0
+            poly += offset
 
     if mask_nth > 1:
         for poly in polys:
-            for i, p in enumerate(poly):
-                poly[i] = p*mask_nth
+            poly *= mask_nth
 
     return polys
 
