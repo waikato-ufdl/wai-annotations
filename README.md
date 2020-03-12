@@ -45,9 +45,18 @@ options, which depend on whether it is the input or output of the conversion.
                         when searching for images related to annotations files. Should be a
                         comma-separated list of extensions. Defaults to `png,jpg` if not specified.
                         
-* `--include-zero-area`: Optional argument to disable the dropping of zero-area annotations, which
-                         is the default behaviour.
-                    
+* `--min-width`: Optional integer to discard annotations with width less than this value.
+
+* `--max-width`: Optional integer to discard annotations with width greater than this value.
+
+* `--min-height`: Optional integer to discard annotations with height less than this value.
+
+* `--max-height`: Optional integer to discard annotations with height greater than this value.
+
+* `--min-area`: Optional integer to discard annotations with area less than this value.
+
+* `--max-area`: Optional integer to discard annotations with area greater than this value.
+
 ### Input Options
 
 * `-i`, `--inputs`: Optional argument specifying the input files to convert. Can be specified

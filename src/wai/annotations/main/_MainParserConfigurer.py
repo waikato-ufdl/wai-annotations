@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 
 from wai.common.cli import ArgumentParserConfigurer
 
-from ..core import LibrarySettings
+from ..core import LibrarySettings, DimensionDiscarder
 from ._components import (
     get_available_input_formats,
     get_available_output_formats,
@@ -25,6 +25,9 @@ class MainParserConfigurer(ArgumentParserConfigurer):
 
         # Add the main settings
         MainSettings.configure_parser(parser)
+
+        # Add the dimension discarder
+        DimensionDiscarder.configure_parser(parser)
 
         # Create a first level sub-parser set for selecting the input type
         input_subparsers = parser.add_subparsers(dest="input_type")

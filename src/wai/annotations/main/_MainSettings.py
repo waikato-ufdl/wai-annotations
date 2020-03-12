@@ -2,7 +2,7 @@ from logging import WARNING, INFO, DEBUG
 
 from wai.common import ClassRegistry
 from wai.common.cli import CLIInstantiable
-from wai.common.cli.options import CountOption, FlagOption, ClassOption
+from wai.common.cli.options import CountOption, ClassOption
 from wai.common.cli.util import TranslationTable
 
 from ..core.coercions import MaskBoundsCoercion, BoxBoundsCoercion
@@ -25,10 +25,4 @@ class MainSettings(CLIInstantiable):
         "-f", "--force",
         registry=ClassRegistry().alias(MaskBoundsCoercion, "mask").alias(BoxBoundsCoercion, "bbox"),
         help="forces located objects into a particular boundary type"
-    )
-
-    # Whether to include zero-area annotations
-    INCLUDE_ZERO_AREA = FlagOption(
-        "--include-zero-area",
-        help="whether to process annotations which have zero width/height (excluded by default)"
     )
