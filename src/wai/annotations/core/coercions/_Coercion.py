@@ -4,7 +4,7 @@ from typing import Iterable
 from wai.common.adams.imaging.locateobjects import LocatedObject
 
 from .._InlineStreamProcessor import InlineStreamProcessor
-from .._typing import InternalFormat
+from .._InternalFormat import InternalFormat
 
 
 class Coercion(InlineStreamProcessor[InternalFormat]):

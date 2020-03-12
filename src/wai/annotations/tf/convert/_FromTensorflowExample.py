@@ -53,7 +53,7 @@ class FromTensorflowExample(ExternalFormatConverter[TensorflowExampleExternalFor
                                                        labels, masks,
                                                        image_info.width(), image_info.height())
 
-        return image_info, located_objects
+        return InternalFormat(image_info, located_objects)
 
     def process_located_objects(self,
                                 lefts: List[float],

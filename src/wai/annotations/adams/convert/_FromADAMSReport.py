@@ -27,7 +27,7 @@ class FromADAMSReport(ExternalFormatConverter[ADAMSExternalFormat]):
         # Default to all prefixes if none provided
         prefixes = set(self.prefixes) if len(self.prefixes) > 0 else find_all_prefixes(report)
 
-        return image_info, self.get_located_objects_from_report(report, prefixes)
+        return InternalFormat(image_info, self.get_located_objects_from_report(report, prefixes))
 
     @staticmethod
     def get_located_objects_from_report(report: Report, prefixes: Set[str]) -> LocatedObjects:

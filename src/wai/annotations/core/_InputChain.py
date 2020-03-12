@@ -1,8 +1,8 @@
 from typing import Iterator
 
-from ._Reader import Reader
 from ._ExternalFormatConverter import ExternalFormatConverter
-from ._typing import InternalFormat
+from ._InternalFormat import InternalFormat
+from ._Reader import Reader
 
 
 class InputChain:

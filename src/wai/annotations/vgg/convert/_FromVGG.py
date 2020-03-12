@@ -15,7 +15,7 @@ class FromVGG(ExternalFormatConverter[VGGExternalFormat]):
         # Unpack the external format
         image_info, image = instance
 
-        return image_info, LocatedObjects(map(self.to_located_object, image.regions))
+        return InternalFormat(image_info, LocatedObjects(map(self.to_located_object, image.regions)))
 
     @staticmethod
     def to_located_object(region: Region) -> LocatedObject:

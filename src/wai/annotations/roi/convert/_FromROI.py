@@ -15,7 +15,7 @@ class FromROI(ExternalFormatConverter[ROIExternalFormat]):
         # Unpack the external format
         image_info, roi_objects = instance
 
-        return image_info, LocatedObjects(map(self.convert_roi_object, roi_objects))
+        return InternalFormat(image_info, LocatedObjects(map(self.convert_roi_object, roi_objects)))
 
     @staticmethod
     def convert_roi_object(roi_object: ROIObject) -> LocatedObject:

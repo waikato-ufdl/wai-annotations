@@ -7,7 +7,7 @@ from wai.common.cli import CLIInstantiable, OptionsList
 from wai.common.cli.options import TypedOption
 
 from .utils import get_object_label, set_object_label
-from ._typing import InternalFormat
+from ._InternalFormat import InternalFormat
 from ._Converter import Converter
 from ._DuplicateImageNames import DuplicateImageNames
 from ._typing import ExternalFormat

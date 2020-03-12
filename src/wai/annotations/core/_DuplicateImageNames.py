@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from ._typing import InternalFormat
 from ._InlineStreamProcessor import InlineStreamProcessor
+from ._InternalFormat import InternalFormat
 
 
 class DuplicateImageNames(InlineStreamProcessor[InternalFormat]):
@@ -14,7 +14,7 @@ class DuplicateImageNames(InlineStreamProcessor[InternalFormat]):
 
     def _process_element(self, element: InternalFormat) -> Iterable[InternalFormat]:
         # Get the image name from the element
-        image_name = element[0].filename
+        image_name = element.image_info.filename
 
         # If we've seen it, raise an error
         if image_name in self._seen_names:

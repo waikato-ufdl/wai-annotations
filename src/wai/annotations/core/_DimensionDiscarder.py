@@ -5,7 +5,7 @@ from wai.common.cli import CLIInstantiable
 from wai.common.cli.options import TypedOption
 
 from ._InlineStreamProcessor import InlineStreamProcessor
-from ._typing import InternalFormat
+from ._InternalFormat import InternalFormat
 
 
 class DimensionDiscarder(CLIInstantiable, InlineStreamProcessor[InternalFormat]):
@@ -58,7 +58,7 @@ class DimensionDiscarder(CLIInstantiable, InlineStreamProcessor[InternalFormat])
                                           for located_object in located_objects
                                           if not self._should_discard_located_object(located_object)))
 
-        return (image_info, located_objects),
+        return InternalFormat(image_info, located_objects),
 
     def _should_discard_located_object(self, located_object: LocatedObject) -> bool:
         """
