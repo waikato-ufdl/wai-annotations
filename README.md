@@ -138,6 +138,9 @@ options, which depend on whether it is the input or output of the conversion.
 * `--pretty`: Optional flag for JSON-based formats which tells them to output their JSON files with pretty indentation.
               If not included, JSON files are saved in compact-form instead. Formats: `coco`, `vgg`.
 
+* `--comments`: Optional flag to specify comments to write to the beginning of the annotations files.
+                Formats: `roi`.
+
 ## Examples
 
 Create a MS-COCO annotations file for a directory of images and ADAMS report annotations:

@@ -7,6 +7,8 @@ Changelog
 - Upgraded wai.common requirement to v0.0.27.
 - Separated main settings from library settings.
 - Changed ``--include-zero-area`` flag to min/max width/height/area flags.
+- Added ``--comments`` option for ROI writer to insert comments at the beginning
+  of written files.
 
 0.2.2 (2020-03-11)
 ------------------

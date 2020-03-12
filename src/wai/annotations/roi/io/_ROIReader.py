@@ -1,11 +1,12 @@
 import os
-from typing import Iterator
+from typing import Iterator, IO
 import csv
 
 from wai.common.cli.options import TypedOption
 
 from ...core import Reader, ImageInfo
 from ..utils import get_associated_image_from_filename
+from ..constants import COMMENT_SYMBOL
 from .._format import ROIExternalFormat
 from .._ROIObject import ROIObject
 
@@ -22,6 +23,9 @@ class ROIReader(Reader[ROIExternalFormat]):
     def read_annotation_file(self, filename: str) -> Iterator[ROIExternalFormat]:
         # Read in the file
         with open(filename, "r") as file:
+            # Consume the comments lines
+            self._consume_comments(file)
+
             # Create a CSV dict reader around the file
             csv_reader = csv.DictReader(file)
 
@@ -44,3 +48,24 @@ class ROIReader(Reader[ROIExternalFormat]):
 
     def image_info_to_external_format(self, image_info: ImageInfo) -> ROIExternalFormat:
         return image_info, []
+
+    def _consume_comments(self, file: IO[str]):
+        """
+        Reads lines from the file until a non-comment line is found.
+
+        :param file:    The file to read from.
+        """
+        # Read until end of file
+        line = None
+        while line != '':
+            # Record the position in the file so we can backtrack
+            # if we find a non-comment line
+            position = file.tell()
+
+            # Read the next line from the file
+            line = file.readline()
+
+            # If it's not a comment, backtrack and return
+            if not line.startswith(COMMENT_SYMBOL):
+                file.seek(position)
+                return

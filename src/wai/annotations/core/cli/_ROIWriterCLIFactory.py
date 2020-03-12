@@ -7,9 +7,9 @@ from typing import Type
 from wai.common.cli import CLIFactory, CLIInstantiable
 from wai.common.meta.typing import VAR_ARGS_TYPE
 
-from wai.common.cli.options._FlagOption import FlagOption
 from wai.common.cli.options._TypedOption import TypedOption
 from builtins import str
+from wai.common.cli.options._FlagOption import FlagOption
 
 
 class ROIWriterCLIFactory(CLIFactory):
@@ -17,6 +17,7 @@ class ROIWriterCLIFactory(CLIFactory):
     Factory which instantiates the ROIWriter class.
     """
     # Options
+    comments = TypedOption('--comments', type=str, nargs='+', help='comments to write to the beginning of the ROI file')
     no_images = FlagOption('--no-images', help='skip the writing of images, outputting only the report files')
     output = TypedOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
     writer_prefix = TypedOption('--prefix', type=str, help="the prefix for output filenames (default = '')")

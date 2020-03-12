@@ -1,11 +1,12 @@
 import os
-from typing import Iterable
+from typing import Iterable, IO
 import csv
 
 from wai.common.cli.options import TypedOption
 
 from ...core import SeparateImageWriter, ImageInfo
 from ..utils import combine_dicts, roi_filename_for_image
+from ..constants import COMMENT_SYMBOL
 from .._format import ROIExternalFormat
 from .._ROIObject import ROIObject
 
@@ -14,8 +15,24 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
     """
     Writer of ROI CSV annotations.
     """
-    writer_prefix = TypedOption("--prefix", type=str, help="the prefix for output filenames (default = '')")
-    writer_suffix = TypedOption("--suffix", type=str, help="the suffix for output filenames (default = '-rois.csv')")
+    writer_prefix = TypedOption(
+        "--prefix",
+        type=str,
+        help="the prefix for output filenames (default = '')"
+    )
+
+    writer_suffix = TypedOption(
+        "--suffix",
+        type=str,
+        help="the suffix for output filenames (default = '-rois.csv')"
+    )
+
+    comments = TypedOption(
+        "--comments",
+        type=str,
+        nargs="+",
+        help="comments to write to the beginning of the ROI file"
+    )
 
     def write_without_images(self, instances: Iterable[ROIExternalFormat], path: str):
         # Path must be a directory
@@ -45,6 +62,7 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
 
             # Write the CSV file
             with open(os.path.join(path, filename), "w") as file:
+                self._write_comments(file)
                 csv_writer = csv.DictWriter(file, headers)
                 csv_writer.writeheader()
                 for roi_dict in roi_dicts:
@@ -63,3 +81,18 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
     @classmethod
     def output_help_text(cls) -> str:
         return "output directory to write files to"
+
+    def _write_comments(self, file: IO[str]):
+        """
+        Writes the supplied comments to the given file.
+
+        :param file:    The file to write to.
+        """
+        # Write each entry on its own line
+        for comment_line in self.comments:
+            # Add the comment symbol if it's not there already
+            if not comment_line.startswith(COMMENT_SYMBOL):
+                comment_line = f"{COMMENT_SYMBOL} {comment_line}"
+
+            # Write the comment
+            file.write(f"{comment_line}\n")
