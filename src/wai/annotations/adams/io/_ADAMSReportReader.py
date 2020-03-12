@@ -4,7 +4,8 @@ from typing import Iterator
 from wai.common.file.report import loadf, Report
 
 from ...core import Reader, ImageInfo
-from ...core.utils import get_associated_image
+from ...core.utils import get_associated_image, recursive_iglob
+from ..constants import DEFAULT_EXTENSION
 from .._format import ADAMSExternalFormat
 
 
@@ -30,3 +31,15 @@ class ADAMSReportReader(Reader[ADAMSExternalFormat]):
 
     def image_info_to_external_format(self, image_info: ImageInfo) -> ADAMSExternalFormat:
         return image_info, Report()
+
+    def annotation_files(self) -> Iterator[str]:
+        # Further process the set of annotation files
+        for file in super().annotation_files():
+            # If the file is a directory, default to all files that end in the default extension
+            if os.path.isdir(file):
+                for filename in recursive_iglob(os.path.join(file, f"*{DEFAULT_EXTENSION}")):
+                    yield filename
+
+            # Otherwise read the file as normal
+            else:
+                yield file

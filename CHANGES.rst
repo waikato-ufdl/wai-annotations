@@ -9,6 +9,7 @@ Changelog
 - Changed ``--include-zero-area`` flag to min/max width/height/area flags.
 - Added ``--comments`` option for ROI writer to insert comments at the beginning
   of written files.
+- Input directories read all contained files ending in ``.report`` when using ``adams`` format.
 
 0.2.2 (2020-03-11)
 ------------------
