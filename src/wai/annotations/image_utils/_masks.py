@@ -35,16 +35,18 @@ def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin
         rows = np.array(range(0, mask.shape[0], mask_nth))
         cols = np.array(range(0, mask.shape[1], mask_nth))
         act_mask = mask[np.ix_(rows, cols)]
+        act_view = tuple(coordinate / mask_nth for coordinate in view) if view is not None else None
     else:
         act_mask = mask
+        act_view = view
 
     x0 = None
     y0 = None
-    if view is not None:
-        x0 = max(0, int(math.floor(view[0])) - view_margin)
-        y0 = max(0, int(math.floor(view[1])) - view_margin)
-        x1 = min(act_mask.shape[1], int(math.ceil(view[2])) + view_margin)
-        y1 = min(act_mask.shape[0], int(math.ceil(view[3])) + view_margin)
+    if act_view is not None:
+        x0 = max(0, int(math.floor(act_view[0])) - view_margin)
+        y0 = max(0, int(math.floor(act_view[1])) - view_margin)
+        x1 = min(act_mask.shape[1], int(math.ceil(act_view[2])) + view_margin)
+        y1 = min(act_mask.shape[0], int(math.ceil(act_view[3])) + view_margin)
         view_mask = act_mask[slice(y0,y1+1,1), slice(x0,x1+1,1)]
         act_mask = view_mask
 
