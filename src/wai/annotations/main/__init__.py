@@ -8,4 +8,4 @@ from ._components import (
     get_writer_factory
 )
 from ._main import main, sys_main
-from ._parser import MainParserConfigurer
+from ._MainParserConfigurer import MainParserConfigurer

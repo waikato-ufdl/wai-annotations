@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Upgraded wai.common requirement to v0.0.27.
+- Separated main settings from library settings.
 
 0.2.2 (2020-03-11)
 ------------------

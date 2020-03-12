@@ -1,13 +1,8 @@
-"""
-Module which configures the argument parser for the main function.
-"""
 from argparse import ArgumentParser
 
 from wai.common.cli import ArgumentParserConfigurer
 
-from ..core import Settings
-
-# Import the components that are available to us
+from ..core import LibrarySettings
 from ._components import (
     get_available_input_formats,
     get_available_output_formats,
@@ -16,6 +11,7 @@ from ._components import (
     get_internal_format_converter_factory,
     get_writer_factory
 )
+from ._MainSettings import MainSettings
 
 
 class MainParserConfigurer(ArgumentParserConfigurer):
@@ -25,7 +21,10 @@ class MainParserConfigurer(ArgumentParserConfigurer):
     @classmethod
     def configure_parser(cls, parser: ArgumentParser):
         # Add library settings
-        Settings.configure_parser(parser)
+        LibrarySettings.configure_parser(parser)
+
+        # Add the main settings
+        MainSettings.configure_parser(parser)
 
         # Create a first level sub-parser set for selecting the input type
         input_subparsers = parser.add_subparsers(dest="input_type")

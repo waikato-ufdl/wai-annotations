@@ -6,14 +6,15 @@ from typing import List, Optional
 
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
-from ..core import Settings, get_settings, set_settings, ZeroAreaDiscarder
+from ..core import LibrarySettings, set_settings, ZeroAreaDiscarder
 from ._components import (
     get_reader_factory,
     get_external_format_converter_factory,
     get_internal_format_converter_factory,
     get_writer_factory
 )
-from ._parser import MainParserConfigurer
+from ._MainParserConfigurer import MainParserConfigurer
+from ._MainSettings import MainSettings
 
 
 def main(args: Optional[List[str]] = None):
@@ -33,10 +34,11 @@ def main(args: Optional[List[str]] = None):
     namespace = parser.parse_args(args)
 
     # Set any global options
-    set_settings(Settings(namespace))
+    set_settings(LibrarySettings(namespace))
+    main_settings = MainSettings(namespace)
 
     # Set the logger verbosity from the arguments
-    logger.setLevel(get_settings().VERBOSITY)
+    logger.setLevel(main_settings.VERBOSITY)
 
     logger.debug(f"ARGS:\n" + "\n".join(f"{name}={value}" for name, value in vars(namespace).items()))
 
@@ -63,13 +65,13 @@ def main(args: Optional[List[str]] = None):
     input_chain = input_converter.convert_all(reader.load())
 
     # Discard any zero-area annotations if selected
-    if not get_settings().INCLUDE_ZERO_AREA:
+    if not main_settings.INCLUDE_ZERO_AREA:
         input_chain = ZeroAreaDiscarder().process(input_chain)
 
     # Add a coercion if specified
-
-    if get_settings().COERCION is not None:
-        input_chain = get_settings().COERCION().process(input_chain)
+    coercion = main_settings.COERCION
+    if coercion is not None:
+        input_chain = coercion().process(input_chain)
 
     # Finish the chain with the output components
     writer.save(output_converter.convert_all(input_chain))
