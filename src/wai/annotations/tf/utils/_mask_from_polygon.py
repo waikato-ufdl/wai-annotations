@@ -4,6 +4,8 @@ import PIL
 import numpy as np
 from wai.common.geometry import Polygon
 
+from ...image_utils import polygon_to_mask
+
 
 def mask_from_polygon(polygon: Polygon, image_width: int, image_height: int) -> bytes:
     """
@@ -28,9 +30,7 @@ def mask_from_polygon(polygon: Polygon, image_width: int, image_height: int) -> 
     poly_array = np.array(poly_list, dtype=float)
 
     # Run-length encode the polygon into a bitmask
-    from pycocotools import mask
-    rle = mask.frPyObjects([poly_array], image_height, image_width)
-    binary_mask = np.amax(mask.decode(rle), axis=2)
+    binary_mask = polygon_to_mask([poly_array], image_width, image_height)
 
     # Write the bitmask into PNG format
     output_io = io.BytesIO()

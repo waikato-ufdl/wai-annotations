@@ -3,6 +3,29 @@ from skimage import measure
 import cv2
 import math
 from planar import Polygon, Vec2
+from pycocotools import mask
+
+
+def polygon_to_mask(polys, image_width, image_height):
+    """
+    Creates a binary mask of the provided polygons.
+
+    Based on code from:
+    https://github.com/tensorflow/models/blob/master/research/object_detection/dataset_tools/create_coco_tf_record.py
+
+
+    :param polys:           The polygons, each a Numpy array with shape (2N,), where N is the number of
+                            points in the polygon, formatted as interleaved [x0, y0, x1, y1, ...] pairs.
+    :type polys:            list
+    :param image_width:     The width of the mask to produce.
+    :type image_width:      int
+    :param image_height:    The height of the mask to produce.
+    :type image_height:     int
+    :return:                A binary array with 1s inside the polygons and 0s outside.
+    :rtype:                 np.ndarray
+    """
+    rle = mask.frPyObjects(polys, image_height, image_width)
+    return np.amax(mask.decode(rle), axis=2)
 
 
 def mask_to_polygon(mask, mask_threshold=0.1, mask_nth=1, view=None, view_margin=5, fully_connected='low'):
