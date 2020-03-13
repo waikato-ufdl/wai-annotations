@@ -1,9 +1,9 @@
 import io
 
 import PIL
-import numpy as np
 from wai.common.geometry import Polygon
 
+from ...core.utils import polygon_to_poly_array
 from ...image_utils import polygon_to_mask
 
 
@@ -19,15 +19,8 @@ def mask_from_polygon(polygon: Polygon, image_width: int, image_height: int) -> 
     :param image_height:    The height of the image.
     :return:                The mask data.
     """
-
-    # Flatten the polygon points into a list
-    poly_list = []
-    for point in polygon:
-        poly_list.append(point.x)
-        poly_list.append(point.y)
-
     # Create a Numpy array for the polygon
-    poly_array = np.array(poly_list, dtype=float)
+    poly_array = polygon_to_poly_array(polygon)
 
     # Run-length encode the polygon into a bitmask
     binary_mask = polygon_to_mask([poly_array], image_width, image_height)
