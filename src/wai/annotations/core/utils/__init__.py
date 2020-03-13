@@ -16,5 +16,6 @@ from ._metadata import (
     get_object_metadata,
     set_object_metadata
 )
+from ._polygon_from_rectangle import polygon_from_rectangle
 from ._read_file_list import read_file_list
 from ._recursive_iglob import recursive_iglob

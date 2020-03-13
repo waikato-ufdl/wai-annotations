@@ -1,6 +1,6 @@
 from wai.common.adams.imaging.locateobjects import LocatedObject
-from wai.common.geometry import Polygon, Point
 
+from ..utils import polygon_from_rectangle
 from ._Coercion import Coercion
 
 
@@ -16,18 +16,5 @@ class MaskBoundsCoercion(Coercion):
         if located_object.has_polygon():
             return
 
-        # Calculate the bound coordinates
-        rectangle = located_object.get_rectangle()
-        left = rectangle.left()
-        right = rectangle.right()
-        top = rectangle.top()
-        bottom = rectangle.bottom()
-
-        # Create a polygon from the bound coordinates
-        polygon = Polygon(Point(left, top),
-                          Point(right, top),
-                          Point(right, bottom),
-                          Point(left, bottom))
-
         # Add the polygon to the object
-        located_object.set_polygon(polygon)
+        located_object.set_polygon(polygon_from_rectangle(located_object.get_rectangle()))
