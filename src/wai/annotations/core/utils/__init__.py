@@ -20,3 +20,4 @@ from ._polygon_from_rectangle import polygon_from_rectangle
 from ._polygon_to_poly_array import polygon_to_poly_array
 from ._read_file_list import read_file_list
 from ._recursive_iglob import recursive_iglob
+from ._render_annotations_onto_image import render_annotations_onto_image
