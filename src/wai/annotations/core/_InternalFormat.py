@@ -1,5 +1,6 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
+from .utils import render_annotations_onto_image
 from ._ImageInfo import ImageInfo
 
 
@@ -22,3 +23,9 @@ class InternalFormat:
 
     def __iter__(self):
         return iter((self.image_info, self.located_objects))
+
+    def __getattribute__(self, item):
+        if item == '_repr_png_' and self.image_info.data is not None:
+            return lambda: render_annotations_onto_image(self.image_info.data, self._located_objects)
+
+        return super().__getattribute__(item)

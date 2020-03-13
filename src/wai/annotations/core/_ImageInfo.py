@@ -66,3 +66,22 @@ class ImageInfo:
         if self.data is not None:
             with open(os.path.join(path, self.filename), "wb") as file:
                 file.write(self.data)
+
+    def __getattribute__(self, item):
+        # Dynamically defines '_repr_png_' or '_repr_jpeg_'
+        # based on image data availability
+        if (
+                item == '_repr_png_'
+                and self.data is not None
+                and self.format is ImageFormat.PNG
+        ):
+            return lambda: self.data
+
+        elif (
+                item == '_repr_jpeg_'
+                and self.data is not None
+                and self.format is ImageFormat.JPG
+        ):
+            return lambda: self.data
+
+        return super().__getattribute__(item)
