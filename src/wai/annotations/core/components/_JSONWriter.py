@@ -5,8 +5,8 @@ from wai.common.cli.options import FlagOption
 
 from wai.json.object import JSONObject
 
+from .._typing import ExternalFormat
 from ._SeparateImageWriter import SeparateImageWriter
-from ._typing import ExternalFormat
 
 
 class JSONWriter(SeparateImageWriter[ExternalFormat], ABC):

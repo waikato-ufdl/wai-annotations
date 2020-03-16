@@ -1,7 +1,8 @@
 import os
 from typing import Iterator
 
-from ...core import Reader, ImageInfo
+from ...core import ImageInfo
+from ...core.components import Reader
 from ..configuration import VGGFile, Image, FileAttributes
 from .._format import VGGExternalFormat
 

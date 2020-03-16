@@ -1,6 +1,6 @@
 from typing import Iterable, List, Dict
 
-from ...core import InlineStreamProcessor
+from ...core.stream import InlineStreamProcessor
 from .._format import TensorflowExampleExternalFormat
 from ._extract_feature import extract_feature
 

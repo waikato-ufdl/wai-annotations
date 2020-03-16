@@ -4,7 +4,7 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import CLIInstantiable
 from wai.common.cli.options import TypedOption
 
-from ._InlineStreamProcessor import InlineStreamProcessor
+from .stream import InlineStreamProcessor
 from ._InternalFormat import InternalFormat
 
 

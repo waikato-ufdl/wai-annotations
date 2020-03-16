@@ -36,7 +36,7 @@ setup(
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
-        "wai.common==0.0.28",
+        "wai.common>=0.0.28,<=0.0.29",
         "wai.json>=0.0.4,<0.1",
         "Cython",
         "Pillow",
@@ -48,6 +48,11 @@ setup(
         "opencv-python",
     ],
     entry_points={
-        "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"]
+        "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"],
+        "wai.annotations.formats": ["adams=wai.annotations.adams:ADAMSFormatSpecifier",
+                                    "coco=wai.annotations.coco:COCOFormatSpecifier",
+                                    "roi=wai.annotations.roi:ROIFormatSpecifier",
+                                    "tfrecords=wai.annotations.tf:TFFormatSpecifier",
+                                    "vgg=wai.annotations.vgg:VGGFormatSpecifier"]
     }
 )

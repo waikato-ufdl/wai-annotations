@@ -3,7 +3,8 @@ from typing import Iterator
 
 from wai.common.file.report import loadf, Report
 
-from ...core import Reader, ImageInfo
+from ...core import ImageInfo
+from ...core.components import Reader
 from ...core.utils import get_associated_image, recursive_iglob
 from ..constants import DEFAULT_EXTENSION
 from .._format import ADAMSExternalFormat

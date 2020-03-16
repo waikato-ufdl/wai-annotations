@@ -1,7 +1,8 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.geometry import Polygon, Point
 
-from ...core import ExternalFormatConverter, InternalFormat
+from ...core import InternalFormat
+from ...core.components import ExternalFormatConverter
 from ...core.utils import set_object_label, set_object_prefix
 from ..configuration import Annotation
 from .._format import COCOExternalFormat

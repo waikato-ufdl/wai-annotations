@@ -3,7 +3,8 @@ from typing import Iterator
 
 from .._ensure_available import tensorflow as tf
 
-from ...core import Reader, ImageInfo
+from ...core import ImageInfo
+from ...core.components import Reader
 from .._format import TensorflowExampleExternalFormat
 from ..utils import negative_example, is_shard_filename, get_all_sharded_filenames, ShardCompactor
 

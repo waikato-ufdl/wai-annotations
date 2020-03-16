@@ -7,12 +7,7 @@ from typing import List, Optional
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
 from ..core import LibrarySettings, set_settings, DimensionDiscarder
-from ._components import (
-    get_reader_factory,
-    get_external_format_converter_factory,
-    get_internal_format_converter_factory,
-    get_writer_factory
-)
+from ..core.plugin import registry
 from ._MainParserConfigurer import MainParserConfigurer
 from ._MainSettings import MainSettings
 
@@ -56,10 +51,10 @@ def main(args: Optional[List[str]] = None):
     logger.info(f"Converting from {input_format} to {output_format}")
 
     # Instantiate the components from the provided arguments
-    reader = get_reader_factory(input_format).instantiate(namespace)
-    input_converter = get_external_format_converter_factory(input_format).instantiate(namespace)
-    output_converter = get_internal_format_converter_factory(output_format).instantiate(namespace)
-    writer = get_writer_factory(output_format).instantiate(namespace)
+    reader = registry.get_reader_factory(input_format).instantiate(namespace)
+    input_converter = registry.get_external_format_converter_factory(input_format).instantiate(namespace)
+    output_converter = registry.get_internal_format_converter_factory(output_format).instantiate(namespace)
+    writer = registry.get_writer_factory(output_format).instantiate(namespace)
 
     # Create the input chain
     input_chain = input_converter.convert_all(reader.load())

@@ -4,7 +4,8 @@ import csv
 
 from wai.common.cli.options import TypedOption, FlagOption
 
-from ...core import SeparateImageWriter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import SeparateImageWriter
 from ..utils import combine_dicts, roi_filename_for_image
 from ..constants import COMMENT_SYMBOL
 from .._format import ROIExternalFormat

@@ -3,7 +3,8 @@ from typing import Iterable
 
 from wai.common.file.report import save
 
-from ...core import SeparateImageWriter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import SeparateImageWriter
 from .._format import ADAMSExternalFormat
 from .. import constants
 

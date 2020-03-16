@@ -3,7 +3,7 @@ from typing import Iterable
 
 from wai.common.adams.imaging.locateobjects import LocatedObject
 
-from .._InlineStreamProcessor import InlineStreamProcessor
+from ..stream import InlineStreamProcessor
 from .._InternalFormat import InternalFormat
 
 

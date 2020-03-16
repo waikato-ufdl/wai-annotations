@@ -1,7 +1,8 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.file.report import Report
 
-from ...core import InternalFormatConverter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import InternalFormatConverter
 from .._format import ADAMSExternalFormat
 from ..utils import divide_by_prefix, remove_prefix_metadata
 

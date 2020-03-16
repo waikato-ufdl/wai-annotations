@@ -1,6 +1,7 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
-from ...core import ExternalFormatConverter, InternalFormat
+from ...core import InternalFormat
+from ...core.components import ExternalFormatConverter
 from ...core.utils import set_object_label
 from ..configuration import Region, PolygonShapeAttributes
 from .._format import VGGExternalFormat

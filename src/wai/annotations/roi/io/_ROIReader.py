@@ -4,7 +4,8 @@ import csv
 
 from wai.common.cli.options import TypedOption
 
-from ...core import Reader, ImageInfo
+from ...core import ImageInfo
+from ...core.components import Reader
 from ..utils import get_associated_image_from_filename
 from ..constants import COMMENT_SYMBOL
 from .._format import ROIExternalFormat

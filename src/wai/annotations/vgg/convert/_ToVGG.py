@@ -1,6 +1,7 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
-from ...core import InternalFormatConverter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import InternalFormatConverter
 from ...core.utils import get_object_label, get_object_prefix
 from ..configuration import *
 from .._format import VGGExternalFormat

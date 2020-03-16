@@ -4,7 +4,7 @@ from typing import Iterable
 
 from wai.common.cli.options import FlagOption
 
-from ._typing import ExternalFormat
+from .._typing import ExternalFormat
 from ._Writer import Writer
 
 

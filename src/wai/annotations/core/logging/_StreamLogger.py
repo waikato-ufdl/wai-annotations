@@ -1,6 +1,6 @@
 from typing import Callable, Iterable
 
-from .._InlineStreamProcessor import InlineStreamProcessor, StreamElementType
+from ..stream import InlineStreamProcessor, StreamElementType
 
 
 class StreamLogger(InlineStreamProcessor[StreamElementType]):

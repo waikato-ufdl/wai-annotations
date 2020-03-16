@@ -3,7 +3,8 @@ from typing import Iterable, Dict
 
 from wai.common.cli.options import TypedOption
 
-from ...core import JSONWriter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import JSONWriter
 from ..configuration import COCOFile, Image, Category, Info, License
 from .._format import COCOExternalFormat
 

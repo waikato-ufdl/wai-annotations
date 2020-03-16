@@ -3,7 +3,8 @@ from typing import List
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli.options import TypedOption
 
-from ...core import ExternalFormatConverter, InternalFormat, ImageInfo
+from ...core import InternalFormat, ImageInfo
+from ...core.components import ExternalFormatConverter
 from ...core.utils import set_object_label
 from ..utils import extract_feature, image_info_from_example, polygon_from_mask
 from .._format import TensorflowExampleExternalFormat

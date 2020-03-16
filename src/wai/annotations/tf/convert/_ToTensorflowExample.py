@@ -6,7 +6,8 @@ from wai.common.cli import OptionsList
 
 from .._ensure_available import tensorflow as tf
 
-from ...core import InternalFormatConverter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import InternalFormatConverter
 from ...core.utils import get_object_label
 from ..utils import make_feature, mask_from_polygon, negative_example
 from .._format import TensorflowExampleExternalFormat

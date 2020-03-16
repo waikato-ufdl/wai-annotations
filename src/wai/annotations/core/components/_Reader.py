@@ -6,10 +6,10 @@ from typing import Generic, Iterator, List, Union
 from wai.common.cli import CLIInstantiable, OptionsList
 from wai.common.cli.options import TypedOption
 
-from .logging import StreamLogger, LoggingEnabled
-from .utils import chain_map, recursive_iglob, read_file_list
-from ._ImageInfo import ImageInfo
-from ._typing import ExternalFormat
+from ..logging import StreamLogger, LoggingEnabled
+from ..utils import chain_map, recursive_iglob, read_file_list
+from .._ImageInfo import ImageInfo
+from .._typing import ExternalFormat
 
 
 class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):

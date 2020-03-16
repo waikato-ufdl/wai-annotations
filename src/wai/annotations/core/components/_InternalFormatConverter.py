@@ -7,11 +7,11 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import CLIInstantiable, OptionsList
 from wai.common.cli.options import TypedOption
 
-from .utils import get_object_label
-from ._Converter import Converter
-from ._ImageInfo import ImageInfo
-from ._InternalFormat import InternalFormat
-from ._typing import ExternalFormat
+from ..utils import get_object_label
+from ..stream import Converter
+from .._ImageInfo import ImageInfo
+from .._InternalFormat import InternalFormat
+from .._typing import ExternalFormat
 
 
 class InternalFormatConverter(CLIInstantiable, Converter[InternalFormat, ExternalFormat]):

@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from ._InlineStreamProcessor import InlineStreamProcessor
+from .stream import InlineStreamProcessor
 from ._InternalFormat import InternalFormat
 
 

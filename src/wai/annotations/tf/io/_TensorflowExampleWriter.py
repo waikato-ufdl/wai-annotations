@@ -4,7 +4,8 @@ import contextlib2
 
 from wai.common.cli.options import TypedOption
 
-from ...core import Writer, ImageInfo
+from ...core import ImageInfo
+from ...core.components import Writer
 from .._ensure_available import tensorflow as tf
 from ..utils import image_info_from_example, LabelMapAccumulator, open_sharded_output_tfrecords
 from .._format import TensorflowExampleExternalFormat

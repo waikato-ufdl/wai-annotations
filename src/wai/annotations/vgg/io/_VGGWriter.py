@@ -1,6 +1,7 @@
 from typing import Iterable
 
-from ...core import JSONWriter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import JSONWriter
 from ..configuration import VGGFile
 from .._format import VGGExternalFormat
 

@@ -5,7 +5,8 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import OptionsList
 from wai.common.cli.options import TypedOption
 
-from ...core import InternalFormatConverter, ImageInfo
+from ...core import ImageInfo
+from ...core.components import InternalFormatConverter
 from ...core.utils import get_object_label, get_object_prefix, get_object_metadata
 from .._format import ROIExternalFormat
 from ..utils import min_rect_from_roi_polygon, roi_polygon

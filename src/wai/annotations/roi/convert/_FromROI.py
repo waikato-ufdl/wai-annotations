@@ -1,6 +1,7 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
-from ...core import ExternalFormatConverter, InternalFormat
+from ...core import InternalFormat
+from ...core.components import ExternalFormatConverter
 from ...core.utils import set_object_label, set_object_metadata, set_object_prefix
 from .._format import ROIExternalFormat
 from .._ROIObject import ROIObject

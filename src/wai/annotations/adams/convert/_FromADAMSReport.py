@@ -4,7 +4,8 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli.options import TypedOption
 from wai.common.file.report import Report
 
-from ...core import ExternalFormatConverter, InternalFormat
+from ...core import InternalFormat
+from ...core.components import ExternalFormatConverter
 from ...core.utils import set_object_prefix
 from ..utils import find_all_prefixes
 from .._format import ADAMSExternalFormat

@@ -3,14 +3,7 @@ from argparse import ArgumentParser
 from wai.common.cli import ArgumentParserConfigurer
 
 from ..core import LibrarySettings, DimensionDiscarder
-from ._components import (
-    get_available_input_formats,
-    get_available_output_formats,
-    get_reader_factory,
-    get_external_format_converter_factory,
-    get_internal_format_converter_factory,
-    get_writer_factory
-)
+from ..core.plugin import registry
 from ._MainSettings import MainSettings
 
 
@@ -33,7 +26,7 @@ class MainParserConfigurer(ArgumentParserConfigurer):
         input_subparsers = parser.add_subparsers(dest="input_type")
 
         # Add each available input type to the parser
-        for input_format in get_available_input_formats():
+        for input_format in registry.get_available_input_formats():
             # Create a sub-parser for this input type
             input_subparser = input_subparsers.add_parser(input_format)
 
@@ -43,7 +36,7 @@ class MainParserConfigurer(ArgumentParserConfigurer):
             # Create a second level sub-parser set for selecting the output type
             output_subparsers = input_subparser.add_subparsers(dest="output_type")
 
-            for output_format in get_available_output_formats():
+            for output_format in registry.get_available_output_formats():
                 # Create a sub-parser for this output type
                 output_subparser = output_subparsers.add_parser(output_format)
 
@@ -59,8 +52,8 @@ class MainParserConfigurer(ArgumentParserConfigurer):
         :param parser:  The parser to configure.
         :param format:  The input format to configure for.
         """
-        get_reader_factory(format).configure_parser(parser)
-        get_external_format_converter_factory(format).configure_parser(parser)
+        registry.get_reader_factory(format).configure_parser(parser)
+        registry.get_external_format_converter_factory(format).configure_parser(parser)
 
     @classmethod
     def configure_output_parser(cls, parser: ArgumentParser, format: str):
@@ -71,5 +64,5 @@ class MainParserConfigurer(ArgumentParserConfigurer):
         :param parser:  The parser to configure.
         :param format:  The output format to configure for.
         """
-        get_internal_format_converter_factory(format).configure_parser(parser)
-        get_writer_factory(format).configure_parser(parser)
+        registry.get_internal_format_converter_factory(format).configure_parser(parser)
+        registry.get_writer_factory(format).configure_parser(parser)

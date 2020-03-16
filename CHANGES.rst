@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.0 (2020-03-18)
+------------------
+
+- Converted formats to use a plug-in system so other libraries can define their own formats.
+
 0.2.3 (2020-03-17)
 ------------------
 

@@ -7,9 +7,9 @@ from typing import Generic, Iterable, Iterator, IO, Tuple, Optional
 from wai.common.cli import CLIInstantiable
 from wai.common.cli.options import TypedOption, Option
 
-from .logging import LoggingEnabled, StreamLogger
-from ._ImageInfo import ImageInfo
-from ._typing import ExternalFormat
+from ..logging import LoggingEnabled, StreamLogger
+from .._ImageInfo import ImageInfo
+from .._typing import ExternalFormat
 
 
 class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
