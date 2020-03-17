@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2.3 (2020-03-??)
+0.2.3 (2020-03-17)
 ------------------
 
 - Upgraded wai.common requirement to v0.0.28.
@@ -15,6 +15,8 @@ Changelog
 - Added ``--mask-threshold`` option to tfrecords input which sets the probability to consider
   the mask inside the polygon.
 - Internal format is now an object rather than a tuple.
+- Added ``--size-mode`` flag to ROI format which writes ROI files with x,y,w,h headers rather
+  than x0,y0,x1,y1 headers.
 
 0.2.2 (2020-03-11)
 ------------------

@@ -150,6 +150,9 @@ options, which depend on whether it is the input or output of the conversion.
 
 * `--comments`: Optional flag to specify comments to write to the beginning of the annotations files.
                 Formats: `roi`.
+                
+* `--size-mode`: Optional flag to write ROI files with x, y, w, h-style headers rather than the standard
+                 x0, y0, x1, y1-style headers. Formats: `roi`.
 
 ## Examples
 

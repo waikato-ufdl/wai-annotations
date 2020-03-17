@@ -1,28 +1,26 @@
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional
+
+from wai.common.geometry import Polygon, Point
 
 from ..core.logging import LoggingEnabled
+from .utils import normalisation_constant_multi
 
 
 class ROIObject(LoggingEnabled):
     """
     Holds a detected object from a ROI file.
     """
+    # The ordered required position keywords for corner mode
+    required_position_keywords_corner_mode = ("x0", "y0", "x1", "y1", "x0n", "y0n", "x1n", "y1n")
+
+    # The ordered required position keywords for corner mode
+    required_position_keywords_size_mode = ("x", "y", "w", "h", "xn", "yn", "wn", "hn")
+
     # The ordered required arguments to ROIObject
-    required_keywords = ("x0", "y0", "x1", "y1",
-                         "x0n", "y0n", "x1n", "y1n",
-                         "label", "label_str", "score")
+    required_other_keywords = ("label", "label_str", "score")
 
     # The ordered optional arguments to ROIObject
-    optional_keywords = ("poly_x", "poly_y", "poly_xn", "poly_yn",
-                         "minrect_w", "minrect_h")
-
-    # The ordered keyword arguments to ROIObject
-    keywords = required_keywords + optional_keywords
-
-    # Cached set representations of keywords for fast lookups
-    required_keyword_set: Set[str] = set(required_keywords)
-    optional_keyword_set: Set[str] = set(optional_keywords)
-    keyword_set: Set[str] = set(keywords)
+    optional_keywords = ("poly_x", "poly_y", "poly_xn", "poly_yn", "minrect_w", "minrect_h")
 
     def __init__(self,
                  x0: float, y0: float, x1: float, y1: float,
@@ -60,6 +58,38 @@ class ROIObject(LoggingEnabled):
         # Make sure all of the polygon lists are the same length
         self.ensure_polygon_list_lengths()
 
+    @property
+    def x(self) -> float:
+        return self.x0
+
+    @property
+    def y(self) -> float:
+        return self.y0
+
+    @property
+    def w(self) -> float:
+        return self.x1 - self.x0 + 1
+
+    @property
+    def h(self) -> float:
+        return self.y1 - self.y0 + 1
+
+    @property
+    def xn(self) -> float:
+        return self.x / self.image_width()
+
+    @property
+    def yn(self) -> float:
+        return self.y / self.image_height()
+
+    @property
+    def wn(self) -> float:
+        return self.w / self.image_width()
+
+    @property
+    def hn(self) -> float:
+        return self.h / self.image_height()
+
     def ensure_polygon_list_lengths(self):
         """
         Makes sure all polygon lists match in length.
@@ -82,16 +112,25 @@ class ROIObject(LoggingEnabled):
         """
         return self.poly_x is not None
 
+    def polygon(self) -> Polygon:
+        """
+        Generates a polygon from the given ROI object.
+
+        :return:            The polygon.
+        """
+        # Make sure the ROI object has a polygon
+        if not self.has_polygon():
+            raise ValueError(f"ROI object has no polygon")
+
+        return Polygon(*(Point(round(x), round(y)) for x, y in zip(self.poly_x, self.poly_y)))
+
     def image_width(self) -> int:
         """
         Calculates the source image's width.
 
         :return:    The source image's width.
         """
-        if self.x0n != 0.0:
-            return round(self.x0 / self.x0n)
-        else:
-            return round(self.x1 / self.x1n)
+        return normalisation_constant_multi(self.x0, self.x0n, self.x1, self.x1n)
 
     def image_height(self) -> int:
         """
@@ -99,22 +138,34 @@ class ROIObject(LoggingEnabled):
 
         :return:    The source image's height.
         """
-        if self.y0n != 0.0:
-            return round(self.y0 / self.y0n)
-        else:
-            return round(self.y1 / self.y1n)
+        return normalisation_constant_multi(self.y0, self.y0n, self.y1, self.y1n)
 
-    def as_dict(self) -> Dict[str, str]:
+    @classmethod
+    def required_keywords(cls, size_mode: bool):
+        return (
+                (cls.required_position_keywords_size_mode if size_mode else cls.required_position_keywords_corner_mode)
+                + cls.required_other_keywords
+        )
+
+    @classmethod
+    def keywords(cls, size_mode: bool):
+        return cls.required_keywords(size_mode) + cls.optional_keywords
+
+    def as_dict(self, size_mode: bool = False) -> Dict[str, str]:
         """
         Gets a dictionary representation of this object.
 
-        :return:    A dict.
+        :param size_mode:   Whether to export as a size-mode dictionary instead.
+        :return:            A dict.
         """
         # Create a result dict
         result = {}
 
+        # Get the keywords we expect to export
+        keywords = self.keywords(size_mode)
+
         # Process each keyword in turn
-        for keyword in self.keywords:
+        for keyword in keywords:
             # Get the value for the attribute
             value = getattr(self, keyword)
 
@@ -153,6 +204,10 @@ class ROIObject(LoggingEnabled):
             # Add the value to the kwargs
             kwargs[keyword] = cls._parse(keyword, value)
 
+        # If it's a size-mode dict, convert to a corner-mode one
+        if "x" in kwargs:
+            kwargs = cls._convert_size_mode_kwargs(**kwargs)
+
         return ROIObject(**kwargs)
 
     @classmethod
@@ -164,8 +219,9 @@ class ROIObject(LoggingEnabled):
         :param value:   The string representation of the attribute's value.
         """
         # Float types
-        if keyword in {"x0", "y0", "x1", "y1", "x0n", "y0n", "x1n", "y1n", "score",
-                       "minrect_w", "minrect_h"}:
+        if keyword in {"x0", "y0", "x1", "y1", "x0n", "y0n", "x1n", "y1n",
+                       "x", "y", "w", "h", "xn", "yn", "wn", "hn",
+                       "score", "minrect_w", "minrect_h"}:
             return float(value) if value is not "" else None
 
         # Int types
@@ -178,3 +234,39 @@ class ROIObject(LoggingEnabled):
 
         # All other attributes are strings
         return value
+
+    @classmethod
+    def _convert_size_mode_kwargs(cls, **kwargs) -> Dict:
+        """
+        Converts the keyword arguments to the constructor from
+        size-mode to the equivalent corner-mode dictionary.
+
+        :param kwargs:  The size-mode keyword arguments.
+        :return:        The corner-mode keyword arguments.
+        """
+        # Remove the size-mode arguments
+        size_mode_kwargs = {}
+        for keyword in cls.required_position_keywords_size_mode:
+            size_mode_kwargs[keyword] = kwargs.pop(keyword)
+
+        # Calculate the image's width/height for normalisation
+        image_width = normalisation_constant_multi(size_mode_kwargs['x'],
+                                                   size_mode_kwargs['xn'],
+                                                   size_mode_kwargs['w'],
+                                                   size_mode_kwargs['wn'])
+        image_height = normalisation_constant_multi(size_mode_kwargs['y'],
+                                                    size_mode_kwargs['yn'],
+                                                    size_mode_kwargs['h'],
+                                                    size_mode_kwargs['hn'])
+
+        # Introduce the corner-mode equivalent arguments
+        kwargs['x0'] = size_mode_kwargs['x']
+        kwargs['y0'] = size_mode_kwargs['y']
+        kwargs['x1'] = size_mode_kwargs['x'] + size_mode_kwargs['w'] - 1
+        kwargs['y1'] = size_mode_kwargs['y'] + size_mode_kwargs['h'] - 1
+        kwargs['x0n'] = kwargs['x0'] / image_width
+        kwargs['y0n'] = kwargs['y0'] / image_height
+        kwargs['x1n'] = kwargs['x1'] / image_width
+        kwargs['y1n'] = kwargs['y1'] / image_height
+
+        return kwargs

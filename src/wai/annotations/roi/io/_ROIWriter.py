@@ -2,7 +2,7 @@ import os
 from typing import Iterable, IO
 import csv
 
-from wai.common.cli.options import TypedOption
+from wai.common.cli.options import TypedOption, FlagOption
 
 from ...core import SeparateImageWriter, ImageInfo
 from ..utils import combine_dicts, roi_filename_for_image
@@ -34,6 +34,11 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
         help="comments to write to the beginning of the ROI file"
     )
 
+    size_mode = FlagOption(
+        "--size-mode",
+        help="writes the ROI files with x,y,w,h headers instead of x0,y0,x1,y1"
+    )
+
     def write_without_images(self, instances: Iterable[ROIExternalFormat], path: str):
         # Path must be a directory
         if not os.path.isdir(path):
@@ -48,14 +53,17 @@ class ROIWriter(SeparateImageWriter[ROIExternalFormat]):
             filename: str = roi_filename_for_image(image_info.filename, self.writer_prefix, self.writer_suffix)
 
             # Format each ROI object as a dictionary
-            roi_dicts, headers = combine_dicts(map(ROIObject.as_dict, roi_objects))
+            roi_dicts, headers = combine_dicts(roi_object.as_dict(self.size_mode) for roi_object in roi_objects)
+
+            # Get the header keywords we are expecting
+            keywords = ROIObject.keywords(self.size_mode)
 
             # Extract the non-standard headers
-            non_standard_headers = headers - ROIObject.keyword_set
+            non_standard_headers = headers - set(keywords)
 
             # Put the standard headers in order
-            headers = tuple(header for header in ROIObject.keywords
-                            if header in headers or header in ROIObject.required_keyword_set)
+            headers = tuple(header for header in keywords
+                            if header in headers or header in set(ROIObject.required_keywords(self.size_mode)))
 
             # Add the filename header
             headers = "file", *headers, *non_standard_headers

@@ -20,6 +20,7 @@ class ROIWriterCLIFactory(CLIFactory):
     comments = TypedOption('--comments', type=str, nargs='+', help='comments to write to the beginning of the ROI file')
     no_images = FlagOption('--no-images', help='skip the writing of images, outputting only the report files')
     output = TypedOption('-o', '--output', type=str, required=True, metavar='dir_or_file')
+    size_mode = FlagOption('--size-mode', help='writes the ROI files as x,y,w,h instead of x0,y0,x1,y1')
     writer_prefix = TypedOption('--prefix', type=str, help="the prefix for output filenames (default = '')")
     writer_suffix = TypedOption('--suffix', type=str, help="the suffix for output filenames (default = '-rois.csv')")
 

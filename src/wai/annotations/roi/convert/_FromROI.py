@@ -3,7 +3,6 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from ...core import ExternalFormatConverter, InternalFormat
 from ...core.utils import set_object_label, set_object_metadata, set_object_prefix
 from .._format import ROIExternalFormat
-from ..utils import polygon_from_roi_object
 from .._ROIObject import ROIObject
 
 
@@ -25,10 +24,10 @@ class FromROI(ExternalFormatConverter[ROIExternalFormat]):
         :param roi_object:  The ROI object to convert.
         :return:            The located object.
         """
-        located_object = LocatedObject(round(roi_object.x0),
-                                       round(roi_object.y0),
-                                       round(roi_object.x1 - roi_object.x0),
-                                       round(roi_object.y1 - roi_object.y0))
+        located_object = LocatedObject(round(roi_object.x),
+                                       round(roi_object.y),
+                                       round(roi_object.w),
+                                       round(roi_object.h))
 
         set_object_label(located_object, roi_object.label_str)
 
@@ -41,6 +40,6 @@ class FromROI(ExternalFormatConverter[ROIExternalFormat]):
 
         # Add the polygon
         if roi_object.has_polygon():
-            located_object.set_polygon(polygon_from_roi_object(roi_object))
+            located_object.set_polygon(roi_object.polygon())
 
         return located_object
