@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Bug fix where plugin registry was being recreated every run.
+- Bug fix where previous registry incarnation was being loaded instead of new version.
 
 0.3.0 (2020-03-18)
 ------------------

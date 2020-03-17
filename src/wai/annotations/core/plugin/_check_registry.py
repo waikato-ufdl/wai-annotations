@@ -51,3 +51,10 @@ def check_registry():
                 file.write(import_code + "\n")
             file.write("\n")
             file.write("registry = " + get_code(registry_code_repr) + "\n")
+
+        # As the registry has changed, the module will need reloading
+        # (if we could load it initially)
+        import sys
+        registry_package = f"{__package__}._registry"
+        if registry_package in sys.modules:
+            del sys.modules[registry_package]
