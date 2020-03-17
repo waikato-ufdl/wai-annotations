@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.1 (2020-03-18)
+------------------
+
+- Bug fix where plugin registry was being recreated every run.
+
 0.3.0 (2020-03-18)
 ------------------
 

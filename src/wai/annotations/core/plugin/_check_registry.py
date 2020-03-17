@@ -24,7 +24,7 @@ def check_registry():
 
     # Check if we need to rebuild the registry
     try:
-        from .registry import registry as current_registry
+        from ._registry import registry as current_registry
         requires_rebuild = current_registry != registry
     except Exception:
         requires_rebuild = True
