@@ -14,7 +14,7 @@ class SeparateImageWriter(Writer[ExternalFormat], ABC):
     to the annotations.
     """
     no_images = FlagOption("--no-images",
-                            help="skip the writing of images, outputting only the report files")
+                           help="skip the writing of images, outputting only the annotation files")
 
     def write(self, instances: Iterable[ExternalFormat], path: str):
         self.write_without_images(map(self.inline_image_writer, instances), path)
