@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from functools import wraps
 from typing import Generic, TypeVar, Iterator, Callable, Iterable, Any
 
 StreamElementType = TypeVar("StreamElementType")
@@ -19,6 +20,7 @@ class InlineStreamProcessor(Generic[StreamElementType]):
         :param function:    The function being decorated.
         :return:            The decorated function wrapper.
         """
+        @wraps(function)
         def wrapper(*args, **kwargs):
             return self.process(function(*args, **kwargs))
         
