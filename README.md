@@ -103,6 +103,11 @@ options, which depend on whether it is the input or output of the conversion.
 * `--mask-threshold`: Optional value between 0.0 and 1.0 which determines the mask values that are
                       considered inside the polygon when generating a polygon from the mask.
                       Formats: `tfrecords`.
+                      
+* `--seed`: Optional value to randomise the order in which files are loaded. Useful in conjunction
+            with the split- options to create randomised sub-sets. Formats: all.
+            N.b. The seed is supplied to a pseudo-random number generator, so using the same seed
+            multiple times on the same set of input files will result in the same read order.
 
 ### Output Options
 

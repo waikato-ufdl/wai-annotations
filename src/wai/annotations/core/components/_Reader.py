@@ -1,10 +1,12 @@
 import itertools
 from abc import abstractmethod
 from argparse import Namespace
+from random import Random
 from typing import Generic, Iterator, List, Union
 
 from wai.common.cli import CLIInstantiable, OptionsList
 from wai.common.cli.options import TypedOption
+from wai.common.iterate import random
 
 from ..logging import StreamLogger, LoggingEnabled
 from ..utils import chain_map, recursive_iglob, read_file_list
@@ -48,6 +50,13 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
         help="Files containing lists of negative images (can use glob syntax)"
     )
 
+    # The seed to use for randomisation of the read sequence
+    seed = TypedOption(
+        "--seed",
+        type=int,
+        help="the seed to use for randomising the read sequence"
+    )
+
     def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
         super().__init__(namespace)
 
@@ -61,12 +70,24 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
 
         :return:            An iterator to the instances in the input file/directory.
         """
+        # Get the annotations and negative files to read
+        annotation_files = self.annotation_files()
+        negative_image_files = self.negative_image_files()
+
+        # If a seed is given, randomise the file order
+        if self.seed is not None:
+            r = Random(self.seed)
+            annotation_files = random(annotation_files, r)
+            negative_image_files = random(negative_image_files, r)
+
         # Create a stream processor to log when we are loading a file
-        stream_log = StreamLogger(self.logger.info, lambda instance: f"Loading file {instance}").process
+        stream_logger = StreamLogger(self.logger.info, lambda instance: f"Loading file {instance}")
+        annotation_files = stream_logger.process(annotation_files)
+        negative_image_files = stream_logger.process(negative_image_files)
 
         return itertools.chain(
-            chain_map(self.read_annotation_file, stream_log(self.annotation_files())),
-            chain_map(self.read_negative_image_file, stream_log(self.negative_image_files()))
+            chain_map(self.read_annotation_file, annotation_files),
+            chain_map(self.read_negative_image_file, negative_image_files)
         )
 
     def annotation_files(self) -> Iterator[str]:
