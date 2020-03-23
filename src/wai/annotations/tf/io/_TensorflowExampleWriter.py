@@ -1,3 +1,4 @@
+from os.path import dirname, join
 from typing import Iterable, List
 
 import contextlib2
@@ -47,9 +48,9 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
 
         # Write out the label map as well
         if label_map_accumulator is not None:
-            self.write_protobuf_label_map(label_map_accumulator)
+            self.write_protobuf_label_map(label_map_accumulator, path)
 
-    def write_protobuf_label_map(self, label_map_accumulator: LabelMapAccumulator):
+    def write_protobuf_label_map(self, label_map_accumulator: LabelMapAccumulator, path: str):
         """
         Writes the label-to-index mapping to the given file, in
         protobuf format, if an output filename was given.
@@ -62,7 +63,7 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
                                for label, index in label_map_accumulator.label_map.items()]
 
         # Write the lines to the specified file
-        with open(self.protobuf_label_map, 'w') as file:
+        with open(join(dirname(path), self.protobuf_label_map), 'w') as file:
             file.writelines(protobuf)
 
     def extract_image_info_from_external_format(self, instance: TensorflowExampleExternalFormat) -> ImageInfo:
