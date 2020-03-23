@@ -4,8 +4,30 @@ from typing import Iterable
 
 from wai.common.cli.options import FlagOption
 
+from ..stream import InlineStreamProcessor
 from .._typing import ExternalFormat
 from ._Writer import Writer
+
+
+class InlineImageWriter(InlineStreamProcessor[ExternalFormat]):
+    """
+    Writes the image from an instance to disk.
+    """
+    def __init__(self, writer: 'SeparateImageWriter', path: str):
+        self._writer: 'SeparateImageWriter' = writer
+        self._path: str = path
+
+    def _process_element(self, element: ExternalFormat) -> Iterable[ExternalFormat]:
+        # Get the image info from the instance
+        image_info = self._writer.extract_image_info_from_external_format(element)
+
+        # Get the path to write the image to
+        path = self._path if os.path.isdir(self._path) else os.path.dirname(self._path)
+
+        # Write the image
+        image_info.write_data_if_present(path)
+
+        return element,
 
 
 class SeparateImageWriter(Writer[ExternalFormat], ABC):
@@ -17,7 +39,11 @@ class SeparateImageWriter(Writer[ExternalFormat], ABC):
                            help="skip the writing of images, outputting only the annotation files")
 
     def write(self, instances: Iterable[ExternalFormat], path: str):
-        self.write_without_images(map(self.inline_image_writer, instances), path)
+        # Wrap the instances with an image writer if writing images
+        if not self.no_images:
+            instances = InlineImageWriter(self, path).process(instances)
+
+        self.write_without_images(instances, path)
 
     @abstractmethod
     def write_without_images(self, instances: Iterable[ExternalFormat], path: str):
@@ -31,25 +57,3 @@ class SeparateImageWriter(Writer[ExternalFormat], ABC):
                             of the external format.
         """
         pass
-
-    def inline_image_writer(self, instance: ExternalFormat) -> ExternalFormat:
-        """
-        Writes images from the pipeline as they are processed.
-
-        :param instance:    An instance in the pipeline.
-        :return:            The same instance.
-        """
-        # If --no-images is set, skip
-        if self.no_images:
-            return instance
-
-        # Get the image info from the instance
-        image_info = self.extract_image_info_from_external_format(instance)
-
-        # Get the path to write the image to
-        path = self.output if os.path.isdir(self.output) else os.path.dirname(self.output)
-
-        # Write the image
-        image_info.write_data_if_present(path)
-
-        return instance
