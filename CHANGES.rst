@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3.2 (2020-03-24)
+------------------
+
+- Added ``--split-names`` and ``--split-ratios`` options for creating splits in the
+  dataset.
+- Added ``--seed`` option for randomising file-read order.
+
 0.3.1 (2020-03-18)
 ------------------
 
