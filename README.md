@@ -154,6 +154,14 @@ options, which depend on whether it is the input or output of the conversion.
 * `--size-mode`: Optional flag to write ROI files with x, y, w, h-style headers rather than the standard
                  x0, y0, x1, y1-style headers. Formats: `roi`.
 
+* `--split-names`, `--split-ratios`: Allows the files to be split into subsets. `--split-names` should be a list
+                                     of names for the splits, and `--split-ratios` should be a list of the
+                                     proportions of the files that should go into each split. Each split is put
+                                     into a sub-directory with the split name for that split. Formats: all.
+                                     E.g. `--split-names train test --split-ratios 7 3` would create two subsets,
+                                     train and test, with 70% of the images going into train and 30% going into
+                                     test.
+
 ## Plugins
 
 The **wai.annotations** library supports a plug-in mechanism for adding your own conversion formats.
