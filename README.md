@@ -166,6 +166,9 @@ options, which depend on whether it is the input or output of the conversion.
                                      E.g. `--split-names train test --split-ratios 7 3` would create two subsets,
                                      train and test, with 70% of the images going into train and 30% going into
                                      test.
+                                     N.b. If the number of split names given is different to the number of ratios
+                                     given, the shorter of the two lists will be used, and the additional values in
+                                     the longer list will be ignored.
 
 ## Plugins
 
