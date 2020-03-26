@@ -36,6 +36,25 @@ class ImageFormat(CLIRepresentable, Enum):
         raise ValueError(f"'{filename}' does not end in a recognised extension "
                          f"({', '.join(chain(*(image_format.value for image_format in ImageFormat)))})")
 
+    def replace_extension(self, filename: str) -> str:
+        """
+        Replaces the extension of an image filename with the
+        default extension for this format.
+
+        :param filename:    The filename to modify.
+        :return:            The new filename.
+        """
+        # Get the extension from the filename
+        extension: str = os.path.splitext(filename)[1][1:]
+
+        # Remove the extension from the filename
+        filename = filename[:-len(extension)]
+
+        # Choose a new extension for the filename
+        extension = self.get_default_extension().upper() if extension.isupper() else self.get_default_extension()
+
+        return filename + extension
+
     @classmethod
     def for_extension(cls, extension: str) -> Optional["ImageFormat"]:
         """
