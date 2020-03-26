@@ -13,7 +13,7 @@ def get_associated_image(filename: str) -> Optional[str]:
     # Check each variation of the extension for each format
     from .._LibrarySettings import get_settings
     for image_format in get_settings().IMAGE_FORMAT_PREFERENCE_ORDER:
-        for extension in image_format.value:
+        for extension in image_format.possible_extensions:
             # Get the hypothetical filename for an image of this format
             image_filename: str = f"{filename}.{extension}"
 

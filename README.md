@@ -43,7 +43,7 @@ options, which depend on whether it is the input or output of the conversion.
 
 * `-e`, `--extensions`: Optional argument to specify the order of preference for image types
                         when searching for images related to annotations files. Should be a
-                        comma-separated list of extensions. Defaults to `png,jpg` if not specified.
+                        list of extensions. Defaults to `png`, `jpg`, `bmp` if not specified.
                         
 * `--min-width`: Optional integer to discard annotations with width less than this value.
 
@@ -108,6 +108,9 @@ options, which depend on whether it is the input or output of the conversion.
             with the split- options to create randomised sub-sets. Formats: all.
             N.b. The seed is supplied to a pseudo-random number generator, so using the same seed
             multiple times on the same set of input files will result in the same read order.
+            
+* `--convert-image`: Optional format to convert image files to. Choices are `png`, `jpg`/`jpeg` and
+                     `bmp`. If omitted, files are left in their input format. Formats: all.
 
 ### Output Options
 

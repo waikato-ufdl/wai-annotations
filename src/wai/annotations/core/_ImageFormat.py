@@ -1,6 +1,6 @@
 import os
 from enum import Enum
-from typing import Optional
+from typing import Optional, FrozenSet
 from itertools import chain
 
 from wai.common.cli import CLIRepresentable
@@ -9,10 +9,26 @@ from wai.common.cli import CLIRepresentable
 class ImageFormat(CLIRepresentable, Enum):
     """
     Class enumerating the types of images we can work with. Each enumeration's
-    value is a tuple of possible file extensions for that image type.
+    value is the set of possible file extensions for that image type, followed
+    by its PIL format string.
     """
-    JPG = {"jpg", "JPG", "jpeg", "JPEG"}
-    PNG = {"png", "PNG"}
+    JPG = frozenset({"jpg", "JPG", "jpeg", "JPEG"}), "JPEG"
+    PNG = frozenset({"png", "PNG"}), "PNG"
+    BMP = frozenset({"bmp", "BMP"}), "BMP"
+
+    @property
+    def possible_extensions(self) -> FrozenSet[str]:
+        """
+        Gets the set of possible extensions for this format.
+        """
+        return self.value[0]
+
+    @property
+    def pil_format_string(self) -> str:
+        """
+        Gets the PIL format string for this format.
+        """
+        return self.value[1]
 
     @classmethod
     def for_filename(cls, filename: str) -> Optional["ImageFormat"]:
@@ -34,7 +50,7 @@ class ImageFormat(CLIRepresentable, Enum):
 
         # Otherwise it is an error
         raise ValueError(f"'{filename}' does not end in a recognised extension "
-                         f"({', '.join(chain(*(image_format.value for image_format in ImageFormat)))})")
+                         f"({', '.join(chain(*(image_format.possible_extensions for image_format in ImageFormat)))})")
 
     def replace_extension(self, filename: str) -> str:
         """
@@ -67,8 +83,12 @@ class ImageFormat(CLIRepresentable, Enum):
         if extension.startswith("."):
             extension = extension[1:]
 
+        # Lowercase the extension
+        extension = extension.lower()
+
+        # Try find a format for the extension
         for image_format in ImageFormat:
-            if extension in image_format.value:
+            if extension in image_format.possible_extensions:
                 return image_format
 
         return None
@@ -87,8 +107,10 @@ class ImageFormat(CLIRepresentable, Enum):
 
     @classmethod
     def from_cli_repr(cls, cli_string: str) -> 'ImageFormat':
+        # The CLI representation is any known extension
         image_format = cls.for_extension(cli_string)
 
+        # If the extension is unknown, raise an issue
         if image_format is None:
             raise ValueError(f"Unrecognised image format '{cli_string}'")
 

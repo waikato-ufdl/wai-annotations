@@ -2,6 +2,7 @@
 Package for general utility functions.
 """
 from ._chain_map import chain_map
+from ._convert_image_format import convert_image_format
 from ._extension_to_regex import extension_to_regex
 from ._get_associated_image import get_associated_image
 from ._get_files_from_directory import get_files_from_directory

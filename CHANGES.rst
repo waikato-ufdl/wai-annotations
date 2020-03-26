@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.3 (2020-03-27)
+------------------
+
+- Added support for BMP-format images.
+- Added ``--convert-image`` option to convert images to a given image-format.
+
 0.3.2 (2020-03-24)
 ------------------
 

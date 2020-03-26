@@ -8,6 +8,7 @@ from wai.common.cli.options import TypedOption
 
 from ..utils import get_object_label, set_object_label
 from ..stream import Converter
+from .._ImageFormat import ImageFormat
 from .._InternalFormat import InternalFormat
 from .._DuplicateImageNames import DuplicateImageNames
 from .._typing import ExternalFormat
@@ -25,6 +26,14 @@ class ExternalFormatConverter(CLIInstantiable, Converter[ExternalFormat, Interna
         type=str,
         metavar="old=new", action='append',
         help="mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)"
+    )
+
+    # An optional conversion for the image format
+    image_conversion_format = TypedOption(
+        "--convert-image",
+        type=ImageFormat,
+        metavar="FORMAT",
+        help="format to convert images to"
     )
 
     def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
@@ -50,11 +59,14 @@ class ExternalFormatConverter(CLIInstantiable, Converter[ExternalFormat, Interna
         # Do the conversion
         converted_instance: InternalFormat = self._convert(instance)
 
-        # Unpack the converted instance
-        image_info, located_objects = converted_instance
+        # Convert the image format if selected
+        image_conversion_format = self.image_conversion_format
+        if image_conversion_format is not None:
+            converted_instance = InternalFormat(converted_instance.image_info.convert(image_conversion_format),
+                                                converted_instance.located_objects)
 
         # Apply the label mapping
-        self.apply_label_mapping(located_objects)
+        self.apply_label_mapping(converted_instance.located_objects)
 
         return converted_instance
 

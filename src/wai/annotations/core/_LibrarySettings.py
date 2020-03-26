@@ -13,9 +13,9 @@ class LibrarySettings(CLIInstantiable):
     IMAGE_FORMAT_PREFERENCE_ORDER = TypedOption(
         "-e", "--extensions",
         type=ImageFormat,
-        nargs=2,
+        nargs=3,
         metavar="FORMAT",
-        default=[ImageFormat.PNG, ImageFormat.JPG],
+        default=[ImageFormat.PNG, ImageFormat.JPG, ImageFormat.BMP],
         help="image format extensions in order of preference"
     )
 

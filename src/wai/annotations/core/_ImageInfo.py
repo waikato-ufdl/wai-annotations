@@ -1,7 +1,7 @@
 import os
 from typing import Optional, Tuple
 
-from .utils import get_image_size
+from .utils import get_image_size, convert_image_format
 from ._ImageFormat import ImageFormat
 
 
@@ -21,6 +21,20 @@ class ImageInfo:
         self.size: Optional[Tuple[int, int]] = size if size is not None \
             else get_image_size(data) if data is not None \
             else None
+
+    def convert(self, to_format: ImageFormat) -> 'ImageInfo':
+        """
+        Converts this image into another format.
+
+        :param to_format:   The image format to convert to.
+        :return:            The converted image-info object.
+        """
+        return ImageInfo(
+            to_format.replace_extension(self.filename),
+            convert_image_format(self.data, to_format.pil_format_string) if self.data is not None else None,
+            to_format,
+            self.size
+        )
 
     @classmethod
     def from_file(cls, filepath: str) -> 'ImageInfo':
