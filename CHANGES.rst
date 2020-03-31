@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.4 (2020-03-31)
+------------------
+
+- Updated requirement for wai.common to v0.0.31.
+- Updated requirement for wai.bynning to v0.0.2.
+
 0.3.3 (2020-03-27)
 ------------------
 

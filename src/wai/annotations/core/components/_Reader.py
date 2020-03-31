@@ -22,7 +22,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     inputs: List[str] = TypedOption(
         "-i", "--inputs",
         type=str,
-        metavar="files", action="append",
+        metavar="files", action="concat",
         help="Input annotations files (can use glob syntax)"
     )
 
@@ -30,7 +30,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     negatives: List[str] = TypedOption(
         "-n", "--negatives",
         type=str,
-        metavar="image", action="append",
+        metavar="image", action="concat",
         help="Image files that have no annotations (can use glob syntax)"
     )
 
@@ -38,7 +38,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     input_files: List[str] = TypedOption(
         "-I", "--input-files",
         type=str,
-        action="append",
+        action="concat",
         help="Files containing lists of input annotation files (can use glob syntax)"
     )
 
@@ -46,7 +46,7 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     negative_files: List[str] = TypedOption(
         "-N", "--negative-files",
         type=str,
-        action="append",
+        action="concat",
         help="Files containing lists of negative images (can use glob syntax)"
     )
 

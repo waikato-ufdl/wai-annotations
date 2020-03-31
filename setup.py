@@ -32,13 +32,13 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.3.3",
+    version="0.3.4",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
-        "wai.common>=0.0.28,<=0.0.30",
+        "wai.common==0.0.31",
         "wai.json>=0.0.4,<0.1",
-        "wai.bynning>=0.0.1,<0.1",
+        "wai.bynning>=0.0.2,<0.1",
         "Cython",
         "Pillow",
         "contextlib2",

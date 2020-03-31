@@ -24,7 +24,7 @@ class ExternalFormatConverter(CLIInstantiable, Converter[ExternalFormat, Interna
     label_mapping = TypedOption(
         "-m", "--mapping",
         type=str,
-        metavar="old=new", action='append',
+        metavar="old=new", action='concat',
         help="mapping for labels, for replacing one label string with another (eg when fixing/collapsing labels)"
     )
 
