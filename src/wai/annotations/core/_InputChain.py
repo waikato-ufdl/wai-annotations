@@ -1,6 +1,7 @@
-from typing import Iterator
+from typing import Iterator, Tuple
 
 from .components import ExternalFormatConverter, Reader
+from .stream import InlineStreamProcessor
 from ._InternalFormat import InternalFormat
 
 
@@ -10,9 +11,10 @@ class InputChain:
     a single unit for reading annotations files into the
     internal format.
     """
-    def __init__(self, reader: Reader, converter: ExternalFormatConverter):
+    def __init__(self, reader: Reader, converter: ExternalFormatConverter, *post_processors: InlineStreamProcessor):
         self._reader: Reader = reader
         self._converter: ExternalFormatConverter = converter
+        self._post_processors: Tuple[InlineStreamProcessor] = post_processors
 
     def load(self) -> Iterator[InternalFormat]:
         """
@@ -20,4 +22,11 @@ class InputChain:
 
         :return:    An iterator over the internal-format annotations.
         """
-        return self._converter.convert_all(self._reader.load())
+        # Create the input chain
+        input_chain = self._converter.convert_all(self._reader.load())
+
+        # Apply the post-processing
+        for post_processor in self._post_processors:
+            input_chain = post_processor.process(input_chain)
+
+        return input_chain
