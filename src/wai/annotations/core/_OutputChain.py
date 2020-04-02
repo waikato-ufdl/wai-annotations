@@ -39,9 +39,9 @@ class OutputChain:
 
     def save(self, instances: Iterable[InternalFormat]):
         """
-        Writes the instances to disk.
+        Writes a series of instances to disk.
 
-        :param instances:   An iterator over the internal-format annotations.
+        :param instances:   The instances to write to disk.
         """
         # Apply the pre-processing
         for pre_processor in reversed(self._pre_processors):
