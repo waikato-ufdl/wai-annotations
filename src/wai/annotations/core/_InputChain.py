@@ -16,6 +16,27 @@ class InputChain:
         self._converter: ExternalFormatConverter = converter
         self._post_processors: Tuple[InlineStreamProcessor] = post_processors
 
+    @property
+    def reader(self) -> Reader:
+        """
+        Gets the reader.
+        """
+        return self._reader
+
+    @property
+    def converter(self) -> ExternalFormatConverter:
+        """
+        Gets the external format converter.
+        """
+        return self._converter
+
+    @property
+    def post_processors(self) -> Tuple[InlineStreamProcessor]:
+        """
+        Gets the post-processors.
+        """
+        return self._post_processors
+
     def load(self) -> Iterator[InternalFormat]:
         """
         Reads annotations into the internal format.

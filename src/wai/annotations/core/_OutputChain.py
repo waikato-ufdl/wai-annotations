@@ -16,6 +16,27 @@ class OutputChain:
         self._converter: InternalFormatConverter = converter
         self._pre_processors: Tuple[InlineStreamProcessor] = pre_processors
 
+    @property
+    def writer(self) -> Writer:
+        """
+        Gets the writer.
+        """
+        return self._writer
+
+    @property
+    def converter(self) -> InternalFormatConverter:
+        """
+        Gets the internal format converter.
+        """
+        return self._converter
+
+    @property
+    def pre_processors(self) -> Tuple[InlineStreamProcessor]:
+        """
+        Gets the pre-processors.
+        """
+        return self._pre_processors
+
     def save(self, instances: Iterable[InternalFormat]):
         """
         Writes the instances to disk.
