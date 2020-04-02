@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3.5 (2020-04-03)
+------------------
+
+- Added InputChain and OutputChain classes, encapsulating the stages of input and output respectively.
+- Modified parsing so that users can create "main-like" CLI interfaces.
+- Bug fixes.
+
 0.3.4 (2020-03-31)
 ------------------
 
