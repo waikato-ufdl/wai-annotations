@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from os import mkdir, walk
-from os.path import isdir, exists, join, basename, split, relpath
+from os.path import isdir, exists, join, basename, split, relpath, normpath
 from tempfile import TemporaryDirectory
 from typing import Generic, Iterable, Iterator, IO, Tuple, Optional
 
@@ -154,7 +154,7 @@ class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
             # Iterate through all written files
             for dirpath, dirnames, filenames in walk(dir):
                 for filename in filenames:
-                    full_filename = join(relpath(dirpath, dir), filename)
+                    full_filename = normpath(join(relpath(dirpath, dir), filename))
                     with open(join(dir, full_filename), "rb") as file:
                         yield full_filename, file
 
