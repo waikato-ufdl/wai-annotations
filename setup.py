@@ -42,10 +42,10 @@ setup(
         "Cython",
         "Pillow",
         "contextlib2",
-        "numpy",
+        "numpy>=1.16,<=1.17.4",
         "planar",
         "scikit-image",
-        "pycocotools",
+        "pycocotools @ git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI",
         "opencv-python",
     ],
     entry_points={
