@@ -63,4 +63,4 @@ def get_all_sharded_filenames(filename: str) -> Tuple[str, ...]:
     if shards == 0:
         raise ValueError(f"{filename} is not a shard filename")
 
-    return tuple(format_sharded_filename(base_name, shards, i) for i in range(index))
+    return tuple(format_sharded_filename(base_name, shards, i) for i in range(shards))
