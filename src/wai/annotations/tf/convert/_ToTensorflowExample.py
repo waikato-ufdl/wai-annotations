@@ -1,3 +1,4 @@
+import hashlib
 from argparse import Namespace
 from typing import Tuple, List, Dict, Union
 
@@ -36,9 +37,8 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
             return negative_example(image_info)
 
         # Format and extract the relevant annotation parameters
-        lefts, rights, tops, bottoms, labels, classes, masks = self.process_located_objects(located_objects,
-                                                                                            image_info.width(),
-                                                                                            image_info.height())
+        lefts, rights, tops, bottoms, labels, classes, masks, is_crowds, areas = \
+            self.process_located_objects(located_objects, image_info.width(), image_info.height())
 
         # Create the example features
         feature_dict = {
@@ -48,12 +48,15 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
             'image/source_id': make_feature(image_info.filename),
             'image/encoded': make_feature(image_info.data),
             'image/format': make_feature(image_info.format.get_default_extension()),
+            'image/key/sha256': make_feature(hashlib.sha256(image_info.data).hexdigest()),
             'image/object/bbox/xmin': make_feature(lefts),
             'image/object/bbox/xmax': make_feature(rights),
             'image/object/bbox/ymin': make_feature(tops),
             'image/object/bbox/ymax': make_feature(bottoms),
             'image/object/class/text': make_feature(labels),
-            'image/object/class/label': make_feature(classes)
+            'image/object/class/label': make_feature(classes),
+            'image/object/is_crowd': make_feature([1 if is_crowd else 0 for is_crowd in is_crowds]),
+            'image/object/area': make_feature(areas)
         }
 
         # Add the masks if present
@@ -74,7 +77,9 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
         List[float],
         List[bytes],
         List[int],
-        List[bytes]
+        List[bytes],
+        List[bool],
+        List[float]
     ]:
         """
         Processes the located objects into the format expected by Features.
@@ -90,6 +95,8 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
                                         - UTF-8 encoded class labels
                                         - class categories
                                         - masks
+                                        - is_crowd flags (always false)
+                                        - areas
         """
         # Format and extract the relevant annotation parameters
         lefts = []
@@ -99,6 +106,8 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
         labels = []
         classes = []
         masks = []
+        is_crowds = []
+        areas = []
         for located_object in located_objects:
             # Get the object label
             label = get_object_label(located_object)
@@ -125,9 +134,14 @@ class ToTensorflowExample(InternalFormatConverter[TensorflowExampleExternalForma
                 bottoms.append(bottom)
                 labels.append(label.encode('utf-8'))
                 classes.append(class_)
+                is_crowds.append(False)
                 if located_object.has_polygon():
-                    masks.append(mask_from_polygon(located_object.get_polygon(),
+                    polygon = located_object.get_polygon()
+                    masks.append(mask_from_polygon(polygon,
                                                    image_width,
                                                    image_height))
+                    areas.append(polygon.area())
+                else:
+                    areas.append(located_object.get_rectangle().area())
 
-        return lefts, rights, tops, bottoms, labels, classes, masks
+        return lefts, rights, tops, bottoms, labels, classes, masks, is_crowds, areas
