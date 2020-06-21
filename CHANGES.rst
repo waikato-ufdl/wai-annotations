@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3.6 (2020-06-22)
+------------------
+
+- Modified numpy/pycocotools requirements to work with EfficientDet.
+- Added sha256, is_crowd and area features to TFRecords format to work with EfficientDet.
+- Fixed bug where full set of TFRecord shard files wasn't being generated.
+
 0.3.5 (2020-04-03)
 ------------------
 
