@@ -18,6 +18,15 @@ class LoggingEnabled:
         """
         return self._logger
 
+    @classmethod
+    def get_class_logger(cls) -> logging.Logger:
+        """
+        Gets the logger for the class.
+
+        :return:    The logger.
+        """
+        return cls._logger
+
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
 

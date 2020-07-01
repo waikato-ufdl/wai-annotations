@@ -32,7 +32,7 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.3.6",
+    version="0.4.0",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
@@ -50,10 +50,28 @@ setup(
     ],
     entry_points={
         "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"],
-        "wai.annotations.formats": ["adams=wai.annotations.adams:ADAMSFormatSpecifier",
-                                    "coco=wai.annotations.coco:COCOFormatSpecifier",
-                                    "roi=wai.annotations.roi:ROIFormatSpecifier",
-                                    "tfrecords=wai.annotations.tf:TFFormatSpecifier",
-                                    "vgg=wai.annotations.vgg:VGGFormatSpecifier"]
+        "wai.annotations.plugins": [
+            # Formats
+            "from-adams=wai.annotations.format.specifiers:ADAMSInputFormatSpecifier",
+            "to-adams=wai.annotations.format.specifiers:ADAMSOutputFormatSpecifier",
+            "from-coco=wai.annotations.format.specifiers:COCOInputFormatSpecifier",
+            "to-coco=wai.annotations.format.specifiers:COCOOutputFormatSpecifier",
+            "from-roi=wai.annotations.format.specifiers:ROIInputFormatSpecifier",
+            "to-roi=wai.annotations.format.specifiers:ROIOutputFormatSpecifier",
+            "from-tfrecords=wai.annotations.format.specifiers:TFRecordsInputFormatSpecifier",
+            "to-tfrecords=wai.annotations.format.specifiers:TFRecordsOutputFormatSpecifier",
+            "from-vgg=wai.annotations.format.specifiers:VGGInputFormatSpecifier",
+            "to-vgg=wai.annotations.format.specifiers:VGGOutputFormatSpecifier",
+
+            # ISPs
+            "coerce-box=wai.annotations.isp.specifiers:BoxBoundsCoercionISPSpecifier",
+            "coerce-mask=wai.annotations.isp.specifiers:MaskBoundsCoercionISPSpecifier",
+            "dimension-discarder=wai.annotations.isp.specifiers:DimensionDiscarderISPSpecifier",
+            "check-duplicate-filenames=wai.annotations.isp.specifiers:DuplicateFileNamesISPSpecifier",
+            "passthrough=wai.annotations.isp.specifiers:PassThroughISPSpecifier",
+
+            # XDCs
+            # Currently none
+        ]
     }
 )

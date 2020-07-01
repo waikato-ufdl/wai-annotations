@@ -20,7 +20,7 @@ class Converter(Generic[FromFormat, ToFormat]):
         return map(self.convert, instances)
 
     @abstractmethod
-    def convert(self, instance: FromFormat) -> ToFormat:
+    def convert(self, instance: FromFormat) -> Iterator[ToFormat]:
         """
         Converts an instance in input format into the output format.
 

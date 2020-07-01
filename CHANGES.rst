@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4.0 (2020-07-02)
+------------------
+
+- Major restructure to introduce domains other than object-detection in images.
+
 0.3.6 (2020-06-22)
 ------------------
 

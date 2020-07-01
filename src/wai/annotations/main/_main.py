@@ -2,18 +2,21 @@
 Module containing the main entry point functions for converting annotations.
 """
 import traceback
-from typing import List, Optional
+from typing import Optional
 
+from wai.common.cli import OptionsList
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
-from .parsing import MainParserConfigurer
+from ..core.chain import ConversionChain
+from ._list_plugins import list_plugins
+from ._MainSettings import MainSettings
 
 
-def main(args: Optional[List[str]] = None):
+def main(options: Optional[OptionsList] = None):
     """
     Main function of the annotations converter.
 
-    :param args:    The CLI arguments to the program.
+    :param options:    The CLI arguments to the program.
     """
     # Setup logging
     logger = create_standard_application_root_logger()
@@ -21,18 +24,32 @@ def main(args: Optional[List[str]] = None):
         if handler.name == DEBUG_HANDLER_NAME:
             handler.addFilter(lambda record: record.name != 'PIL.PngImagePlugin')
 
-    # Parse the arguments
-    main_settings, input_side, output_side = MainParserConfigurer(logger).parse(args)
-    assert input_side is not None
-    input_format, input_chain = input_side
-    assert output_side is not None
-    output_format, output_chain = output_side
+    # Get the command-line arguments if none are specified directly
+    if options is None:
+        import sys
+        options = sys.argv[1:]
+
+    # Pre-parse the command-line arguments
+    global_options, stage_options = ConversionChain.split_global_options(options)
+
+    # Consume global options
+    main_settings = MainSettings(global_options)
+    logger.setLevel(main_settings.VERBOSITY)
+
+    # If requested to list the plugins, do so and exit
+    if main_settings.LIST_PLUGINS:
+        print(list_plugins())
+        return
+
+    # Create the conversion chain
+    conversion_chain = ConversionChain.from_options(stage_options)
 
     # Log the to/from formats we are converting
-    logger.info(f"Converting from {input_format} to {output_format}")
+    # TODO: Reinstate
+    # logger.info(f"Converting from {input_format} to {output_format}")
 
-    # Apply the input chain to the output chain
-    output_chain.save(input_chain.load())
+    # Execute the chain
+    conversion_chain.save()
 
     logger.info("Finished conversion")
 

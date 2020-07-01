@@ -1,11 +1,8 @@
 from logging import WARNING, INFO, DEBUG
 
-from wai.common import ClassRegistry
 from wai.common.cli import CLIInstantiable
-from wai.common.cli.options import CountOption, ClassOption
+from wai.common.cli.options import CountOption, FlagOption
 from wai.common.cli.util import TranslationTable
-
-from ..core.coercions import MaskBoundsCoercion, BoxBoundsCoercion
 
 
 class MainSettings(CLIInstantiable):
@@ -20,9 +17,8 @@ class MainSettings(CLIInstantiable):
         help="whether to be more verbose when generating the records"
     )
 
-    # The coercion to apply to annotations
-    COERCION = ClassOption(
-        "-f", "--force",
-        registry=ClassRegistry().alias(MaskBoundsCoercion, "mask").alias(BoxBoundsCoercion, "bbox"),
-        help="forces located objects into a particular boundary type"
+    # Lists the available plugins and exits
+    LIST_PLUGINS = FlagOption(
+        "--list-plugins",
+        help="lists the available plugins and exits"
     )

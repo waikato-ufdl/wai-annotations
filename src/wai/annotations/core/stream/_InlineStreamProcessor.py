@@ -10,6 +10,9 @@ class InlineStreamProcessor(Generic[StreamElementType]):
     Base class for objects which can process a stream of elements
     in some manner. Can modify stream elements, remove or insert new
     elements, etc.
+
+    TODO: Add batch-processing functionality to simplify stack-traces when
+          debugging.
     """
     def as_decorator(self, function: Callable[[Any], Iterable[StreamElementType]]):
         """
@@ -36,10 +39,7 @@ class InlineStreamProcessor(Generic[StreamElementType]):
         # Process each element in turn
         for element in stream:
             # Process the element
-            processed = self._process_element(element)
-
-            for processed_element in processed:
-                yield processed_element
+            yield from self._process_element(element)
 
     @abstractmethod
     def _process_element(self, element: StreamElementType) -> Iterable[StreamElementType]:

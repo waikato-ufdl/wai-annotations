@@ -10,4 +10,4 @@ def extension_to_regex(extension: str) -> str:
     :return:            A pattern object.
     """
     # Escape the extension and format it as a regex
-    return "(.*)" + re.escape(extension) + "$"
+    return f"(.*){re.escape(extension)}$"
