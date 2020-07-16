@@ -51,3 +51,7 @@ class InputFormatSpecifier(PluginSpecifier):
             cls.reader()(namespace),
             cls.input_converter()(namespace)
         )
+
+    @classmethod
+    def format_domain_description(cls) -> str:
+        return cls.domain().domain_name()

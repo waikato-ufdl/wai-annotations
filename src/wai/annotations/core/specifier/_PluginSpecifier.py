@@ -54,6 +54,14 @@ class PluginSpecifier(ArgumentParserConfigurer, ABC):
         pass
 
     @classmethod
+    @abstractmethod
+    def format_domain_description(cls) -> str:
+        """
+        Formats the domain information for the plugin.
+        """
+        pass
+
+    @classmethod
     def format_usage(cls, name: str, indent: int = 0) -> str:
         """
         Gets the usage text for the plugin.

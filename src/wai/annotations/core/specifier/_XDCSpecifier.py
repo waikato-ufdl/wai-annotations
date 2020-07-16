@@ -46,3 +46,7 @@ class XDCSpecifier(PluginSpecifier):
     @classmethod
     def stage_instance_from_namespace(cls, namespace: Namespace) -> CrossDomainConverter:
         return cls.converter()(namespace)
+
+    @classmethod
+    def format_domain_description(cls) -> str:
+        return f"{cls.from_domain().domain_name()} -> {cls.to_domain().domain_name()}"

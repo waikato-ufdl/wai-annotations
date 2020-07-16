@@ -39,3 +39,19 @@ class ISPSpecifier(PluginSpecifier):
     @classmethod
     def stage_instance_from_namespace(cls, namespace: Namespace) -> InlineStreamProcessor:
         return cls.processor_type()(namespace)
+
+    @classmethod
+    def format_domain_description(cls) -> str:
+        # Get the set of domains that this ISP works with
+        domains = cls.domains()
+
+        # If the set is None, works with any domain
+        if domains is None:
+            return "Any"
+
+        # If the set is empty, works with no domains. Not really a useful
+        # case, but technically possible
+        if len(domains) == 0:
+            return "None"
+
+        return ", ".join((domain.domain_name() for domain in domains))

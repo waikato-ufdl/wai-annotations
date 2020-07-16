@@ -51,3 +51,7 @@ class OutputFormatSpecifier(PluginSpecifier):
             cls.writer()(namespace),
             cls.output_converter()(namespace)
         )
+
+    @classmethod
+    def format_domain_description(cls) -> str:
+        return cls.domain().domain_name()

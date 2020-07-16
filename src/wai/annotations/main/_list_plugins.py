@@ -14,6 +14,7 @@ def list_plugins() -> str:
         for name, plugin in plugins.items():
             result += f"    {name.upper()}:\n"
             result += f"      {plugin.description()}\n\n"
+            result += f"      Domain(s): {plugin.format_domain_description()}\n\n"
             result += f"{plugin.format_usage(name, 6)}\n"
 
         # Additional separation between categories of plugins
