@@ -8,6 +8,12 @@ from ._ADAMSOutputFormatSpecifier import ADAMSOutputFormatSpecifier
 from ._COCOInputFormatSpecifier import COCOInputFormatSpecifier
 from ._COCOOutputFormatSpecifier import COCOOutputFormatSpecifier
 
+from ._CommonVoiceInputFormatSpecifier import CommonVoiceInputFormatSpecifier
+from ._CommonVoiceOutputFormatSpecifier import CommonVoiceOutputFormatSpecifier
+
+from ._FestVoxInputFormatSpecifier import FestVoxInputFormatSpecifier
+from ._FestVoxOutputFormatSpecifier import FestVoxOutputFormatSpecifier
+
 from ._ROIInputFormatSpecifier import ROIInputFormatSpecifier
 from ._ROIOutputFormatSpecifier import ROIOutputFormatSpecifier
 
