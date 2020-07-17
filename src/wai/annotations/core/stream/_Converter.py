@@ -17,7 +17,8 @@ class Converter(Generic[FromFormat, ToFormat]):
         :param instances:   The instances in input format.
         :return:            The instances in output format.
         """
-        return map(self.convert, instances)
+        for instance in instances:
+            yield from self.convert(instance)
 
     @abstractmethod
     def convert(self, instance: FromFormat) -> Iterator[ToFormat]:
