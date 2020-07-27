@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4.2 (2020-07-28)
+------------------
+
+- Added new options to the MS-COCO format for pre-specifying the categories to expect.
+
 0.4.1 (2020-07-27)
 ------------------
 
