@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from argparse import Namespace
-from typing import Optional, Union, TypeVar
+from typing import Optional, Union, TypeVar, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli import OptionsList
@@ -51,7 +51,7 @@ class ImageObjectDetectionInputConverter(InputConverter[ExternalFormat, ObjectDe
 
             self._label_mapping[old] = new
 
-    def convert(self, instance: ExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: ExternalFormat) -> Iterator[ObjectDetectionInstance]:
         # Do the conversion
         converted_instance: ObjectDetectionInstance = self._convert(instance)
 
@@ -64,7 +64,7 @@ class ImageObjectDetectionInputConverter(InputConverter[ExternalFormat, ObjectDe
         # Apply the label mapping
         self.apply_label_mapping(converted_instance.annotations)
 
-        return converted_instance
+        yield converted_instance
 
     @abstractmethod
     def _convert(self, instance: ExternalFormat) -> ObjectDetectionInstance:

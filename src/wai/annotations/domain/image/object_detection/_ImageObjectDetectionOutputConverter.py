@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from argparse import Namespace
 from re import compile
-from typing import List, Union, Pattern, Any, TypeVar
+from typing import List, Union, Pattern, Any, TypeVar, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import OptionsList
@@ -40,14 +40,14 @@ class ImageObjectDetectionOutputConverter(OutputConverter[ObjectDetectionInstanc
 
         self._pattern: Pattern = compile(self.regex) if self.regex is not None else None
 
-    def convert(self, instance: ObjectDetectionInstance) -> ExternalFormat:
+    def convert(self, instance: ObjectDetectionInstance) -> Iterator[ExternalFormat]:
         # Unpack the instance
         image_info, located_objects = instance
 
         # Use the options to filter the located objects by label
         self.remove_invalid_objects(located_objects)
 
-        return self.convert_unpacked(image_info, located_objects)
+        yield self.convert_unpacked(image_info, located_objects)
 
     @abstractmethod
     def convert_unpacked(self,
