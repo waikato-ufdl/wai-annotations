@@ -22,3 +22,9 @@ class MainSettings(CLIInstantiable):
         "--list-plugins",
         help="lists the available plugins and exits"
     )
+
+    # Whether to perform conversions in debug mode
+    DEBUG = FlagOption(
+        "--debug",
+        help="whether to perform conversions in debug mode"
+    )

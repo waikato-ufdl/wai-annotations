@@ -8,6 +8,7 @@ from wai.common.cli import OptionsList
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
 from ..core.chain import ConversionChain
+from ..core.debug import set_debug
 from ._list_plugins import list_plugins
 from ._MainSettings import MainSettings
 
@@ -35,6 +36,7 @@ def main(options: Optional[OptionsList] = None):
     # Consume global options
     main_settings = MainSettings(global_options)
     logger.setLevel(main_settings.VERBOSITY)
+    set_debug(main_settings.DEBUG)
 
     # If requested to list the plugins, do so and exit
     if main_settings.LIST_PLUGINS:
