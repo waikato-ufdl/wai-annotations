@@ -1,6 +1,8 @@
 from abc import abstractmethod
 from typing import Generic, Iterable, Iterator, TypeVar
 
+from ..utils import chain_map
+
 # The types that the converter converts from and to
 FromFormat = TypeVar("FromFormat")
 ToFormat = TypeVar("ToFormat")
@@ -17,8 +19,7 @@ class Converter(Generic[FromFormat, ToFormat]):
         :param instances:   The instances in input format.
         :return:            The instances in output format.
         """
-        for instance in instances:
-            yield from self.convert(instance)
+        return chain_map(self.convert, instances)
 
     @abstractmethod
     def convert(self, instance: FromFormat) -> Iterator[ToFormat]:

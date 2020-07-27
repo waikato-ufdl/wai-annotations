@@ -2,6 +2,8 @@ from abc import abstractmethod
 from functools import wraps
 from typing import Generic, TypeVar, Iterator, Callable, Iterable, Any
 
+from ..utils import chain_map
+
 StreamElementType = TypeVar("StreamElementType")
 
 
@@ -36,10 +38,7 @@ class InlineStreamProcessor(Generic[StreamElementType]):
         :param stream:  The stream to process.
         :return:        The stream with processing.
         """
-        # Process each element in turn
-        for element in stream:
-            # Process the element
-            yield from self._process_element(element)
+        return chain_map(self._process_element, stream)
 
     @abstractmethod
     def _process_element(self, element: StreamElementType) -> Iterable[StreamElementType]:
