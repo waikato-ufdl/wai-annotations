@@ -8,3 +8,6 @@ converting datasets:
 
 * `--list-plugins`: If provided, lists all of the plugins registered with wai-annotations, and then
                     quits.
+
+* `--debug`: If provided, processing stages will buffer their conversions, allowing for easier debugging
+             in an interactive debugger (can see the results of conversions at the stages where they happen).
