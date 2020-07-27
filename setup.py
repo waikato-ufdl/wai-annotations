@@ -45,7 +45,7 @@ setup(
         "numpy>=1.16,<=1.17.4",
         "planar",
         "scikit-image",
-        "pycocotools @ git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI",
+        "wai.pycocotools",
         "opencv-python",
     ],
     entry_points={
