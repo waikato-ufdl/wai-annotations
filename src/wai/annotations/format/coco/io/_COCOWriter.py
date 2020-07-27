@@ -1,7 +1,7 @@
 import datetime
-from typing import Iterable, Dict
+from typing import Iterable, Dict, List, Tuple
 
-from wai.common.cli.options import TypedOption
+from wai.common.cli.options import TypedOption, FlagOption
 
 from ....core.component import JSONWriter
 from ....domain.image import ImageInfo
@@ -17,15 +17,65 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
     """
     Writer of COCO-format JSON files.
     """
-    license_name: str = TypedOption("--license-name", type=str, help="the license of the images")
-    license_url: str = TypedOption("--license-url", type=str, help="the license of the images")
+    license_name: str = TypedOption(
+        "--license-name",
+        type=str,
+        help="the license of the images"
+    )
+
+    license_url: str = TypedOption(
+        "--license-url",
+        type=str,
+        help="the license of the images"
+    )
+
+    categories: List[str] = TypedOption(
+        "--categories",
+        type=str,
+        nargs="+",
+        help="defines the order of the categories",
+        metavar="CATEGORY"
+    )
+
+    error_on_new_category: bool = FlagOption(
+        "--error-on-new-category",
+        help="whether unspecified categories should raise an error"
+    )
+
+    default_supercategory = TypedOption(
+        "--default-supercategory",
+        type=str,
+        help="the supercategory to use for pre-defined categories",
+        metavar="SUPERCATEGORY",
+        default="Object"
+    )
+
+    def initialise_category_lookup(self) -> Tuple[List[Category], Dict[str, int]]:
+        """
+        Initialises the category lookup.
+        """
+        # Create the result objects
+        categories, lookup = [], {}
+
+        # Add each specified category
+        for index, label in enumerate(self.categories, 1):
+            # Create the JSON object
+            category = Category(id=index, name=label, supercategory=self.default_supercategory)
+
+            # Add its index to the lookup
+            lookup[label] = index
+
+            # Add the JSON object to the output
+            categories.append(category)
+
+        return categories, lookup
 
     def create_json_object(self, instances: Iterable[COCOExternalFormat]) -> COCOFile:
         # Get the current time
         now = datetime.datetime.now()
 
         # Create a lookup from category name to id
-        category_lookup: Dict[str, int] = {}
+        categories, category_lookup = self.initialise_category_lookup()
 
         # Keep track of annotation ID numbers
         next_annotation_id: int = 1
@@ -40,7 +90,7 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
                                        images=[],
                                        annotations=[],
                                        licenses=[self.create_license()],
-                                       categories=[])
+                                       categories=categories)
 
         # Write each instance
         for instance_index, instance in enumerate(instances, 1):
@@ -64,6 +114,9 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
             for annotation, label, prefix in zip(annotations, labels, prefixes):
                 # Create a category for this label if there isn't one already
                 if label not in category_lookup:
+                    if self.error_on_new_category:
+                        raise Exception(f"Unspecified category: {label}")
+
                     category = Category(id=len(category_lookup) + 1,
                                         name=label,
                                         supercategory=prefix)
