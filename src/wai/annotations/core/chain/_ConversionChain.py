@@ -1,4 +1,4 @@
-from typing import Optional, Type, List, Union, Set, Iterator, Tuple, Iterable
+from typing import Optional, Type, List, Union, Set, Iterator, Tuple, Iterable, IO
 
 from wai.common.cli import OptionsList
 
@@ -29,6 +29,20 @@ class ConversionChain(LoggingEnabled):
         self._input_domains: Optional[Set[Type[DomainSpecifier]]] = None
         self._output_domains: Optional[Set[Type[DomainSpecifier]]] = None
 
+    @property
+    def has_input(self) -> bool:
+        """
+        Whether this conversion chain has an input stage.
+        """
+        return self._input_stage is not None
+
+    @property
+    def has_output(self) -> bool:
+        """
+        Whether this conversion chain has an output stage.
+        """
+        return self._output_stage is not None
+
     @classmethod
     def split_global_options(cls, options: OptionsList) -> Tuple[OptionsList, OptionsList]:
         """
@@ -49,7 +63,7 @@ class ConversionChain(LoggingEnabled):
         return options, []
 
     @classmethod
-    def _split_options(cls, options: OptionsList) -> List[OptionsList]:
+    def split_options(cls, options: OptionsList) -> List[OptionsList]:
         """
         Splits the options list into sub-lists, one for each stage.
 
@@ -83,7 +97,7 @@ class ConversionChain(LoggingEnabled):
         :return:            The conversion chain.
         """
         # Split the stage options
-        stage_option_lists = cls._split_options(options)
+        stage_option_lists = cls.split_options(options)
 
         # Create the empty conversion chain
         conversion_chain = ConversionChain()
@@ -232,6 +246,31 @@ class ConversionChain(LoggingEnabled):
 
         # Write the instances
         self._output_stage.save(instances)
+
+    def file_iterator(self, instances: Optional[Iterable[Instance]] = None) -> Iterator[Tuple[str, IO[bytes]]]:
+        """
+        Converts the given instances to the actual files they are written to.
+
+        :param instances:                       The instances to write, or None to load instances
+                                                from the input stage.
+        :return:                                An iterator of filename, file-contents pairs.
+        :raises ConversionChainHasNoWriter:     If the chain isn't configured with an output stage.
+        :raises ConversionChainHasNoReader:     If the chain isn't configured with an input stage and
+                                                the instances aren't provided explicitly.
+        """
+        # Make sure we have an output
+        if self._output_stage is None:
+            raise ConversionChainHasNoWriter()
+
+        # Load the instances if not given explicitly, or process
+        # the given instances
+        if instances is not None:
+            instances = self.process(instances)
+        else:
+            instances = self.load()
+
+        # Return the files
+        return self._output_stage.file_iterator(instances)
 
     def process(self, input: Iterable[Instance]) -> Iterator[Instance]:
         """
