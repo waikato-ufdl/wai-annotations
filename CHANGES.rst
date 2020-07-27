@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4.3 (2020-07-28)
+------------------
+
+- Added new option to the MS-COCO format to sort the categories.
+
 0.4.2 (2020-07-28)
 ------------------
 
