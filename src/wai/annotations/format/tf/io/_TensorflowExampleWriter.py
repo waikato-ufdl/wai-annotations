@@ -16,12 +16,20 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
     """
     Writer of Tensorflow example records.
     """
-    shards = TypedOption("-s", "--shards",
-                         metavar="num", required=False, type=int,
-                         help="number of shards to split the images into")
-    protobuf_label_map = TypedOption("-p", "--protobuf",
-                                     metavar="file", required=False, type=str,
-                                     help="for storing the label strings and IDs")
+    shards = TypedOption(
+        "-s", "--shards",
+        type=str,
+        nargs="+",
+        metavar="FILENAME",
+        help="additional shards to write to"
+    )
+
+    protobuf_label_map = TypedOption(
+        "-p", "--protobuf",
+        type=str,
+        metavar="FILENAME",
+        help="for storing the label strings and IDs"
+    )
 
     def write(self, instances: Iterable[TensorflowExampleExternalFormat], path: str):
         # Reset the label map
@@ -31,13 +39,17 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
             instances = label_map_accumulator.process(instances)
 
         # Sharded writing
-        if self.shards is not None and self.shards > 1:
+        if len(self.shards) > 0:
+            # Concatenate all output file-names
+            all_file_names = [path] + self.shards
+            num_file_names = len(all_file_names)
+
             with contextlib2.ExitStack() as exit_stack:
                 # Open the output file for sharded writing
-                writers = open_sharded_output_tfrecords(exit_stack, path, self.shards)
+                writers = open_sharded_output_tfrecords(exit_stack, all_file_names)
 
                 for index, instance in enumerate(instances):
-                    writers[index % self.shards].write(instance.SerializeToString())
+                    writers[index % num_file_names].write(instance.SerializeToString())
 
         # Unsharded writing
         else:
