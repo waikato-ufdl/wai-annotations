@@ -24,3 +24,27 @@ class COCOFile(JSONObject["COCOFile"]):
     categories: List[Category] = ArrayProperty(
         element_property=Category.as_property()
     )
+
+    def sort_categories(self):
+        """
+        Sorts the categories in this file into alphabetical order.
+        """
+        # Get the categories in their current order
+        categories = list(self.categories)
+
+        # Sort them
+        categories.sort(key=lambda category: category.name)
+
+        # Create a remapping lookup table for the categories
+        remap = {category.id: index for index, category in enumerate(categories, 1)}
+
+        # Remap the category IDs in the annotations
+        for annotation in self.annotations:
+            annotation.category_id = remap[annotation.category_id]
+
+        # Remap the categories themselves
+        for category in categories:
+            category.id = remap[category.id]
+
+        # Reinsert the categories into the file in their sorted order
+        self.categories = categories

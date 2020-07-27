@@ -50,6 +50,11 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
         default="Object"
     )
 
+    should_sort_categories = FlagOption(
+        "--sort-categories",
+        help="whether to put the categories in alphabetical order"
+    )
+
     def initialise_category_lookup(self) -> Tuple[List[Category], Dict[str, int]]:
         """
         Initialises the category lookup.
@@ -133,6 +138,10 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
 
                 # Add the annotation
                 coco_file.annotations.append(annotation)
+
+        # Sort the categories if requested
+        if self.should_sort_categories:
+            coco_file.sort_categories()
 
         return coco_file
 
