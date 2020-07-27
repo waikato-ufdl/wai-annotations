@@ -10,7 +10,6 @@ from wai.common.iterate import random
 
 from ..logging import StreamLogger, LoggingEnabled
 from ..utils import chain_map, recursive_iglob, read_file_list
-from ..instance import FileInfo
 
 ExternalFormat = TypeVar("ExternalFormat")
 
