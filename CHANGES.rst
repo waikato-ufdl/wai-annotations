@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.4.1 (2020-07-27)
+------------------
+
+- Added domain information to the `--list-plugins` command.
+- Basic support for speech annotations, including CommonVoice and FestVox formats.
+- Added `--debug` global flag to aid in debugging.
+- Added file_iterator method to conversion chains, allowing iteration over the converted file-data.
+- Fixed dependency error on installation from PyPI caused by pycocotools.
+- Bug fixes.
+
 0.4.0 (2020-07-02)
 ------------------
 
