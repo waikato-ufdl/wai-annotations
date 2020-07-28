@@ -71,6 +71,7 @@ setup(
             "coerce-box=wai.annotations.isp.specifiers:BoxBoundsCoercionISPSpecifier",
             "coerce-mask=wai.annotations.isp.specifiers:MaskBoundsCoercionISPSpecifier",
             "dimension-discarder=wai.annotations.isp.specifiers:DimensionDiscarderISPSpecifier",
+            "discard-negatives=wai.annotations.isp.specifiers:DiscardNegativesISPSpecifier",
             "check-duplicate-filenames=wai.annotations.isp.specifiers:DuplicateFileNamesISPSpecifier",
             "passthrough=wai.annotations.isp.specifiers:PassThroughISPSpecifier",
 

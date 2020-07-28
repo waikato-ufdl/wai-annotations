@@ -7,6 +7,8 @@ from ._MaskBoundsCoercionISPSpecifier import MaskBoundsCoercionISPSpecifier
 
 from ._DimensionDiscarderISPSpecifier import DimensionDiscarderISPSpecifier
 
+from ._DiscardNegativesISPSpecifier import DiscardNegativesISPSpecifier
+
 from ._DuplicateFileNamesISPSpecifier import DuplicateFileNamesISPSpecifier
 
 from ._PassThroughISPSpecifier import PassThroughISPSpecifier
