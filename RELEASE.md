@@ -9,9 +9,7 @@ Preparation:
 Commands for releasing on pypi-waikato (requires twine >= 1.8.0):
 
 ```
-  rm -r dist src/wai.annotations.egg-info 
-  rm -r src/wai/annotations/core/plugin/factories
-  rm -r src/wai/annotations/core/plugin/_registry.py
+  rm -r dist src/wai.annotations.egg-info
   python setup.py clean
   python setup.py sdist
   twine upload dist/*
