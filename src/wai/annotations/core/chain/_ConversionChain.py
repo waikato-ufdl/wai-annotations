@@ -169,27 +169,28 @@ class ConversionChain(LoggingEnabled):
 
             # Make sure the ISP/XDC works with the current domain
             if issubclass(stage_specifier, ISPSpecifier):
-                # Make sure the ISP can work with the current output domain
+                # Make sure the ISP can work with the current set of output domains, and calculate the
+                # new set of output domains
                 if self._output_domains is not None and stage_specifier.domains() is not None:
                     # Get the set of domains that the stage can work with out of the
                     # current set of possible output domains
-                    intersecting_domains = self._output_domains.intersection(stage_specifier.domains())
+                    self._output_domains = self._output_domains.intersection(stage_specifier.domains())
 
                     # If there are none to work with, error
-                    if len(intersecting_domains) == 0:
+                    if len(self._output_domains) == 0:
                         raise BadDomain()
 
-                    # Add the stage to the intermediaries
-                    self._intermediate_stages.append(instantiate_stage_and_log())
+                elif self._output_domains is None:
+                    self._output_domains = stage_specifier.domains()
 
-                    # The intersection is the new set of output domains
-                    self._output_domains = intersecting_domains
+                # Add the stage to the intermediaries
+                self._intermediate_stages.append(instantiate_stage_and_log())
 
-                    # If the current input domain has more than one option, then all
-                    # intermediaries must be ISPs, so the input domains become the same
-                    # as the output domains
-                    if self._input_domains is None or len(self._input_domains) > 1:
-                        self._input_domains = self._output_domains
+                # If the current input domain has more than one option, then all
+                # intermediaries must be ISPs, so the input domains become the same
+                # as the output domains
+                if self._input_domains is None or len(self._input_domains) > 1:
+                    self._input_domains = self._output_domains
 
             # issubclass(stage, XDCSpecifier) == True
             else:
