@@ -7,7 +7,7 @@ from .._ImageInfo import ImageInfo
 from ._ObjectDetectionInstance import ObjectDetectionInstance
 
 
-class ImageObjectDetectionDomainSpecifier(DomainSpecifier):
+class ImageObjectDetectionDomainSpecifier(DomainSpecifier[ImageInfo, LocatedObjects]):
     """
     Domain specifier for images annotated with objects
     detected within those images.
@@ -15,14 +15,6 @@ class ImageObjectDetectionDomainSpecifier(DomainSpecifier):
     @classmethod
     def domain_name(cls) -> str:
         return "Image Object-Detection Domain"
-    
-    @classmethod
-    def file_type(cls) -> Type[ImageInfo]:
-        return ImageInfo
-
-    @classmethod
-    def annotations_type(cls) -> Type:
-        return LocatedObjects
 
     @classmethod
     def instance_class(cls) -> Type[ObjectDetectionInstance]:

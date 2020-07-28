@@ -1,3 +1,4 @@
+from abc import abstractproperty
 from typing import TypeVar, Generic
 
 from ._FileInfo import FileInfo
@@ -21,6 +22,13 @@ class Instance(Generic[FileType, AnnotationsType]):
     @property
     def annotations(self) -> AnnotationsType:
         return self._annotations
+
+    @abstractproperty
+    def is_negative(self) -> bool:
+        """
+        Whether this instance is a negative instance (contains no annotations).
+        """
+        pass
 
     def __iter__(self):
         yield self.file_info
