@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4.4 (2020-07-29)
+------------------
+
+- Separated base reader/writer functionality into abstract bases which don't assume
+  local disk access.
+
 0.4.3 (2020-07-28)
 ------------------
 
