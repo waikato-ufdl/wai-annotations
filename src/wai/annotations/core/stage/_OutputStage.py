@@ -1,6 +1,6 @@
 from typing import Iterable, Tuple, Iterator, IO, TypeVar, Generic
 
-from ..component import OutputConverter, Writer
+from ..component import OutputConverter, Writer, LocalWriter
 from ..instance import Instance
 
 ExternalFormat = TypeVar("ExternalFormat")
@@ -50,4 +50,8 @@ class OutputStage(Generic[InstanceType, ExternalFormat]):
         :param instances:   The instances to write.
         :return:            An iterator of filename, file-contents pairs.
         """
+        # Make sure the writer is capable of file iteration
+        if not isinstance(self._writer, LocalWriter):
+            raise TypeError(f"{self._writer.__class__.__name__} is not capable of file iteration")
+
         return self._writer.file_iterator(self._converter.convert_all(instances))

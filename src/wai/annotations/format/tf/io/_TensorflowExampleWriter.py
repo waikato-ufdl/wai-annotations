@@ -5,14 +5,14 @@ import contextlib2
 
 from wai.common.cli.options import TypedOption
 
-from ....core.component import Writer
+from ....core.component import LocalWriter
 from ....domain.image import ImageInfo
 from .._ensure_available import tensorflow as tf
 from ..utils import image_info_from_example, LabelMapAccumulator, open_sharded_output_tfrecords
 from .._format import TensorflowExampleExternalFormat
 
 
-class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
+class TensorflowExampleWriter(LocalWriter[TensorflowExampleExternalFormat]):
     """
     Writer of Tensorflow example records.
     """
@@ -31,7 +31,7 @@ class TensorflowExampleWriter(Writer[TensorflowExampleExternalFormat]):
         help="for storing the label strings and IDs"
     )
 
-    def write(self, instances: Iterable[TensorflowExampleExternalFormat], path: str):
+    def write_to_path(self, instances: Iterable[TensorflowExampleExternalFormat], path: str):
         # Reset the label map
         label_map_accumulator = None
         if self.protobuf_label_map is not None:

@@ -1,68 +1,28 @@
 import itertools
 from abc import abstractmethod
-from argparse import Namespace
 from random import Random
-from typing import Generic, Iterator, List, Union, TypeVar
+from typing import Generic, Iterator, TypeVar
 
-from wai.common.cli import CLIInstantiable, OptionsList
+from wai.common.cli import CLIInstantiable
 from wai.common.cli.options import TypedOption
 from wai.common.iterate import random
 
 from ..logging import StreamLogger, LoggingEnabled
-from ..utils import chain_map, recursive_iglob, read_file_list
+from ..utils import chain_map
 
 ExternalFormat = TypeVar("ExternalFormat")
 
 
 class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
     """
-    Base class for classes which can read a specific external format from disk.
+    Base class for classes which can read a specific external format.
     """
-    # The name of the input annotation files to read from
-    inputs: List[str] = TypedOption(
-        "-i", "--inputs",
-        type=str,
-        metavar="files", action="concat",
-        help="Input annotations files (can use glob syntax)"
-    )
-
-    # The names of files to include in the conversion without annotations
-    negatives: List[str] = TypedOption(
-        "-n", "--negatives",
-        type=str,
-        metavar="file", action="concat",
-        help="Files that have no annotations (can use glob syntax)"
-    )
-
-    # The names of files to load input lists from
-    input_files: List[str] = TypedOption(
-        "-I", "--input-files",
-        type=str,
-        action="concat",
-        help="Files containing lists of input annotation files (can use glob syntax)"
-    )
-
-    # The names of files to load negative lists from
-    negative_files: List[str] = TypedOption(
-        "-N", "--negative-files",
-        type=str,
-        action="concat",
-        help="Files containing lists of negative files (can use glob syntax)"
-    )
-
     # The seed to use for randomisation of the read sequence
     seed = TypedOption(
         "--seed",
         type=int,
         help="the seed to use for randomising the read sequence"
     )
-
-    def __init__(self, namespace: Union[Namespace, OptionsList, None] = None):
-        super().__init__(namespace)
-
-        # Warn the user if no input files were specified
-        if len(self.inputs) + len(self.negatives) + len(self.input_files) + len(self.negative_files) == 0:
-            self.logger.warning("No input files selected to convert")
 
     def load(self) -> Iterator[ExternalFormat]:
         """
@@ -90,29 +50,25 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
             chain_map(self.read_negative_file, negative_files)
         )
 
+    @abstractmethod
     def get_annotation_files(self) -> Iterator[str]:
         """
         Gets an iterator over the annotation files that will be
-        read by this reader based on the input options.
+        read by this reader.
 
-        :return:    The iterator of filenames.
+        :return:    The iterator of file-names.
         """
-        return itertools.chain(
-            chain_map(recursive_iglob, self.inputs),
-            chain_map(read_file_list, chain_map(recursive_iglob, self.input_files))
-        )
+        pass
 
+    @abstractmethod
     def get_negative_files(self) -> Iterator[str]:
         """
         Gets an iterator over the negative images that will be
-        read by this reader based on the input options.
+        read by this reader.
 
-        :return:    The iterator of filenames.
+        :return:    The iterator of file-names.
         """
-        return itertools.chain(
-            chain_map(recursive_iglob, self.negatives),
-            chain_map(read_file_list, chain_map(recursive_iglob, self.negative_files))
-        )
+        pass
 
     @abstractmethod
     def read_annotation_file(self, filename: str) -> Iterator[ExternalFormat]:

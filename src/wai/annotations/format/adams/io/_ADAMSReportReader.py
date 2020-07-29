@@ -5,14 +5,14 @@ from wai.common.cli.options import TypedOption
 from wai.common.file.report import loadf, Report
 
 from ....core.utils import recursive_iglob
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.image import ImageInfo, ImageFormat
 from ....domain.image.util import get_associated_image
 from ..constants import DEFAULT_EXTENSION
 from .._format import ADAMSExternalFormat
 
 
-class ADAMSReportReader(Reader[ADAMSExternalFormat]):
+class ADAMSReportReader(LocalReader[ADAMSExternalFormat]):
     """
     Reader of ADAMS .report files.
     """

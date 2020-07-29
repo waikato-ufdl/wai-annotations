@@ -1,13 +1,13 @@
 import os
 from typing import Iterator
 
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.image import ImageInfo
 from ..configuration import COCOFile
 from .._format import COCOExternalFormat
 
 
-class COCOReader(Reader[COCOExternalFormat]):
+class COCOReader(LocalReader[COCOExternalFormat]):
     """
     Reader of COCO-format JSON files.
     """

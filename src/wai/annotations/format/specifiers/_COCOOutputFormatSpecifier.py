@@ -1,6 +1,6 @@
 from typing import Type
 
-from ...core.component import Writer, OutputConverter
+from ...core.component import LocalWriter, OutputConverter
 from ...core.specifier import OutputFormatSpecifier, DomainSpecifier
 
 
@@ -24,6 +24,6 @@ class COCOOutputFormatSpecifier(OutputFormatSpecifier):
         return ToCOCO
 
     @classmethod
-    def writer(cls) -> Type[Writer]:
+    def writer(cls) -> Type[LocalWriter]:
         from ..coco.io import COCOWriter
         return COCOWriter

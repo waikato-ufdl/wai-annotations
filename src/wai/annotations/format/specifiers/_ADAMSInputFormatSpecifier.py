@@ -1,6 +1,6 @@
 from typing import Type
 
-from ...core.component import Reader, InputConverter
+from ...core.component import LocalReader, InputConverter
 from ...core.specifier import InputFormatSpecifier, DomainSpecifier
 
 
@@ -19,7 +19,7 @@ class ADAMSInputFormatSpecifier(InputFormatSpecifier):
         return ImageObjectDetectionDomainSpecifier
 
     @classmethod
-    def reader(cls) -> Type[Reader]:
+    def reader(cls) -> Type[LocalReader]:
         from ..adams.io import ADAMSReportReader
         return ADAMSReportReader
 

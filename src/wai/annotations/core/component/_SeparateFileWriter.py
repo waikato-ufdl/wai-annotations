@@ -5,7 +5,7 @@ from typing import Iterable, TypeVar
 from wai.common.cli.options import FlagOption
 
 from ..stream import InlineStreamProcessor
-from ._Writer import Writer
+from ._LocalWriter import LocalWriter
 
 ExternalFormat = TypeVar("ExternalFormat")
 
@@ -31,7 +31,7 @@ class InlineFileWriter(InlineStreamProcessor[ExternalFormat]):
         return element,
 
 
-class SeparateFileWriter(Writer[ExternalFormat], ABC):
+class SeparateFileWriter(LocalWriter[ExternalFormat], ABC):
     """
     Writer for external formats where the file is stored separately
     to the annotations.
@@ -39,7 +39,7 @@ class SeparateFileWriter(Writer[ExternalFormat], ABC):
     annotations_only = FlagOption("--annotations-only",
                                   help="skip the writing of data files, outputting only the annotation files")
 
-    def write(self, instances: Iterable[ExternalFormat], path: str):
+    def write_to_path(self, instances: Iterable[ExternalFormat], path: str):
         # Wrap the instances with an inline file writer if writing files
         if not self.annotations_only:
             instances = InlineFileWriter(self, path).process(instances)

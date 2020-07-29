@@ -1,6 +1,6 @@
 from typing import Type
 
-from ...core.component import InputConverter, Reader
+from ...core.component import InputConverter, LocalReader
 from ...core.specifier import InputFormatSpecifier, DomainSpecifier
 
 
@@ -19,7 +19,7 @@ class VGGInputFormatSpecifier(InputFormatSpecifier):
         return ImageObjectDetectionDomainSpecifier
 
     @classmethod
-    def reader(cls) -> Type[Reader]:
+    def reader(cls) -> Type[LocalReader]:
         from ..vgg.io import VGGReader
         return VGGReader
 

@@ -4,7 +4,7 @@ import csv
 
 from wai.common.cli.options import TypedOption
 
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.image import ImageInfo, ImageFormat
 from ..utils import get_associated_image_from_filename
 from ..constants import COMMENT_SYMBOL
@@ -12,7 +12,7 @@ from .._format import ROIExternalFormat
 from .._ROIObject import ROIObject
 
 
-class ROIReader(Reader[ROIExternalFormat]):
+class ROIReader(LocalReader[ROIExternalFormat]):
     """
     Reader of ROI-format CSV files.
     """

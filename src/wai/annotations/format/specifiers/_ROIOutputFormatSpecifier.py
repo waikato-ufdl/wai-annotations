@@ -1,6 +1,6 @@
 from typing import Type
 
-from ...core.component import OutputConverter, Writer
+from ...core.component import OutputConverter, LocalWriter
 from ...core.specifier import OutputFormatSpecifier, DomainSpecifier
 
 
@@ -24,6 +24,6 @@ class ROIOutputFormatSpecifier(OutputFormatSpecifier):
         return ToROI
 
     @classmethod
-    def writer(cls) -> Type[Writer]:
+    def writer(cls) -> Type[LocalWriter]:
         from ..roi.io import ROIWriter
         return ROIWriter

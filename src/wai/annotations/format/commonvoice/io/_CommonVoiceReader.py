@@ -4,13 +4,13 @@ from typing import Iterator
 
 from wai.common.cli.options import TypedOption
 
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.audio import AudioInfo
 from ..util import CommonVoiceDialect, EXPECTED_HEADER
 from .._format import CommonVoiceFormat
 
 
-class CommonVoiceReader(Reader[CommonVoiceFormat]):
+class CommonVoiceReader(LocalReader[CommonVoiceFormat]):
     """
     Reader of Mozilla's CommonVoice speech annotation format.
     """

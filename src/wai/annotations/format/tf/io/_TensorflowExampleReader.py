@@ -3,13 +3,13 @@ from typing import Iterator
 
 from .._ensure_available import tensorflow as tf
 
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.image import ImageInfo
 from .._format import TensorflowExampleExternalFormat
 from ..utils import negative_example
 
 
-class TensorflowExampleReader(Reader[TensorflowExampleExternalFormat]):
+class TensorflowExampleReader(LocalReader[TensorflowExampleExternalFormat]):
     """
     Reader of Tensorflow Example records.
     """

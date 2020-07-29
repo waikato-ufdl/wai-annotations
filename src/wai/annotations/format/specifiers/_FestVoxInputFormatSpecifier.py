@@ -1,6 +1,6 @@
 from typing import Type
 
-from ...core.component import Reader, InputConverter
+from ...core.component import LocalReader, InputConverter
 from ...core.specifier import InputFormatSpecifier, DomainSpecifier
 
 
@@ -19,7 +19,7 @@ class FestVoxInputFormatSpecifier(InputFormatSpecifier):
         return SpeechDomainSpecifier
 
     @classmethod
-    def reader(cls) -> Type[Reader]:
+    def reader(cls) -> Type[LocalReader]:
         from ..festvox.io import FestVoxReader
         return FestVoxReader
 

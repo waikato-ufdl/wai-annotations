@@ -1,13 +1,13 @@
 import os
 from typing import Iterator
 
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.image import ImageInfo
 from ..configuration import VGGFile, Image, FileAttributes
 from .._format import VGGExternalFormat
 
 
-class VGGReader(Reader[VGGExternalFormat]):
+class VGGReader(LocalReader[VGGExternalFormat]):
     """
     Reader of VGG-format JSON files.
     """

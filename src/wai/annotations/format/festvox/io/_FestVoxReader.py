@@ -4,14 +4,14 @@ from typing import Iterator
 
 from wai.common.cli.options import TypedOption
 
-from ....core.component import Reader
+from ....core.component import LocalReader
 from ....domain.audio import AudioInfo
 from .._format import FestVoxFormat
 
 LINE_PATTERN = '^\\( (?P<filename>.*) "(?P<transcription>.*)" \\)$'
 
 
-class FestVoxReader(Reader[FestVoxFormat]):
+class FestVoxReader(LocalReader[FestVoxFormat]):
     """
     Reader of the Festival FestVox speech annotation format.
     """
