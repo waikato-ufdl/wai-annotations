@@ -1,7 +1,8 @@
+from argparse import ArgumentParser
 from logging import WARNING, INFO, DEBUG
 
 from wai.common.cli import CLIInstantiable
-from wai.common.cli.options import CountOption, FlagOption
+from wai.common.cli.options import CountOption, FlagOption, TypedOption
 from wai.common.cli.util import TranslationTable
 
 
@@ -23,8 +24,28 @@ class MainSettings(CLIInstantiable):
         help="lists the available plugins and exits"
     )
 
+    # Provides usage information for the installed plugins
+    HELP_PLUGINS = TypedOption(
+        "--help-plugins",
+        type=str,
+        nargs="*",
+        default=None,
+        help="provides usage information about plugins and exits",
+        metavar="PLUGIN"
+    )
+
     # Whether to perform conversions in debug mode
     DEBUG = FlagOption(
         "--debug",
         help="whether to perform conversions in debug mode"
     )
+
+    # Override the default help option
+    HELP = FlagOption(
+        "-h", "--help",
+        help="prints this help message and exits"
+    )
+
+    @classmethod
+    def get_configured_parser(self, *, add_help=False, **kwargs) -> ArgumentParser:
+        return super().get_configured_parser(add_help=add_help, **kwargs)

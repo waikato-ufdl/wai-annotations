@@ -9,7 +9,7 @@ from wai.common.logging import create_standard_application_root_logger, DEBUG_HA
 
 from ..core.chain import ConversionChain
 from ..core.debug import set_debug
-from ._list_plugins import list_plugins
+from ._help import help_plugins, list_plugins, format_help
 from ._MainSettings import MainSettings
 
 
@@ -30,17 +30,30 @@ def main(options: Optional[OptionsList] = None):
         import sys
         options = sys.argv[1:]
 
-    # Pre-parse the command-line arguments
-    global_options, stage_options = ConversionChain.split_global_options(options)
+    # SPECIAL CASE: If --help-plugins is in the arguments, all arguments are considered global
+    if "--help-plugins" in options:
+        global_options, stage_options = options, []
+    else:
+        global_options, stage_options = ConversionChain.split_global_options(options)
 
     # Consume global options
     main_settings = MainSettings(global_options)
     logger.setLevel(main_settings.VERBOSITY)
     set_debug(main_settings.DEBUG)
 
+    # If requested to provide general help, do so and exit
+    if main_settings.HELP:
+        print(format_help())
+        return
+
     # If requested to list the plugins, do so and exit
     if main_settings.LIST_PLUGINS:
         print(list_plugins())
+        return
+
+    # If requested to print plugin help, do so and exit
+    if main_settings.HELP_PLUGINS is not None:
+        print(help_plugins(None if len(main_settings.HELP_PLUGINS) == 0 else set(main_settings.HELP_PLUGINS)))
         return
 
     # Create the conversion chain
