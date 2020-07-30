@@ -10,6 +10,7 @@ from wai.common.logging import create_standard_application_root_logger, DEBUG_HA
 from ..core.chain import ConversionChain
 from ..core.debug import set_debug
 from ._help import help_plugins, list_plugins, format_help
+from ._macros import perform_macro_expansion
 from ._MainSettings import MainSettings
 
 
@@ -55,6 +56,9 @@ def main(options: Optional[OptionsList] = None):
     if main_settings.HELP_PLUGINS is not None:
         print(help_plugins(None if len(main_settings.HELP_PLUGINS) == 0 else set(main_settings.HELP_PLUGINS)))
         return
+
+    # Perform macro expansion on the stage options
+    stage_options = perform_macro_expansion(stage_options, main_settings.MACRO_FILE)
 
     # Create the conversion chain
     conversion_chain = ConversionChain.from_options(stage_options)

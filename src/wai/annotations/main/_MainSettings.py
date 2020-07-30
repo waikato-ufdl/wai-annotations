@@ -46,6 +46,15 @@ class MainSettings(CLIInstantiable):
         help="prints this help message and exits"
     )
 
+    # Lets the user define a macro file other than the default one
+    MACRO_FILE = TypedOption(
+        "--macro-file",
+        type=str,
+        default="",
+        help="the file to load macros from",
+        metavar="FILENAME"
+    )
+
     @classmethod
     def get_configured_parser(self, *, add_help=False, **kwargs) -> ArgumentParser:
         return super().get_configured_parser(add_help=add_help, **kwargs)
