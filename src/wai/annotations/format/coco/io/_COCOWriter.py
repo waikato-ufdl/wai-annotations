@@ -55,6 +55,13 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
         help="whether to put the categories in alphabetical order"
     )
 
+    category_output_file: str = TypedOption(
+        "--category-output-file",
+        type=str,
+        help="file to write the categories into, as a simple comma-separated list",
+        metavar="FILENAME"
+    )
+
     def initialise_category_lookup(self) -> Tuple[List[Category], Dict[str, int]]:
         """
         Initialises the category lookup.
@@ -142,6 +149,11 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
         # Sort the categories if requested
         if self.should_sort_categories:
             coco_file.sort_categories()
+
+        # If the categories need to be written, do so
+        if self.category_output_file is not None:
+            with open(self.category_output_file, 'w') as category_output_file:
+                category_output_file.write(",".join(category.name for category in coco_file.categories))
 
         return coco_file
 
