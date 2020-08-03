@@ -1,10 +1,10 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.file.report import Report
 
-from ....domain.image import ImageInfo
-from ....domain.image.object_detection import ImageObjectDetectionOutputConverter
-from ..utils import divide_by_prefix, remove_prefix_metadata
-from .._format import ADAMSExternalFormat
+from .....domain.image import ImageInfo
+from .....domain.image.object_detection import ImageObjectDetectionOutputConverter
+from ...utils import divide_by_prefix, remove_prefix_metadata
+from ..._format import ADAMSExternalFormat
 
 
 class ToADAMSReport(ImageObjectDetectionOutputConverter[ADAMSExternalFormat]):

@@ -4,10 +4,10 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli.options import TypedOption
 from wai.common.file.report import Report
 
-from ....domain.image.object_detection import ImageObjectDetectionInputConverter, ObjectDetectionInstance
-from ....domain.image.object_detection.util import set_object_prefix
-from ..utils import find_all_prefixes
-from .._format import ADAMSExternalFormat
+from .....domain.image.object_detection import ImageObjectDetectionInputConverter, ObjectDetectionInstance
+from .....domain.image.object_detection.util import set_object_prefix
+from ...utils import find_all_prefixes
+from ..._format import ADAMSExternalFormat
 
 
 class FromADAMSReport(ImageObjectDetectionInputConverter[ADAMSExternalFormat]):

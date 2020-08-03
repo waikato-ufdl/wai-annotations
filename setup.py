@@ -52,8 +52,10 @@ setup(
         "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"],
         "wai.annotations.plugins": [
             # Formats
-            "from-adams=wai.annotations.format.specifiers:ADAMSInputFormatSpecifier",
-            "to-adams=wai.annotations.format.specifiers:ADAMSOutputFormatSpecifier",
+            "from-adams-od=wai.annotations.format.specifiers:ADAMSODInputFormatSpecifier",
+            "to-adams-od=wai.annotations.format.specifiers:ADAMSODOutputFormatSpecifier",
+            "from-adams-ic=wai.annotations.format.specifiers:ADAMSICInputFormatSpecifier",
+            "to-adams-ic=wai.annotations.format.specifiers:ADAMSICOutputFormatSpecifier",
             "from-coco=wai.annotations.format.specifiers:COCOInputFormatSpecifier",
             "to-coco=wai.annotations.format.specifiers:COCOOutputFormatSpecifier",
             "from-common-voice=wai.annotations.format.specifiers:CommonVoiceInputFormatSpecifier",

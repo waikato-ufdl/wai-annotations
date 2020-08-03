@@ -4,26 +4,26 @@ from ...core.component import LocalWriter, OutputConverter
 from ...core.specifier import OutputFormatSpecifier, DomainSpecifier
 
 
-class ADAMSOutputFormatSpecifier(OutputFormatSpecifier):
+class ADAMSICOutputFormatSpecifier(OutputFormatSpecifier):
     """
     Specifier of the components for writing the ADAMS report-based
-    object detection format.
+    image classification format.
     """
     @classmethod
     def description(cls) -> str:
-        return "Writes image object-detection annotations in the ADAMS report-format"
+        return "Writes image classification annotations in the ADAMS report-format"
 
     @classmethod
     def domain(cls) -> Type[DomainSpecifier]:
-        from ...domain.image.object_detection import ImageObjectDetectionDomainSpecifier
-        return ImageObjectDetectionDomainSpecifier
+        from ...domain.image.classification import ImageClassificationDomainSpecifier
+        return ImageClassificationDomainSpecifier
 
     @classmethod
     def output_converter(cls) -> Type[OutputConverter]:
-        from ..adams.convert import ToADAMSReport
-        return ToADAMSReport
+        from ..adams.ic.convert import ToADAMS
+        return ToADAMS
 
     @classmethod
     def writer(cls) -> Type[LocalWriter]:
-        from ..adams.io import ADAMSReportWriter
-        return ADAMSReportWriter
+        from ..adams.base.io import ADAMSBaseWriter
+        return ADAMSBaseWriter

@@ -3,13 +3,13 @@ from typing import Iterable
 
 from wai.common.file.report import save
 
-from ....core.component import SeparateFileWriter
-from ....core.instance import FileInfo
-from .._format import ADAMSExternalFormat
-from .. import constants
+from .....core.component import SeparateFileWriter
+from .....core.instance import FileInfo
+from ..._format import ADAMSExternalFormat
+from ... import constants
 
 
-class ADAMSReportWriter(SeparateFileWriter[ADAMSExternalFormat]):
+class ADAMSBaseWriter(SeparateFileWriter[ADAMSExternalFormat]):
     def write_annotations_only(self, instances: Iterable[ADAMSExternalFormat], path: str):
         # Write each instance
         for instance in instances:
