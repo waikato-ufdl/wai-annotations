@@ -17,6 +17,9 @@ from ._FestVoxOutputFormatSpecifier import FestVoxOutputFormatSpecifier
 from ._ROIInputFormatSpecifier import ROIInputFormatSpecifier
 from ._ROIOutputFormatSpecifier import ROIOutputFormatSpecifier
 
+from ._SubDirInputFormatSpecifier import SubDirInputFormatSpecifier
+from ._SubDirOutputFormatSpecifier import SubDirOutputFormatSpecifier
+
 from ._TFRecordsInputFormatSpecifier import TFRecordsInputFormatSpecifier
 from ._TFRecordsOutputFormatSpecifier import TFRecordsOutputFormatSpecifier
 

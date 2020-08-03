@@ -62,6 +62,8 @@ setup(
             "to-festvox=wai.annotations.format.specifiers:FestVoxOutputFormatSpecifier",
             "from-roi=wai.annotations.format.specifiers:ROIInputFormatSpecifier",
             "to-roi=wai.annotations.format.specifiers:ROIOutputFormatSpecifier",
+            "from-subdir=wai.annotations.format.specifiers:SubDirInputFormatSpecifier",
+            "to-subdir=wai.annotations.format.specifiers:SubDirOutputFormatSpecifier",
             "from-tfrecords=wai.annotations.format.specifiers:TFRecordsInputFormatSpecifier",
             "to-tfrecords=wai.annotations.format.specifiers:TFRecordsOutputFormatSpecifier",
             "from-vgg=wai.annotations.format.specifiers:VGGInputFormatSpecifier",
