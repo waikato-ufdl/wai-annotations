@@ -4,13 +4,14 @@ from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli.options import TypedOption
 from wai.common.file.report import Report
 
-from .....domain.image.object_detection import ImageObjectDetectionInputConverter, ObjectDetectionInstance
+from .....core.component import InputConverter
+from .....domain.image.object_detection import ObjectDetectionInstance
 from .....domain.image.object_detection.util import set_object_prefix
 from ...utils import find_all_prefixes
 from ..._format import ADAMSExternalFormat
 
 
-class FromADAMSReport(ImageObjectDetectionInputConverter[ADAMSExternalFormat]):
+class FromADAMSReport(InputConverter[ADAMSExternalFormat, ObjectDetectionInstance]):
     """
     Converter from ADAMS report-style annotations to internal format.
     """
@@ -20,7 +21,7 @@ class FromADAMSReport(ImageObjectDetectionInputConverter[ADAMSExternalFormat]):
         nargs="+",
         help="prefixes to parse")
 
-    def _convert(self, instance: ADAMSExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: ADAMSExternalFormat) -> ObjectDetectionInstance:
         # Unpack the external format
         image_info, report = instance
 

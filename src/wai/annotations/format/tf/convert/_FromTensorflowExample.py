@@ -3,14 +3,15 @@ from typing import List
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli.options import TypedOption
 
+from ....core.component import InputConverter
 from ....domain.image import ImageInfo
-from ....domain.image.object_detection import ImageObjectDetectionInputConverter, ObjectDetectionInstance
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import set_object_label
 from ..utils import extract_feature, image_info_from_example, polygon_from_mask
 from .._format import TensorflowExampleExternalFormat
 
 
-class FromTensorflowExample(ImageObjectDetectionInputConverter[TensorflowExampleExternalFormat]):
+class FromTensorflowExample(InputConverter[TensorflowExampleExternalFormat]):
     """
     Converter from Tensorflow Examples to the internal format.
     """
@@ -30,7 +31,7 @@ class FromTensorflowExample(ImageObjectDetectionInputConverter[TensorflowExample
         help="the stride to use when calculating polygons from masks"
     )
 
-    def _convert(self, instance: TensorflowExampleExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: TensorflowExampleExternalFormat) -> ObjectDetectionInstance:
         # Define a UTF-8 decoder
         def decode_utf_8(bytes_: bytes) -> str:
             return bytes_.decode("utf-8")

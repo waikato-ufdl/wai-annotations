@@ -1,17 +1,18 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
-from ....domain.image.object_detection import ImageObjectDetectionInputConverter, ObjectDetectionInstance
+from ....core.component import InputConverter
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import set_object_label
 from ..configuration import Region, PolygonShapeAttributes
 from .._format import VGGExternalFormat
 from ..utils import from_polygon_shape_attributes, from_rect_shape_attributes
 
 
-class FromVGG(ImageObjectDetectionInputConverter[VGGExternalFormat]):
+class FromVGG(InputConverter[VGGExternalFormat, ObjectDetectionInstance]):
     """
     Converter from VGG annotations to internal format.
     """
-    def _convert(self, instance: VGGExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: VGGExternalFormat) -> ObjectDetectionInstance:
         # Unpack the external format
         image_info, image = instance
 

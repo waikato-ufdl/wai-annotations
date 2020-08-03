@@ -1,17 +1,18 @@
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.geometry import Polygon, Point
 
-from ....domain.image.object_detection import ImageObjectDetectionInputConverter, ObjectDetectionInstance
+from ....core.component import InputConverter
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import set_object_label, set_object_prefix
 from ..configuration import Annotation
 from .._format import COCOExternalFormat
 
 
-class FromCOCO(ImageObjectDetectionInputConverter[COCOExternalFormat]):
+class FromCOCO(InputConverter[COCOExternalFormat, ObjectDetectionInstance]):
     """
     Converter from COCO annotations to internal format.
     """
-    def _convert(self, instance: COCOExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: COCOExternalFormat) -> ObjectDetectionInstance:
         # Unpack the external format
         image_info, annotations, labels, prefixes = instance
 
