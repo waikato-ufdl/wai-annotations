@@ -41,9 +41,6 @@ class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
             f"Saving annotations for "
             f"{self.extract_file_info_from_external_format(instance).filename}")
 
-        # Wrap the stream with the logger
-        instances = stream_logger.process(instances)
-
         # If creating a split, defer to wai.bynning
         if len(self.split_names) != 0 and len(self.split_ratios) != 0:
             # Split and iterate through the instances for the split
@@ -54,11 +51,11 @@ class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
                        in zip(self.split_names, self.split_ratios)}
             ).items():
                 # Write the split
-                self.split_write(split_instances, split_name)
+                self.split_write(stream_logger.process(split_instances), split_name)
 
         # Otherwise just write the instances
         else:
-            self.write(instances)
+            self.write(stream_logger.process(instances))
 
     @abstractmethod
     def split_write(self, instances: Iterable[ExternalFormat], split_name: str):
