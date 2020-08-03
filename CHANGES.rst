@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.4.5 (2020-07-29)
+------------------
+
+- Made help more helpful.
+- Added macros, which allow for simple command-line argument substitution.
+- Improved logging during split-writes. More improvements to come.
+
 0.4.4 (2020-07-29)
 ------------------
 
