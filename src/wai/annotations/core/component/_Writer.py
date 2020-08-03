@@ -28,6 +28,13 @@ class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
                                nargs="+",
                                help="the ratios to use for the splits")
 
+    @property
+    def is_splitting(self) -> bool:
+        """
+        Whether this writer is performing a split-write.
+        """
+        return len(self.split_names) != 0 and len(self.split_ratios) != 0
+
     def save(self, instances: Iterable[ExternalFormat]):
         """
         Writes a series of instances to disk.
@@ -42,7 +49,7 @@ class Writer(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
             f"{self.extract_file_info_from_external_format(instance).filename}")
 
         # If creating a split, defer to wai.bynning
-        if len(self.split_names) != 0 and len(self.split_ratios) != 0:
+        if self.is_splitting:
             # Split and iterate through the instances for the split
             for split_name, split_instances in bynning_split_op(
                     instances,
