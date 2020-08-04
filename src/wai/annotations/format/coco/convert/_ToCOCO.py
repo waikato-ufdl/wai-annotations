@@ -1,23 +1,25 @@
-from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
+from typing import Iterator
 
-from ....domain.image import ImageInfo
-from ....domain.image.object_detection import ImageObjectDetectionOutputConverter
+from wai.common.adams.imaging.locateobjects import LocatedObject
+
+from ....core.component import OutputConverter
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import get_object_label, get_object_prefix
 from ..configuration import Annotation
 from .._format import COCOExternalFormat
 
 
-class ToCOCO(ImageObjectDetectionOutputConverter[COCOExternalFormat]):
+class ToCOCO(OutputConverter[ObjectDetectionInstance, COCOExternalFormat]):
     """
     Converter from internal format to COCO annotations.
     """
-    def convert_unpacked(self,
-                         image_info: ImageInfo,
-                         located_objects: LocatedObjects) -> COCOExternalFormat:
-        return (image_info,
-                list(map(self.convert_located_object, located_objects)),
-                list(map(get_object_label, located_objects)),
-                list(map(get_object_prefix, located_objects)))
+    def convert(self, instance: ObjectDetectionInstance) -> Iterator[COCOExternalFormat]:
+        image_info, located_objects = instance
+
+        yield (image_info,
+               list(map(self.convert_located_object, located_objects)),
+               list(map(get_object_label, located_objects)),
+               list(map(get_object_prefix, located_objects)))
 
     @staticmethod
     def convert_located_object(located_object: LocatedObject) -> Annotation:

@@ -1,20 +1,20 @@
 import hashlib
 from argparse import Namespace
-from typing import Tuple, List, Dict, Union
+from typing import Tuple, List, Dict, Union, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli import OptionsList
 
 from .._ensure_available import tensorflow as tf
 
-from ....domain.image import ImageInfo
-from ....domain.image.object_detection import ImageObjectDetectionOutputConverter
+from ....core.component import OutputConverter
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import get_object_label
 from ..utils import make_feature, mask_from_polygon, negative_example
 from .._format import TensorflowExampleExternalFormat
 
 
-class ToTensorflowExample(ImageObjectDetectionOutputConverter[TensorflowExampleExternalFormat]):
+class ToTensorflowExample(OutputConverter[ObjectDetectionInstance, TensorflowExampleExternalFormat]):
     """
     Converter from the internal format to Tensorflow Examples.
     """
@@ -23,18 +23,19 @@ class ToTensorflowExample(ImageObjectDetectionOutputConverter[TensorflowExampleE
 
         # Lookup to keep track of the labels we've seen and the classes
         # we've assigned to them
-        self._label_class_lookup: Dict[str, int] = {label: index for index, label in enumerate(self.labels, 1)}
+        self._label_class_lookup: Dict[str, int] = {}
 
-    def convert_unpacked(self,
-                         image_info: ImageInfo,
-                         located_objects: LocatedObjects) -> TensorflowExampleExternalFormat:
+    def convert(self, instance: ObjectDetectionInstance) -> Iterator[TensorflowExampleExternalFormat]:
+        image_info, located_objects = instance
+
         # Make sure we have an image
         if image_info.data is None:
             raise ValueError(f"Tensorflow records require image data")
 
         # If no annotations, return an empty example
         if len(located_objects) == 0:
-            return negative_example(image_info)
+            yield negative_example(image_info)
+            return
 
         # Format and extract the relevant annotation parameters
         lefts, rights, tops, bottoms, labels, classes, masks, is_crowds, areas = \
@@ -64,7 +65,7 @@ class ToTensorflowExample(ImageObjectDetectionOutputConverter[TensorflowExampleE
             feature_dict['image/object/mask'] = make_feature(masks)
 
         # Create and return the example
-        return tf.train.Example(
+        yield tf.train.Example(
             features=tf.train.Features(
                 feature=feature_dict
             )

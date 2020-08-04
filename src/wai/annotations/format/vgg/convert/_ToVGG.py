@@ -1,20 +1,20 @@
-from wai.common.adams.imaging.locateobjects import LocatedObjects
+from typing import Iterator
 
-from ....domain.image import ImageInfo
-from ....domain.image.object_detection import ImageObjectDetectionOutputConverter
+from ....core.component import OutputConverter
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import get_object_label, get_object_prefix
 from ..configuration import *
 from .._format import VGGExternalFormat
 from ..utils import get_shape_attributes
 
 
-class ToVGG(ImageObjectDetectionOutputConverter[VGGExternalFormat]):
+class ToVGG(OutputConverter[ObjectDetectionInstance, VGGExternalFormat]):
     """
     Converter from internal format to VGG annotations.
     """
-    def convert_unpacked(self,
-                         image_info: ImageInfo,
-                         located_objects: LocatedObjects) -> VGGExternalFormat:
+    def convert(self, instance: ObjectDetectionInstance) -> Iterator[VGGExternalFormat]:
+        image_info, located_objects = instance
+
         # Create a region for each located object
         regions = [Region(region_attributes=RegionAttributes(name=f"{get_object_prefix(located_object)}-{index}",
                                                              type=get_object_label(located_object),
@@ -28,4 +28,4 @@ class ToVGG(ImageObjectDetectionOutputConverter[VGGExternalFormat]):
                       file_attributes=FileAttributes(caption="", public_domain="no", image_url=""),
                       regions=regions)
 
-        return image_info, image
+        yield image_info, image

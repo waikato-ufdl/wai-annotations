@@ -1,19 +1,19 @@
 from argparse import Namespace
-from typing import Dict, Union
+from typing import Dict, Union, Iterator
 
-from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
+from wai.common.adams.imaging.locateobjects import LocatedObject
 from wai.common.cli import OptionsList
 from wai.common.cli.options import TypedOption
 
-from ....domain.image import ImageInfo
-from ....domain.image.object_detection import ImageObjectDetectionOutputConverter
+from ....core.component import OutputConverter
+from ....domain.image.object_detection import ObjectDetectionInstance
 from ....domain.image.object_detection.util import get_object_label, get_object_prefix, get_object_metadata
 from ..utils import min_rect_from_roi_polygon, roi_polygon
 from .._format import ROIExternalFormat
 from .._ROIObject import ROIObject
 
 
-class ToROI(ImageObjectDetectionOutputConverter[ROIExternalFormat]):
+class ToROI(OutputConverter[ObjectDetectionInstance, ROIExternalFormat]):
     """
     Converter from internal format to ROI annotations.
     """
@@ -30,9 +30,9 @@ class ToROI(ImageObjectDetectionOutputConverter[ROIExternalFormat]):
 
         self._label_map: Dict[str, int] = {}
 
-    def convert_unpacked(self,
-                         image_info: ImageInfo,
-                         located_objects: LocatedObjects) -> ROIExternalFormat:
+    def convert(self, instance: ObjectDetectionInstance) -> Iterator[ROIExternalFormat]:
+        image_info, located_objects = instance
+
         # Make sure we can get the image size
         if image_info.size is not None:
             image_size = image_info.size
@@ -45,7 +45,7 @@ class ToROI(ImageObjectDetectionOutputConverter[ROIExternalFormat]):
         def convert(located_object: LocatedObject) -> ROIObject:
             return self.convert_located_object(located_object, *image_size)
 
-        return image_info, list(map(convert, located_objects))
+        yield image_info, list(map(convert, located_objects))
 
     def convert_located_object(self,
                                located_object: LocatedObject,
