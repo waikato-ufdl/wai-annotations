@@ -1,6 +1,18 @@
 Changelog
 =========
 
+0.4.6 (2020-08-05)
+------------------
+
+- Added --category-output-file option to to-coco format for writing the categories to a simple
+  comma-separated text file.
+- Added the subdir image classification format.
+- Added the ADAMS image classification format.
+- Refactored label-mapping, image format conversion and label filtering into their own
+  ISPs (were options on object detection readers/writers).
+- Better error messages when domains are incorrectly matched.
+- Upgraded wai.common requirement to fix bug with file iteration.
+
 0.4.5 (2020-08-03)
 ------------------
 

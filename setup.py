@@ -32,11 +32,11 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.4.5",
+    version="0.4.6",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
-        "wai.common>=0.0.34",
+        "wai.common>=0.0.35",
         "wai.json>=0.0.4,<0.1",
         "wai.bynning>=0.0.2,<0.1",
         "Cython",
