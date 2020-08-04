@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Set, Iterator
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 from wai.common.cli.options import TypedOption
@@ -21,14 +21,14 @@ class FromADAMSReport(InputConverter[ADAMSExternalFormat, ObjectDetectionInstanc
         nargs="+",
         help="prefixes to parse")
 
-    def convert(self, instance: ADAMSExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: ADAMSExternalFormat) -> Iterator[ObjectDetectionInstance]:
         # Unpack the external format
         image_info, report = instance
 
         # Default to all prefixes if none provided
         prefixes = set(self.prefixes) if len(self.prefixes) > 0 else find_all_prefixes(report)
 
-        return ObjectDetectionInstance(image_info, self.get_located_objects_from_report(report, prefixes))
+        yield ObjectDetectionInstance(image_info, self.get_located_objects_from_report(report, prefixes))
 
     @staticmethod
     def get_located_objects_from_report(report: Report, prefixes: Set[str]) -> LocatedObjects:

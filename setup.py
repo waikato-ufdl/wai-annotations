@@ -78,7 +78,8 @@ setup(
             "dimension-discarder=wai.annotations.isp.specifiers:DimensionDiscarderISPSpecifier",
             "discard-negatives=wai.annotations.isp.specifiers:DiscardNegativesISPSpecifier",
             "check-duplicate-filenames=wai.annotations.isp.specifiers:DuplicateFileNamesISPSpecifier",
-            "map-labels=wai.annotations.isp.specifiers:MapLabelsISPSpecifier"
+            "filter-labels=wai.annotations.isp.specifiers:FilterLabelsISPSpecifier",
+            "map-labels=wai.annotations.isp.specifiers:MapLabelsISPSpecifier",
             "passthrough=wai.annotations.isp.specifiers:PassThroughISPSpecifier",
 
             # XDCs

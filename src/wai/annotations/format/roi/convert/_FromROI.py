@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ....core.component import InputConverter
@@ -11,11 +13,11 @@ class FromROI(InputConverter[ROIExternalFormat, ObjectDetectionInstance]):
     """
     Converter from ROI CSV annotations to internal format.
     """
-    def convert(self, instance: ROIExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: ROIExternalFormat) -> Iterator[ObjectDetectionInstance]:
         # Unpack the external format
         image_info, roi_objects = instance
 
-        return ObjectDetectionInstance(image_info, LocatedObjects(map(self.convert_roi_object, roi_objects)))
+        yield ObjectDetectionInstance(image_info, LocatedObjects(map(self.convert_roi_object, roi_objects)))
 
     @staticmethod
     def convert_roi_object(roi_object: ROIObject) -> LocatedObject:

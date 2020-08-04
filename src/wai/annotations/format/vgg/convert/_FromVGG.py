@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 
 from ....core.component import InputConverter
@@ -12,11 +14,11 @@ class FromVGG(InputConverter[VGGExternalFormat, ObjectDetectionInstance]):
     """
     Converter from VGG annotations to internal format.
     """
-    def convert(self, instance: VGGExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: VGGExternalFormat) -> Iterator[ObjectDetectionInstance]:
         # Unpack the external format
         image_info, image = instance
 
-        return ObjectDetectionInstance(image_info, LocatedObjects(map(self.to_located_object, image.regions)))
+        yield ObjectDetectionInstance(image_info, LocatedObjects(map(self.to_located_object, image.regions)))
 
     @staticmethod
     def to_located_object(region: Region) -> LocatedObject:

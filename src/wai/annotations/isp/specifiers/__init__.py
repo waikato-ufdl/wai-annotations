@@ -13,6 +13,8 @@ from ._DiscardNegativesISPSpecifier import DiscardNegativesISPSpecifier
 
 from ._DuplicateFileNamesISPSpecifier import DuplicateFileNamesISPSpecifier
 
+from ._FilterLabelsISPSpecifier import FilterLabelsISPSpecifier
+
 from ._MapLabelsISPSpecifier import MapLabelsISPSpecifier
 
 from ._PassThroughISPSpecifier import PassThroughISPSpecifier

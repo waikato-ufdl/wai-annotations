@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.geometry import Polygon, Point
 
@@ -12,11 +14,11 @@ class FromCOCO(InputConverter[COCOExternalFormat, ObjectDetectionInstance]):
     """
     Converter from COCO annotations to internal format.
     """
-    def convert(self, instance: COCOExternalFormat) -> ObjectDetectionInstance:
+    def convert(self, instance: COCOExternalFormat) -> Iterator[ObjectDetectionInstance]:
         # Unpack the external format
         image_info, annotations, labels, prefixes = instance
 
-        return ObjectDetectionInstance(image_info, LocatedObjects(map(self.to_located_object, annotations, labels, prefixes)))
+        yield ObjectDetectionInstance(image_info, LocatedObjects(map(self.to_located_object, annotations, labels, prefixes)))
 
     @staticmethod
     def to_located_object(annotation: Annotation, label: str, prefix: str) -> LocatedObject:

@@ -1,23 +1,20 @@
-from abc import abstractmethod
 from argparse import Namespace
 from re import compile
-from typing import List, Union, Pattern, Any, TypeVar, Iterator
+from typing import Iterable, Union, Any, Pattern, Optional, List
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli import OptionsList
 from wai.common.cli.options import TypedOption
 
-from ....core.component import OutputConverter
-from .._ImageInfo import ImageInfo
-from .util import get_object_label
-from ._ObjectDetectionInstance import ObjectDetectionInstance
-
-ExternalFormat = TypeVar("ExternalFormat")
+from ...core.component import InlineStreamProcessor
+from ...domain.image.object_detection import ObjectDetectionInstance
+from ...domain.image.object_detection.util import get_object_label
 
 
-class ImageObjectDetectionOutputConverter(OutputConverter[ObjectDetectionInstance, ExternalFormat]):
+class FilterLabels(InlineStreamProcessor[ObjectDetectionInstance]):
     """
-    Base class for converters from the internal format to an external format.
+    Processes a stream of image object-detection instances,
+    filtering out labels.
     """
     # The labels that should be included in the output format.
     # If None, use regex matching (see below)
@@ -38,29 +35,13 @@ class ImageObjectDetectionOutputConverter(OutputConverter[ObjectDetectionInstanc
                  **internal: Any):
         super().__init__(_namespace, **internal)
 
-        self._pattern: Pattern = compile(self.regex) if self.regex is not None else None
+        self._pattern: Optional[Pattern] = compile(self.regex) if self.regex is not None else None
 
-    def convert(self, instance: ObjectDetectionInstance) -> Iterator[ExternalFormat]:
-        # Unpack the instance
-        image_info, located_objects = instance
-
+    def _process_element(self, element: ObjectDetectionInstance) -> Iterable[ObjectDetectionInstance]:
         # Use the options to filter the located objects by label
-        self.remove_invalid_objects(located_objects)
+        self.remove_invalid_objects(element.annotations)
 
-        yield self.convert_unpacked(image_info, located_objects)
-
-    @abstractmethod
-    def convert_unpacked(self,
-                         image_info: ImageInfo,
-                         located_objects: LocatedObjects) -> ExternalFormat:
-        """
-        Converts an instance from internal format into the external format.
-
-        :param image_info:      The info about the image.
-        :param located_objects: The located objects in the image.
-        :return:                The instance in external format.
-        """
-        pass
+        yield element
 
     def remove_invalid_objects(self, located_objects: LocatedObjects):
         """
