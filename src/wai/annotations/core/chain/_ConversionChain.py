@@ -156,7 +156,10 @@ class ConversionChain(LoggingEnabled):
             if issubclass(stage_specifier, OutputFormatSpecifier):
                 # Make sure the format is for the current output domain
                 if self._output_domains is not None and stage_specifier.domain() not in self._output_domains:
-                    raise BadDomain()
+                    raise BadDomain(f"Attempted to add output stage for domain "
+                                    f"{stage_specifier.domain().domain_name()} ({stage}) "
+                                    f"when previous stages limit "
+                                    f"domains to: {', '.join(domain.domain_name() for domain in self._output_domains)}")
 
                 # If the current input domain has more than one option, then all
                 # intermediaries must be ISPs, so the input domain becomes the domain
@@ -174,11 +177,16 @@ class ConversionChain(LoggingEnabled):
                 if self._output_domains is not None and stage_specifier.domains() is not None:
                     # Get the set of domains that the stage can work with out of the
                     # current set of possible output domains
-                    self._output_domains = self._output_domains.intersection(stage_specifier.domains())
+                    common_domains = self._output_domains.intersection(stage_specifier.domains())
 
                     # If there are none to work with, error
                     if len(self._output_domains) == 0:
-                        raise BadDomain()
+                        raise BadDomain(f"No common domains between current output set "
+                                        f"({', '.join(domain.domain_name() for domain in self._output_domains)}) and "
+                                        f"those operable by ISP {stage} "
+                                        f"({', '.join(domain.domain_name() for domain in stage_specifier.domains())})")
+
+                    self._output_domains = common_domains
 
                 elif self._output_domains is None:
                     self._output_domains = stage_specifier.domains()
@@ -196,7 +204,9 @@ class ConversionChain(LoggingEnabled):
             else:
                 # Make sure the current output domain matches the input domain for the XDC
                 if self._output_domains is not None and stage_specifier.from_domain() not in self._output_domains:
-                    raise BadDomain()
+                    raise BadDomain(f"XDC {stage} ({stage_specifier.from_domain().domain_name()}) "
+                                    f"is not applicable to current set of possible domains: "
+                                    f"{', '.join(domain.domain_name() for domain in self._output_domains)}")
 
                 # Add the stage to the intermediaries
                 self._intermediate_stages.append(instantiate_stage_and_log())
