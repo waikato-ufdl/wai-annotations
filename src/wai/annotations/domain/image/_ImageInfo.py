@@ -50,8 +50,7 @@ class ImageInfo(FileInfo):
     @property
     def size(self) -> Tuple[int, int]:
         """
-        TODO: Comment
-        :return:
+        Gets the (width, height) dimensions of the image.
         """
         return self._size if self._size is not None else (-1, -1)
 
