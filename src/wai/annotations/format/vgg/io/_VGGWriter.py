@@ -10,7 +10,7 @@ class VGGWriter(JSONWriter[VGGExternalFormat]):
     """
     Writer of VGG-format JSON files.
     """
-    def create_json_object(self, instances: Iterable[VGGExternalFormat]) -> VGGFile:
+    def create_json_object(self, instances: Iterable[VGGExternalFormat], path: str) -> VGGFile:
         # Create a map of images
         images = {}
 

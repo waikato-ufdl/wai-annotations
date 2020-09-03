@@ -1,4 +1,5 @@
 import datetime
+import os
 from typing import Iterable, Dict, List, Tuple
 
 from wai.common.cli.options import TypedOption, FlagOption
@@ -82,7 +83,7 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
 
         return categories, lookup
 
-    def create_json_object(self, instances: Iterable[COCOExternalFormat]) -> COCOFile:
+    def create_json_object(self, instances: Iterable[COCOExternalFormat], path: str) -> COCOFile:
         # Get the current time
         now = datetime.datetime.now()
 
@@ -152,7 +153,8 @@ class COCOWriter(JSONWriter[COCOExternalFormat]):
 
         # If the categories need to be written, do so
         if self.category_output_file is not None:
-            with open(self.category_output_file, 'w') as category_output_file:
+            category_path = os.path.join(os.path.dirname(path), self.category_output_file)
+            with open(category_path, 'w') as category_output_file:
                 category_output_file.write(",".join(category.name for category in coco_file.categories))
 
         return coco_file

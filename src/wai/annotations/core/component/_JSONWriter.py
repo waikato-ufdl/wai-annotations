@@ -18,17 +18,18 @@ class JSONWriter(SeparateFileWriter[ExternalFormat], ABC):
 
     def write_annotations_only(self, instances: Iterable[ExternalFormat], path: str):
         # Create the JSON object from the instances
-        json_object = self.create_json_object(instances)
+        json_object = self.create_json_object(instances, path)
 
         # Write the JSON object to disk
         json_object.save_json_to_file(path, 2 if self.pretty else None)
 
     @abstractmethod
-    def create_json_object(self, instances: Iterable[ExternalFormat]) -> JSONObject:
+    def create_json_object(self, instances: Iterable[ExternalFormat], path: str) -> JSONObject:
         """
         Creates the JSON object that will be written to disk.
 
         :param instances:   The instances to write to disk.
+        :param path:        The filename the JSON object will be written to.
         :return:            The JSON object containing the annotations.
         """
         pass
