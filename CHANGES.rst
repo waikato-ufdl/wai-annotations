@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4.7 (2020-09-03)
+------------------
+
+- Fixed bug where `--category-output-file` was being written to an arbitrary location.
+
 0.4.6 (2020-08-05)
 ------------------
 
