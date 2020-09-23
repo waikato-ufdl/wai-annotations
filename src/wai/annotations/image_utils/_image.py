@@ -15,7 +15,7 @@ def image_to_numpyarray(image):
     """
 
     im_arr = np.fromstring(image.tobytes(), dtype=np.uint8)
-    im_arr = im_arr.reshape((image.size[1], image.size[0], 3))
+    im_arr = im_arr.reshape((image.height, image.width, 3))
     return im_arr
 
 
