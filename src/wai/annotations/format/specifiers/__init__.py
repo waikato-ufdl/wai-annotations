@@ -8,6 +8,9 @@ from ._ADAMSICOutputFormatSpecifier import ADAMSICOutputFormatSpecifier
 from ._ADAMSODInputFormatSpecifier import ADAMSODInputFormatSpecifier
 from ._ADAMSODOutputFormatSpecifier import ADAMSODOutputFormatSpecifier
 
+from ._BlueChannelInputFormatSpecifier import BlueChannelInputFormatSpecifier
+from ._BlueChannelOutputFormatSpecifier import BlueChannelOutputFormatSpecifier
+
 from ._COCOInputFormatSpecifier import COCOInputFormatSpecifier
 from ._COCOOutputFormatSpecifier import COCOOutputFormatSpecifier
 
@@ -16,6 +19,9 @@ from ._CommonVoiceOutputFormatSpecifier import CommonVoiceOutputFormatSpecifier
 
 from ._FestVoxInputFormatSpecifier import FestVoxInputFormatSpecifier
 from ._FestVoxOutputFormatSpecifier import FestVoxOutputFormatSpecifier
+
+from ._IndexedPNGInputFormatSpecifier import IndexedPNGInputFormatSpecifier
+from ._IndexedPNGOutputFormatSpecifier import IndexedPNGOutputFormatSpecifier
 
 from ._ROIInputFormatSpecifier import ROIInputFormatSpecifier
 from ._ROIOutputFormatSpecifier import ROIOutputFormatSpecifier
