@@ -21,10 +21,8 @@ class IndexedPNGFormat:
         if image.size is not None and image.size != annotations.size:
             raise Exception("Size of annotations image doesn't match file image size")
 
-        # Make sure the annotation image is an indexed PNG
-        if annotations.format != "PNG":
-            raise Exception("Annotation image is not a PNG")
-        elif annotations.mode != "P":
+        # Make sure the annotation image is an indexed image
+        if annotations.mode != "P":
             raise Exception("Annotation image is not in indexed mode")
 
     @property

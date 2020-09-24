@@ -21,7 +21,6 @@ class ToIndexedPNG(OutputConverter[ImageSegmentationInstance, IndexedPNGFormat])
         annotation = Image.frombytes("P",
                                      instance.annotations.indices.shape,
                                      instance.annotations.indices.astype(np.uint8).tostring())
-        annotation.format = "PNG"
 
         # Add a dummy palette
         # TODO: Allow user to define palette by options
