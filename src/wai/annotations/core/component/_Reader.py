@@ -1,7 +1,7 @@
 import itertools
 from abc import abstractmethod
 from random import Random
-from typing import Generic, Iterator, TypeVar
+from typing import Generic, Iterator, TypeVar, Optional
 
 from wai.common.cli import CLIInstantiable
 from wai.common.cli.options import TypedOption
@@ -24,6 +24,22 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
         help="the seed to use for randomising the read sequence"
     )
 
+    @property
+    def random(self) -> Optional[Random]:
+        """
+        The source of randomness for this reader. Used for randomising the read order
+        of annotation/data files.
+        """
+        # No seed, no randomness
+        if self.seed is None:
+            return None
+
+        # Create the source of randomness if not already done
+        if not hasattr(self, "_random"):
+            setattr(self, "_random", Random(self.seed))
+
+        return getattr(self, "_random")
+
     def load(self) -> Iterator[ExternalFormat]:
         """
         Creates an iterator over the instances in the input file/directory.
@@ -35,10 +51,10 @@ class Reader(LoggingEnabled, CLIInstantiable, Generic[ExternalFormat]):
         negative_files = self.get_negative_files()
 
         # If a seed is given, randomise the file order
-        if self.seed is not None:
-            r = Random(self.seed)
-            annotation_files = random(annotation_files, r)
-            negative_files = random(negative_files, r)
+        random_source = self.random
+        if random_source is not None:
+            annotation_files = random(annotation_files, random_source)
+            negative_files = random(negative_files, random_source)
 
         # Create a stream processor to log when we are loading a file
         stream_logger = StreamLogger(self.logger.info, lambda instance: f"Loading file {instance}")
