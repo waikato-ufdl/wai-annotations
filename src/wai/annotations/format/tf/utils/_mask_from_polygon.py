@@ -3,7 +3,7 @@ import io
 import PIL
 from wai.common.geometry import Polygon
 
-from ....core.utils import polygon_to_poly_array
+from ....core.util import polygon_to_poly_array
 from ....image_utils import polygon_to_mask
 
 

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.5.0 (2020-09-03)
+------------------
+
+- Refactor of the internal structure to aid in debugging.
+- All input/output formats now end in the short-code of their domain.
+
 0.4.7 (2020-09-03)
 ------------------
 

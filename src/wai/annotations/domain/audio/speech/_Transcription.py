@@ -11,3 +11,6 @@ class Transcription:
         Gets the text of the transcription.
         """
         return self._text
+
+    def __str__(self) -> str:
+        return self._text

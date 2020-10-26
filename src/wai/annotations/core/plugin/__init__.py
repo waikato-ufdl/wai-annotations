@@ -1,13 +1,8 @@
 """
-Package for manage plugins to the wai.annotations conversion framework.
+Package for managing plugins to the wai.annotations conversion framework.
 """
-from ._functions import (
-    get_plugin_specifier,
-    get_plugin_specifier_of_type,
-    get_plugin_specifier_of_known_type,
-    plugin_entry_points,
-    get_all_plugin_names,
-    get_all_plugins_of_type,
-    get_all_plugins,
-    get_all_plugins_by_type
-)
+from ._get_all_domains import get_all_domains, try_translate_domains, try_domain_transfer_function
+from ._get_all_plugin_names import get_all_plugin_names
+from ._get_all_plugins import get_all_plugins
+from ._get_all_plugins_by_type import get_all_plugins_by_type
+from ._get_plugin_specifier import get_plugin_specifier

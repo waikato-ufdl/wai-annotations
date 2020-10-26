@@ -4,12 +4,12 @@ from typing import List, TypeVar
 
 from wai.common.cli.options import TypedOption
 
-from .....core.component import LocalReader
+from .....core.component.util import AnnotationFileProcessor
 
 ExternalFormat = TypeVar("ExternalFormat")
 
 
-class ImageSegmentationReader(LocalReader[ExternalFormat], ABC):
+class ImageSegmentationReader(AnnotationFileProcessor[ExternalFormat], ABC):
     """
     Base class for readers of image-segmentation formats.
     """

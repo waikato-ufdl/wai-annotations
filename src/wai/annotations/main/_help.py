@@ -1,8 +1,14 @@
 from typing import Set, Optional, Dict, Type
 
-from ..core.help import MainUsageFormatter
-from ..core.plugin import get_all_plugins_by_type, get_all_plugin_names
-from ..core.specifier import PluginSpecifier
+from ..core.help import MainUsageFormatter, format_stage_usage
+from ..core.plugin import (
+    get_all_plugins_by_type,
+    get_all_plugin_names,
+    get_all_domains,
+    try_translate_domains
+)
+from ..core.specifier import *
+from ..core.specifier.util import specifier_type_string
 from ._MainSettings import MainSettings
 
 
@@ -38,6 +44,22 @@ def list_plugins() -> str:
     return "PLUGINS:\n  " + "\n  ".join(plugin_names) + "\n"
 
 
+def list_domains() -> str:
+    """
+    Creates a string listing the names of all domains registered
+    with wai.annotations.
+
+    :return:    The formatted string.
+    """
+    # Get a list of all plugin names
+    domain_names = list(domain.name() for domain in get_all_domains())
+
+    # Sort it alphabetically
+    domain_names.sort()
+
+    return "DOMAINS:\n  " + "\n  ".join(domain_names) + "\n"
+
+
 def help_plugins(plugins: Optional[Set[str]] = None) -> str:
     """
     Creates a string listing the plugins registered with wai-annotations,
@@ -61,13 +83,14 @@ def help_plugins(plugins: Optional[Set[str]] = None) -> str:
     if len(all_plugins_by_type) == 0:
         result += "  NONE\n"
 
-    for type_string, plugins_for_type in all_plugins_by_type.items():
-        result += f"  {type_string.upper()}:\n"
+    for base_type, plugins_for_type in all_plugins_by_type.items():
+        base_type_string = specifier_type_string(base_type)
+        result += f"  {base_type_string.upper()}:\n"
         for name, plugin in plugins_for_type.items():
             result += f"    {name.upper()}:\n"
             result += f"      {plugin.description()}\n\n"
-            result += f"      Domain(s): {plugin.format_domain_description()}\n\n"
-            result += f"{plugin.format_usage(name, 6)}\n"
+            result += f"      Domain(s): {plugin_domains(plugin)}\n\n"
+            result += f"{format_stage_usage(plugin, name, 6)}\n"
 
         # Additional separation between categories of plugins
         result += "\n"
@@ -75,7 +98,25 @@ def help_plugins(plugins: Optional[Set[str]] = None) -> str:
     return result
 
 
-def filter_plugins(plugins_by_type: Dict[str, Dict[str, Type[PluginSpecifier]]], filter_set: Set[str]):
+def plugin_domains(plugin: Type[StageSpecifier]) -> str:
+    """
+    Formats a string listing the domains valid for a given plugin.
+
+    :param plugin:  The plugin specifier.
+    :return:        The formatted list of domains.
+    """
+    if issubclass(plugin, SourceStageSpecifier):
+        return plugin.domain().name()
+    elif issubclass(plugin, SinkStageSpecifier):
+        return plugin.domain().name()
+    elif issubclass(plugin, ProcessorStageSpecifier):
+        return ", ".join(
+            domain.name()
+            for domain in try_translate_domains(plugin, get_all_domains())
+        )
+
+
+def filter_plugins(plugins_by_type: Dict[Type[StageSpecifier], Dict[str, Type[StageSpecifier]]], filter_set: Set[str]):
     """
     Filters the plugins in place based on their presence in the given set.
 

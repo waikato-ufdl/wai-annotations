@@ -1,0 +1,2 @@
+from ._COCOInputFormatSpecifier import COCOInputFormatSpecifier
+from ._COCOOutputFormatSpecifier import COCOOutputFormatSpecifier

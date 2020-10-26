@@ -1,9 +1,9 @@
-from ....domain.image import ImageInfo
-from .._ensure_available import tensorflow as tf
+from ....domain.image import Image
+from ._ensure_available import tensorflow as tf
 from ._make_feature import make_feature
 
 
-def negative_example(image_info: ImageInfo):
+def negative_example(image_info: Image):
     """
     Creates an empty example (for images with no annotations).
 

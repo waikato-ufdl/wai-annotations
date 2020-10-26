@@ -4,7 +4,7 @@ import PIL
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
-from .....core.utils import polygon_to_poly_array
+from .....core.util import polygon_to_poly_array
 from .....image_utils import polygon_to_mask
 from ..util import polygon_from_rectangle
 

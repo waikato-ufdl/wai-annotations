@@ -24,6 +24,12 @@ class MainSettings(CLIInstantiable):
         help="lists the available plugins and exits"
     )
 
+    # Lists the available plugins and exits
+    LIST_DOMAINS = FlagOption(
+        "--list-domains",
+        help="lists the available domains and exits"
+    )
+
     # Provides usage information for the installed plugins
     HELP_PLUGINS = TypedOption(
         "--help-plugins",
@@ -32,12 +38,6 @@ class MainSettings(CLIInstantiable):
         default=None,
         help="provides usage information about plugins and exits",
         metavar="PLUGIN"
-    )
-
-    # Whether to perform conversions in debug mode
-    DEBUG = FlagOption(
-        "--debug",
-        help="whether to perform conversions in debug mode"
     )
 
     # Override the default help option
@@ -56,5 +56,5 @@ class MainSettings(CLIInstantiable):
     )
 
     @classmethod
-    def get_configured_parser(self, *, add_help=False, **kwargs) -> ArgumentParser:
+    def get_configured_parser(cls, *, add_help=False, **kwargs) -> ArgumentParser:
         return super().get_configured_parser(add_help=add_help, **kwargs)

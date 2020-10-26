@@ -1,20 +1,32 @@
 from typing import Type
 
-from ....core.specifier import DomainSpecifier
-from .._AudioInfo import AudioInfo
+from ....core.domain import DomainSpecifier
+from .._Audio import Audio
 from ._SpeechInstance import SpeechInstance
 from ._Transcription import Transcription
 
 
-class SpeechDomainSpecifier(DomainSpecifier[AudioInfo, Transcription]):
+class SpeechDomainSpecifier(DomainSpecifier[Audio, Transcription]):
     """
     Domain specifier for audio recordings of speech annotated the
     transcription of the spoken words.
     """
     @classmethod
-    def domain_name(cls) -> str:
+    def name(cls) -> str:
         return "Speech Domain"
+    
+    @classmethod
+    def description(cls) -> str:
+        return "Transcriptions of recorded speech"
+    
+    @classmethod
+    def data_type(cls) -> Type[Audio]:
+        return Audio
+    
+    @classmethod
+    def annotations_type(cls) -> Type[Transcription]:
+        return Transcription
 
     @classmethod
-    def instance_class(cls) -> Type[SpeechInstance]:
+    def instance_type(cls) -> Type[SpeechInstance]:
         return SpeechInstance

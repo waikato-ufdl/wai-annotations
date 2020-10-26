@@ -7,9 +7,8 @@ from typing import Optional
 from wai.common.cli import OptionsList
 from wai.common.logging import create_standard_application_root_logger, DEBUG_HANDLER_NAME
 
-from ..core.chain import ConversionChain
-from ..core.debug import set_debug
-from ._help import help_plugins, list_plugins, format_help
+from ..core.builder import ConversionPipelineBuilder
+from ._help import help_plugins, list_plugins, format_help, list_domains
 from ._macros import perform_macro_expansion
 from ._MainSettings import MainSettings
 
@@ -22,6 +21,8 @@ def main(options: Optional[OptionsList] = None):
     """
     # Setup logging
     logger = create_standard_application_root_logger()
+
+    # Remove the PIL logging from the debug logger
     for handler in logger.handlers:
         if handler.name == DEBUG_HANDLER_NAME:
             handler.addFilter(lambda record: record.name != 'PIL.PngImagePlugin')
@@ -35,12 +36,11 @@ def main(options: Optional[OptionsList] = None):
     if "--help-plugins" in options:
         global_options, stage_options = options, []
     else:
-        global_options, stage_options = ConversionChain.split_global_options(options)
+        global_options, stage_options = ConversionPipelineBuilder.split_global_options(options)
 
     # Consume global options
     main_settings = MainSettings(global_options)
     logger.setLevel(main_settings.VERBOSITY)
-    set_debug(main_settings.DEBUG)
 
     # If requested to provide general help, do so and exit
     if main_settings.HELP:
@@ -52,6 +52,11 @@ def main(options: Optional[OptionsList] = None):
         print(list_plugins())
         return
 
+    # If requested to list the domains, do so and exit
+    if main_settings.LIST_DOMAINS:
+        print(list_domains())
+        return
+
     # If requested to print plugin help, do so and exit
     if main_settings.HELP_PLUGINS is not None:
         print(help_plugins(None if len(main_settings.HELP_PLUGINS) == 0 else set(main_settings.HELP_PLUGINS)))
@@ -60,15 +65,15 @@ def main(options: Optional[OptionsList] = None):
     # Perform macro expansion on the stage options
     stage_options = perform_macro_expansion(stage_options, main_settings.MACRO_FILE)
 
-    # Create the conversion chain
-    conversion_chain = ConversionChain.from_options(stage_options)
+    # Create the conversion pipeline
+    conversion_pipeline = ConversionPipelineBuilder.from_options(stage_options)
 
     # Log the to/from formats we are converting
     # TODO: Reinstate
     # logger.info(f"Converting from {input_format} to {output_format}")
 
-    # Execute the chain
-    conversion_chain.save()
+    # Execute the pipeline
+    conversion_pipeline.process()
 
     logger.info("Finished conversion")
 

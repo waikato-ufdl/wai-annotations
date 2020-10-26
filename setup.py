@@ -32,7 +32,7 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.4.7",
+    version="0.5.0",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
@@ -51,40 +51,47 @@ setup(
     entry_points={
         "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"],
         "wai.annotations.plugins": [
-            # Formats
-            "from-adams-od=wai.annotations.format.specifiers:ADAMSODInputFormatSpecifier",
-            "to-adams-od=wai.annotations.format.specifiers:ADAMSODOutputFormatSpecifier",
-            "from-adams-ic=wai.annotations.format.specifiers:ADAMSICInputFormatSpecifier",
-            "to-adams-ic=wai.annotations.format.specifiers:ADAMSICOutputFormatSpecifier",
-            "from-blue-channel-is=wai.annotations.format.specifiers:BlueChannelInputFormatSpecifier",
-            "to-blue-channel-is=wai.annotations.format.specifiers:BlueChannelOutputFormatSpecifier",
-            "from-coco=wai.annotations.format.specifiers:COCOInputFormatSpecifier",
-            "to-coco=wai.annotations.format.specifiers:COCOOutputFormatSpecifier",
-            "from-common-voice=wai.annotations.format.specifiers:CommonVoiceInputFormatSpecifier",
-            "to-common-voice=wai.annotations.format.specifiers:CommonVoiceOutputFormatSpecifier",
-            "from-festvox=wai.annotations.format.specifiers:FestVoxInputFormatSpecifier",
-            "to-festvox=wai.annotations.format.specifiers:FestVoxOutputFormatSpecifier",
-            "from-indexed-png-is=wai.annotations.format.specifiers:IndexedPNGInputFormatSpecifier",
-            "to-indexed-png-is=wai.annotations.format.specifiers:IndexedPNGOutputFormatSpecifier",
-            "from-roi=wai.annotations.format.specifiers:ROIInputFormatSpecifier",
-            "to-roi=wai.annotations.format.specifiers:ROIOutputFormatSpecifier",
-            "from-subdir=wai.annotations.format.specifiers:SubDirInputFormatSpecifier",
-            "to-subdir=wai.annotations.format.specifiers:SubDirOutputFormatSpecifier",
-            "from-tfrecords=wai.annotations.format.specifiers:TFRecordsInputFormatSpecifier",
-            "to-tfrecords=wai.annotations.format.specifiers:TFRecordsOutputFormatSpecifier",
-            "from-vgg=wai.annotations.format.specifiers:VGGInputFormatSpecifier",
-            "to-vgg=wai.annotations.format.specifiers:VGGOutputFormatSpecifier",
+            # Image Object Detection Formats
+            "from-adams-od=wai.annotations.format.adams.od.specifier:ADAMSODInputFormatSpecifier",
+            "to-adams-od=wai.annotations.format.adams.od.specifier:ADAMSODOutputFormatSpecifier",
+            "from-coco-od=wai.annotations.format.coco.specifier:COCOInputFormatSpecifier",
+            "to-coco-od=wai.annotations.format.coco.specifier:COCOOutputFormatSpecifier",
+            "from-roi-od=wai.annotations.format.roi.specifier:ROIInputFormatSpecifier",
+            "to-roi-od=wai.annotations.format.roi.specifier:ROIOutputFormatSpecifier",
+            "from-tf-od=wai.annotations.format.tf.specifier:TFRecordsInputFormatSpecifier",
+            "to-tf-od=wai.annotations.format.tf.specifier:TFRecordsOutputFormatSpecifier",
+            "from-vgg-od=wai.annotations.format.vgg.specifier:VGGInputFormatSpecifier",
+            "to-vgg-od=wai.annotations.format.vgg.specifier:VGGOutputFormatSpecifier",
+
+            # Image Classification Formats
+            "from-adams-ic=wai.annotations.format.adams.ic.specifier:ADAMSICInputFormatSpecifier",
+            "to-adams-ic=wai.annotations.format.adams.ic.specifier:ADAMSICOutputFormatSpecifier",
+            "from-subdir-ic=wai.annotations.format.subdir.specifier:SubDirInputFormatSpecifier",
+            "to-subdir-ic=wai.annotations.format.subdir.specifier:SubDirOutputFormatSpecifier",
+
+            # Image Segmentation Formats
+            "from-blue-channel-is=wai.annotations.format.blue_channel.specifier:BlueChannelInputFormatSpecifier",
+            "to-blue-channel-is=wai.annotations.format.blue_channel.specifier:BlueChannelOutputFormatSpecifier",
+            "from-indexed-png-is=wai.annotations.format.indexed_png.specifier:IndexedPNGInputFormatSpecifier",
+            "to-indexed-png-is=wai.annotations.format.indexed_png.specifier:IndexedPNGOutputFormatSpecifier",
+
+            # Speech Formats
+            "from-common-voice-sp=wai.annotations.format.common_voice.specifier:CommonVoiceInputFormatSpecifier",
+            "to-common-voice-sp=wai.annotations.format.common_voice.specifier:CommonVoiceOutputFormatSpecifier",
+            "from-festvox-sp=wai.annotations.format.festvox.specifier:FestVoxInputFormatSpecifier",
+            "to-festvox-sp=wai.annotations.format.festvox.specifier:FestVoxOutputFormatSpecifier",
 
             # ISPs
-            "coerce-box=wai.annotations.isp.specifiers:BoxBoundsCoercionISPSpecifier",
-            "coerce-mask=wai.annotations.isp.specifiers:MaskBoundsCoercionISPSpecifier",
-            "convert-image-format=wai.annotations.isp.specifiers:ConvertImageFormatISPSpecifier",
-            "dimension-discarder=wai.annotations.isp.specifiers:DimensionDiscarderISPSpecifier",
-            "discard-negatives=wai.annotations.isp.specifiers:DiscardNegativesISPSpecifier",
-            "check-duplicate-filenames=wai.annotations.isp.specifiers:DuplicateFileNamesISPSpecifier",
-            "filter-labels=wai.annotations.isp.specifiers:FilterLabelsISPSpecifier",
-            "map-labels=wai.annotations.isp.specifiers:MapLabelsISPSpecifier",
-            "passthrough=wai.annotations.isp.specifiers:PassThroughISPSpecifier",
+            "coerce-box=wai.annotations.isp.coercions.specifier:BoxBoundsCoercionISPSpecifier",
+            "coerce-mask=wai.annotations.isp.coercions.specifier:MaskBoundsCoercionISPSpecifier",
+            "convert-image-format=wai.annotations.isp.convert_image_format.specifier:ConvertImageFormatISPSpecifier",
+            "dimension-discarder=wai.annotations.isp.dimension_discarder.specifier:DimensionDiscarderISPSpecifier",
+            "discard-negatives=wai.annotations.isp.discard_negatives.specifier:DiscardNegativesISPSpecifier",
+            "check-duplicate-filenames=wai.annotations.isp.duplicate_filenames.specifier:DuplicateFileNamesISPSpecifier",
+            "filter-labels=wai.annotations.isp.filter_labels.specifier:FilterLabelsISPSpecifier",
+            "map-labels=wai.annotations.isp.map_labels.specifier:MapLabelsISPSpecifier",
+            "passthrough=wai.annotations.isp.passthrough.specifier:PassThroughISPSpecifier",
+            "remove-classes=wai.annotations.isp.remove_classes.specifier:RemoveClassesISPSpecifier",
 
             # XDCs
             # Currently none

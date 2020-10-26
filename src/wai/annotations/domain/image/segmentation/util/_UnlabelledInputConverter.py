@@ -4,13 +4,14 @@ from typing import TypeVar
 from wai.common import TwoWayDict
 from wai.common.cli.options import TypedOption
 
-from .....core.component import InputConverter
+from .....core.component import ProcessorComponent
+from .....core.util import InstanceState
 from .._ImageSegmentationInstance import ImageSegmentationInstance
 
 ExternalFormat = TypeVar("ExternalFormat")
 
 
-class UnlabelledInputConverter(InputConverter[ExternalFormat, ImageSegmentationInstance], ABC):
+class UnlabelledInputConverter(ProcessorComponent[ExternalFormat, ImageSegmentationInstance], ABC):
     """
     Base-class for image-segmentation input converters which don't
     provide labels for their indexed classes.
@@ -24,23 +25,20 @@ class UnlabelledInputConverter(InputConverter[ExternalFormat, ImageSegmentationI
         help="specifies the labels for each index"
     )
 
-    @property
-    def label_lookup(self) -> TwoWayDict[int, str]:
-        if not hasattr(self, "_label_lookup_field"):
-            setattr(self, "_label_lookup_field", self._initialise_label_lookup())
-        return getattr(self, "_label_lookup_field")
+    label_lookup: TwoWayDict[int, str] = InstanceState(lambda self: _initialise_label_lookup(self))
 
-    def _initialise_label_lookup(self) -> TwoWayDict[int, str]:
-        """
-        Initialises the lookup between labels/indices on first access.
 
-        :return:    The initialised lookup.
-        """
-        # Create the lookup
-        lookup = TwoWayDict[int, str]()
+def _initialise_label_lookup(self: UnlabelledInputConverter) -> TwoWayDict[int, str]:
+    """
+    Initialises the lookup between labels/indices on first access.
 
-        # Add the labels
-        for index, label in enumerate(self.labels, 1):
-            lookup[index] = label
+    :return:    The initialised lookup.
+    """
+    # Create the lookup
+    lookup = TwoWayDict[int, str]()
 
-        return lookup
+    # Add the labels
+    for index, label in enumerate(self.labels, 1):
+        lookup[index] = label
+
+    return lookup

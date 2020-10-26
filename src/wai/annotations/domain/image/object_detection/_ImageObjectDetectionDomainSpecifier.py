@@ -2,20 +2,32 @@ from typing import Type
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects
 
-from ....core.specifier import DomainSpecifier
-from .._ImageInfo import ImageInfo
-from ._ObjectDetectionInstance import ObjectDetectionInstance
+from ....core.domain import DomainSpecifier
+from .._Image import Image
+from ._ImageObjectDetectionInstance import ImageObjectDetectionInstance
 
 
-class ImageObjectDetectionDomainSpecifier(DomainSpecifier[ImageInfo, LocatedObjects]):
+class ImageObjectDetectionDomainSpecifier(DomainSpecifier[Image, LocatedObjects]):
     """
     Domain specifier for images annotated with objects
     detected within those images.
     """
     @classmethod
-    def domain_name(cls) -> str:
+    def name(cls) -> str:
         return "Image Object-Detection Domain"
 
     @classmethod
-    def instance_class(cls) -> Type[ObjectDetectionInstance]:
-        return ObjectDetectionInstance
+    def description(cls) -> str:
+        return "Objects detected in images, bound by a geometric shape"
+
+    @classmethod
+    def data_type(cls) -> Type[Image]:
+        return Image
+
+    @classmethod
+    def annotations_type(cls) -> Type[LocatedObjects]:
+        return LocatedObjects
+
+    @classmethod
+    def instance_type(cls) -> Type[ImageObjectDetectionInstance]:
+        return ImageObjectDetectionInstance

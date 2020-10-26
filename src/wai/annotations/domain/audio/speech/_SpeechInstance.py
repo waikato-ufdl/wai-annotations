@@ -1,9 +1,13 @@
-from ....core.instance import Instance
-from .._AudioInfo import AudioInfo
+from typing import Type
+
+from .._AudioInstance import AudioInstance
 from ._Transcription import Transcription
 
 
-class SpeechInstance(Instance[AudioInfo, Transcription]):
-    @property
-    def is_negative(self) -> bool:
-        return len(self.annotations.text) == 0
+class SpeechInstance(AudioInstance[Transcription]):
+    """
+    An instance in the speech domain.
+    """
+    @classmethod
+    def annotations_type(cls) -> Type[Transcription]:
+        return Transcription

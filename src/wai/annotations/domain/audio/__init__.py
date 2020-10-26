@@ -1,4 +1,5 @@
 """
 Common functionality for all audio-based domains.
 """
-from ._AudioInfo import AudioInfo
+from ._Audio import Audio
+from ._AudioInstance import AudioInstance

@@ -1,5 +1,5 @@
-from ....domain.image import ImageInfo, ImageFormat
-from .._format import TensorflowExampleExternalFormat
+from ....domain.image import Image, ImageFormat
+from ..utils import TensorflowExampleExternalFormat
 from ._extract_feature import extract_feature
 
 
@@ -19,4 +19,4 @@ def image_info_from_example(instance: TensorflowExampleExternalFormat):
     if not isinstance(image_width, int) or not isinstance(image_height, int):
         raise TypeError(f"Image dimensions not in expected format (integer)")
 
-    return ImageInfo(image_filename, image_data, image_format, (image_width, image_height))
+    return Image(image_filename, image_data, image_format, (image_width, image_height))
