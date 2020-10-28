@@ -30,7 +30,7 @@ class LocalFileWriter(SinkComponent[ElementType]):
         The directory this writer is writing to.
         """
         # Get the path from the 'output' option
-        output_path = self.output
+        output_path = os.path.abspath(self.output)
         if self.expects_file:
             output_path = os.path.dirname(output_path)
 
