@@ -7,10 +7,10 @@ from wai.common.cli.options import TypedOption
 from ....core.component.util import (
     SplitSink,
     LocalFileWriter,
-    SplitState,
     WithPersistentSplitFiles,
     ExpectsFile
 )
+from ....core.stream.util import ProcessState
 from ....core.util import InstanceState
 from ..utils import (
     tensorflow as tf,
@@ -45,7 +45,7 @@ class TensorflowExampleWriter(
 
     _num_writers: int = InstanceState(lambda self: len(self.shards) + 1)
 
-    _label_map_accumulator: Optional[LabelMapAccumulator] = SplitState(
+    _label_map_accumulator: Optional[LabelMapAccumulator] = ProcessState(
         lambda self: None if self.protobuf_label_map is None else LabelMapAccumulator()
     )
 
@@ -75,12 +75,21 @@ class TensorflowExampleWriter(
         Writes the label-to-index mapping to the given file, in
         protobuf format, if an output filename was given.
         """
+        # Extract the label map and sort it
+        labels_sorted = [
+            (index, label)
+            for label, index in label_map_accumulator.label_map.items()
+        ]
+        labels_sorted.sort(key=lambda entry: entry[0])
+
         # Format the label index map
-        protobuf: List[str] = ["item {\n" +
-                               f"  id: {index}\n" +
-                               f"  name: '{label}'\n" +
-                               "}\n"
-                               for label, index in label_map_accumulator.label_map.items()]
+        protobuf: List[str] = [
+            "item {\n" +
+            f"  id: {index}\n" +
+            f"  name: '{label}'\n" +
+            "}\n"
+            for index, label in labels_sorted
+        ]
 
         # Write the lines to the specified file
         with open(join(path, self.protobuf_label_map), 'w') as file:
