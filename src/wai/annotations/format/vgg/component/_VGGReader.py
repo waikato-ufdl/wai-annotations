@@ -58,7 +58,6 @@ class VGGReader(AnnotationFileProcessor[VGGExternalFormat]):
                     size=-1,
                     file_attributes=FileAttributes(caption="", public_domain="no", image_url=""),
                     regions=[]
-
                 )
             )
         )
