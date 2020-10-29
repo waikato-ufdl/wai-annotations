@@ -1,4 +1,4 @@
-from typing import List, Iterator
+from typing import List
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.cli.options import TypedOption

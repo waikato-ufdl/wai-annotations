@@ -1,11 +1,10 @@
 import os
-from typing import Tuple
 
 from wai.common.adams.imaging.locateobjects import LocatedObjects, LocatedObject
 from wai.common.geometry import Point, Polygon
 
 from ....core.component.util import AnnotationFileProcessor
-from ....core.stream import ThenFunction, DoneFunction
+from ....core.stream import ThenFunction
 from ....domain.image import Image
 from ....domain.image.object_detection import ImageObjectDetectionInstance
 from ....domain.image.object_detection.util import set_object_label, set_object_prefix

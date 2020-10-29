@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 import csv
 
 from wai.common.cli.options import TypedOption
