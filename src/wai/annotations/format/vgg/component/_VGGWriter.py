@@ -23,9 +23,14 @@ class VGGWriter(
         # Unpack the instance
         image_info, image = element
 
-        self._split_image[f"{image.filename}-1"] = image
-
+        # Write the image
         self.write_data_file(image_info, self._split_path)
+
+        # If the image is a negative, skip writing it
+        if len(image.regions) == 0:
+            return
+
+        self._split_image[f"{image.filename}-1"] = image
 
     def finish_split(self):
         VGGFile(**self._split_image).save_json_to_file(

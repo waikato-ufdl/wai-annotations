@@ -6,6 +6,7 @@ Changelog
 
 - Fixed bug in calculating output directory from command-line option.
 - Added `strip-annotations` ISP.
+- Stopped COCO/ROI/VGG image object-detection formats from writing negative annotations.
 
 0.5.0 (2020-10-27)
 ------------------

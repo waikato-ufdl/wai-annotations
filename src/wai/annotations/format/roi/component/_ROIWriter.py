@@ -63,6 +63,16 @@ class ROIWriter(
         # Format the report filename
         filename: str = roi_filename_for_image(image_info.filename, self.writer_prefix, self.writer_suffix)
 
+        # Format the filename for the ROI file
+        roi_filename = self.get_split_path(self.split_label, os.path.join(self.output, filename), True)
+
+        # Write the image
+        self.write_data_file(image_info, os.path.dirname(roi_filename))
+
+        # If this is a negative example, we're done
+        if len(roi_objects) == 0:
+            return
+
         # Format each ROI object as a dictionary
         roi_dicts, headers = combine_dicts(roi_object.as_dict(self.size_mode) for roi_object in roi_objects)
 
@@ -79,9 +89,6 @@ class ROIWriter(
         # Add the filename header
         headers = "file", *headers, *non_standard_headers
 
-        # Format the filename for the ROI file
-        roi_filename = self.get_split_path(self.split_label, os.path.join(self.output, filename), True)
-
         # Write the CSV file
         with open(roi_filename, "w") as file:
             self._write_comments(file)
@@ -90,9 +97,6 @@ class ROIWriter(
             for roi_dict in roi_dicts:
                 roi_dict.update(file=image_info.filename)
                 csv_writer.writerow(roi_dict)
-
-        # Write the image
-        self.write_data_file(image_info, os.path.dirname(roi_filename))
 
     @classmethod
     def get_help_text_for_output_option(cls) -> str:

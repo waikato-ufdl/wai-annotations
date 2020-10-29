@@ -85,6 +85,13 @@ class COCOWriter(
         # Unpack the instance
         image_info, annotations, labels, prefixes = element
 
+        # Write the image file
+        self.write_data_file(image_info, self.get_split_path(self.split_label, self.output_path))
+
+        # If this is a negative example, don't add it to the JSON file
+        if len(annotations) == 0:
+            return
+
         # Create the image description
         image = Image(id=self._next_image_id,
                       width=image_info.width,
@@ -122,9 +129,6 @@ class COCOWriter(
 
             # Add the annotation
             self._coco_file.annotations.append(annotation)
-
-        # Write the image file
-        self.write_data_file(image_info, self.get_split_path(self.split_label, self.output_path))
 
     def finish_split(self):
         # Create the list of categories
