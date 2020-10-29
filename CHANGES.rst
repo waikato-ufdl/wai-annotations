@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Fixed bug in calculating output directory from command-line option.
+- Added `strip-annotations` ISP.
 
 0.5.0 (2020-10-27)
 ------------------

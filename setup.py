@@ -32,7 +32,7 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.5.0",
+    version="0.5.1",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
@@ -92,6 +92,7 @@ setup(
             "map-labels=wai.annotations.isp.map_labels.specifier:MapLabelsISPSpecifier",
             "passthrough=wai.annotations.isp.passthrough.specifier:PassThroughISPSpecifier",
             "remove-classes=wai.annotations.isp.remove_classes.specifier:RemoveClassesISPSpecifier",
+            "strip-annotations=wai.annotations.isp.strip_annotations.specifier:StripAnnotationsISPSpecifier",
 
             # XDCs
             # Currently none
