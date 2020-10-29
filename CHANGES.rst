@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5.1 (2020-10-??)
+0.5.1 (2020-10-30)
 ------------------
 
 - Fixed bug in calculating output directory from command-line option.
