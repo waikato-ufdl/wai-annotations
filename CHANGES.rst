@@ -8,6 +8,7 @@ Changelog
 - Added `strip-annotations` ISP.
 - Stopped COCO/ROI/VGG image object-detection formats from writing negative annotations.
 - Fixed bug in coercions where negatives instances weren't being handled correctly.
+- Added `--dense` option to `to-tf-od` which encodes masks in the dense numerical format.
 
 0.5.0 (2020-10-27)
 ------------------

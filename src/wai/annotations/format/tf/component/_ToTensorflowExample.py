@@ -1,7 +1,10 @@
 import hashlib
 from typing import Tuple, List, Dict
 
+import numpy as np
+
 from wai.common.adams.imaging.locateobjects import LocatedObjects
+from wai.common.cli.options import FlagOption
 
 from ....core.component import ProcessorComponent
 from ....core.stream import ThenFunction, DoneFunction
@@ -13,7 +16,9 @@ from ..utils import (
     make_feature,
     mask_from_polygon,
     negative_example,
-    TensorflowExampleExternalFormat
+    TensorflowExampleExternalFormat,
+    png_from_mask,
+    dense_numerical_from_mask
 )
 
 
@@ -24,6 +29,11 @@ class ToTensorflowExample(
     """
     Converter from the internal format to Tensorflow Examples.
     """
+    dense_format: bool = FlagOption(
+        "--dense",
+        help="outputs masks in the dense numerical format instead of PNG-encoded"
+    )
+
     _label_class_lookup: Dict[str, int] = ProcessState(lambda self: {})
 
     def process_element(
@@ -50,11 +60,11 @@ class ToTensorflowExample(
         feature_dict = {
             'image/height': make_feature(image_info.height),
             'image/width': make_feature(image_info.width),
-            'image/filename': make_feature(image_info.filename),
-            'image/source_id': make_feature(image_info.filename),
+            'image/filename': make_feature(image_info.filename.encode("utf-8")),
+            'image/source_id': make_feature(image_info.filename.encode("utf-8")),
             'image/encoded': make_feature(image_info.data),
-            'image/format': make_feature(image_info.format.get_default_extension()),
-            'image/key/sha256': make_feature(hashlib.sha256(image_info.data).hexdigest()),
+            'image/format': make_feature(image_info.format.get_default_extension().encode("utf-8")),
+            'image/key/sha256': make_feature(hashlib.sha256(image_info.data).hexdigest().encode("utf-8")),
             'image/object/bbox/xmin': make_feature(lefts),
             'image/object/bbox/xmax': make_feature(rights),
             'image/object/bbox/ymin': make_feature(tops),
@@ -67,7 +77,12 @@ class ToTensorflowExample(
 
         # Add the masks if present
         if len(masks) > 0:
-            feature_dict['image/object/mask'] = make_feature(masks)
+            # Encode the masks based on the --dense option
+            feature_dict['image/object/mask'] = (
+                tf.train.Feature(float_list=tf.train.FloatList(value=np.concatenate(list(map(dense_numerical_from_mask, masks)))))
+                if self.dense_format else
+                make_feature(list(map(png_from_mask, masks)))
+            )
 
         # Create and return the example
         then(
@@ -85,7 +100,7 @@ class ToTensorflowExample(
         List[float],
         List[bytes],
         List[int],
-        List[bytes],
+        List[np.ndarray],
         List[bool],
         List[float]
     ]:
@@ -145,11 +160,18 @@ class ToTensorflowExample(
                 is_crowds.append(False)
                 if located_object.has_polygon():
                     polygon = located_object.get_polygon()
-                    masks.append(mask_from_polygon(polygon,
-                                                   image_width,
-                                                   image_height))
+                    masks.append(
+                        mask_from_polygon(
+                            polygon,
+                            image_width,
+                            image_height
+                        )
+                    )
                     areas.append(polygon.area())
                 else:
-                    areas.append(located_object.get_rectangle().area())
+                    # TODO: If some located objects have polygons and some don't,
+                    #       the 'masks' list will be a different size to the others.
+                    #       Resolve.
+                    areas.append(float(located_object.get_rectangle().area()))
 
         return lefts, rights, tops, bottoms, labels, classes, masks, is_crowds, areas

@@ -16,10 +16,10 @@ def negative_example(image_info: Image):
             feature={
                 'image/height': make_feature(image_info.height),
                 'image/width': make_feature(image_info.width),
-                'image/filename': make_feature(image_info.filename),
-                'image/source_id': make_feature(image_info.filename),
+                'image/filename': make_feature(image_info.filename.encode("utf-8")),
+                'image/source_id': make_feature(image_info.filename.encode("utf-8")),
                 'image/encoded': make_feature(image_info.data),
-                'image/format': make_feature(image_info.format.get_default_extension()),
+                'image/format': make_feature(image_info.format.get_default_extension().encode("utf-8")),
                 'image/key/sha256': make_feature(hashlib.sha256(image_info.data).hexdigest()),
                 'image/object/bbox/xmin': tf.train.Feature(float_list=tf.train.FloatList(value=[])),
                 'image/object/bbox/xmax': tf.train.Feature(float_list=tf.train.FloatList(value=[])),
