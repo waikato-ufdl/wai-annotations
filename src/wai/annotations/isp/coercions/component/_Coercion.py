@@ -27,8 +27,9 @@ class Coercion(
         image_info, located_objects = element
 
         # Process each located object
-        for located_object in located_objects:
-            self._process_located_object(located_object)
+        if located_objects is not None:
+            for located_object in located_objects:
+                self._process_located_object(located_object)
 
         then(element)
 
