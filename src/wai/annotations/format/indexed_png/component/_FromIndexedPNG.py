@@ -1,15 +1,17 @@
 import numpy as np
 
+from ....core.component import ProcessorComponent
 from ....core.stream import ThenFunction, DoneFunction
 from ....core.stream.util import RequiresNoFinalisation
 from ....domain.image.segmentation import ImageSegmentationInstance, ImageSegmentationAnnotation
-from ....domain.image.segmentation.util import UnlabelledInputConverter
+from ....domain.image.segmentation.util import UnlabelledInputMixin
 from ..util import IndexedPNGFormat
 
 
 class FromIndexedPNG(
     RequiresNoFinalisation,
-    UnlabelledInputConverter[IndexedPNGFormat]
+    UnlabelledInputMixin,
+    ProcessorComponent[IndexedPNGFormat, ImageSegmentationInstance]
 ):
     """
     Converter from the indexed-PNG image-segmentation format

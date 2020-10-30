@@ -1,20 +1,15 @@
 from abc import ABC
-from typing import TypeVar
 
 from wai.common import TwoWayDict
+from wai.common.cli import OptionValueHandler
 from wai.common.cli.options import TypedOption
 
-from .....core.component import ProcessorComponent
 from .....core.util import InstanceState
-from .._ImageSegmentationInstance import ImageSegmentationInstance
-
-ExternalFormat = TypeVar("ExternalFormat")
 
 
-class UnlabelledInputConverter(ProcessorComponent[ExternalFormat, ImageSegmentationInstance], ABC):
+class UnlabelledInputMixin(OptionValueHandler, ABC):
     """
-    Base-class for image-segmentation input converters which don't
-    provide labels for their indexed classes.
+    Mixin class which provides labels for image segmentation formats.
     """
     # Mapping from indices to labels
     labels = TypedOption(
@@ -28,7 +23,7 @@ class UnlabelledInputConverter(ProcessorComponent[ExternalFormat, ImageSegmentat
     label_lookup: TwoWayDict[int, str] = InstanceState(lambda self: _initialise_label_lookup(self))
 
 
-def _initialise_label_lookup(self: UnlabelledInputConverter) -> TwoWayDict[int, str]:
+def _initialise_label_lookup(self: UnlabelledInputMixin) -> TwoWayDict[int, str]:
     """
     Initialises the lookup between labels/indices on first access.
 

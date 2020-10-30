@@ -74,6 +74,8 @@ setup(
             "to-blue-channel-is=wai.annotations.format.blue_channel.specifier:BlueChannelOutputFormatSpecifier",
             "from-indexed-png-is=wai.annotations.format.indexed_png.specifier:IndexedPNGInputFormatSpecifier",
             "to-indexed-png-is=wai.annotations.format.indexed_png.specifier:IndexedPNGOutputFormatSpecifier",
+            "from-layer-segments-is=wai.annotations.format.layer_segments.specifier:LayerSegmentsSourceStageSpecifier",
+            "to-layer-segments-is=wai.annotations.format.layer_segments.specifier:LayerSegmentsSinkStageSpecifier",
 
             # Speech Formats
             "from-common-voice-sp=wai.annotations.format.common_voice.specifier:CommonVoiceInputFormatSpecifier",

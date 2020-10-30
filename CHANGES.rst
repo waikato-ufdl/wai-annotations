@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.2 (2020-??-??)
+------------------
+
+- Added the layer-segments image-segmentation format.
+
 0.5.1 (2020-10-30)
 ------------------
 

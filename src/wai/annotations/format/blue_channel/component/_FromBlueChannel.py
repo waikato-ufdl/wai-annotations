@@ -1,15 +1,17 @@
 import numpy as np
 
+from ....core.component import ProcessorComponent
 from ....core.stream import ThenFunction, DoneFunction
 from ....core.stream.util import RequiresNoFinalisation
 from ....domain.image.segmentation import ImageSegmentationInstance, ImageSegmentationAnnotation
-from ....domain.image.segmentation.util import UnlabelledInputConverter
+from ....domain.image.segmentation.util import UnlabelledInputMixin
 from ..util import BlueChannelFormat
 
 
 class FromBlueChannel(
     RequiresNoFinalisation,
-    UnlabelledInputConverter[BlueChannelFormat]
+    UnlabelledInputMixin,
+    ProcessorComponent[BlueChannelFormat, ImageSegmentationInstance]
 ):
     """
     Converter from the blue-channel image-segmentation format
