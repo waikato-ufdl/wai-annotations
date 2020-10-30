@@ -8,12 +8,12 @@ from ....core.stream import ThenFunction, DoneFunction
 from ....core.stream.util import ProcessState
 from ....domain.image import Image
 from ....domain.image.segmentation import ImageSegmentationInstance, ImageSegmentationAnnotation
-from ....domain.image.segmentation.util import UnlabelledInputMixin
-from ....domain.image.util import get_associated_image
+from ....domain.image.segmentation.util import UnlabelledInputMixin, RelativeDataPathMixin
 from ..util import LabelSeparatorMixin
 
 
 class FromLayerSegments(
+    RelativeDataPathMixin,
     UnlabelledInputMixin,
     LabelSeparatorMixin,
     ProcessorComponent[Tuple[str, bool], ImageSegmentationInstance]
@@ -60,7 +60,7 @@ class FromLayerSegments(
     ):
         for data_image_basename, label_image_filename_lookup in self.groups.items():
             # Find the base image
-            data_image_filename = get_associated_image(data_image_basename)
+            data_image_filename = self.get_associated_image(data_image_basename)
 
             # Error if the data image couldn't be found
             if data_image_filename is None:

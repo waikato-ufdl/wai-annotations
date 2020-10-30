@@ -1,25 +1,25 @@
 import os
 from PIL import Image as PILImage
 
+from ....core.component.util import AnnotationFileProcessor
 from ....core.stream import ThenFunction
 from ....domain.image import Image, ImageFormat
-from ....domain.image.util import get_associated_image
-from ....domain.image.segmentation.util import ImageSegmentationReader
+from ....domain.image.segmentation.util import RelativeDataPathMixin
 from ..util import BlueChannelFormat
 
 
-class BlueChannelReader(ImageSegmentationReader[BlueChannelFormat]):
+class BlueChannelReader(
+    RelativeDataPathMixin,
+    AnnotationFileProcessor[BlueChannelFormat]
+):
     """
     Reader of image-segmentation data-sets which store annotations
     in the blue-channel of an image.
     """
     def read_annotation_file(self, filename: str, then: ThenFunction[BlueChannelFormat]):
-        # Get the path to the data-file
-        data_path = self.get_data_path(filename)
-
         # Get the associated data image
-        data_image_filename = get_associated_image(
-            os.path.join(data_path, os.path.splitext(os.path.basename(filename))[0]),
+        data_image_filename = self.get_associated_image(
+            filename,
             [ImageFormat.JPG, ImageFormat.BMP, ImageFormat.PNG]
         )
 
