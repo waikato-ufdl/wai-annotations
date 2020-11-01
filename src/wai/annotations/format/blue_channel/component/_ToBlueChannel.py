@@ -22,6 +22,10 @@ class ToBlueChannel(
             then: ThenFunction[BlueChannelFormat],
             done: DoneFunction
     ):
+        # Create a negative from a negative
+        if element.annotations is None:
+            return then(BlueChannelFormat(element.data, None))
+
         # If the number of labels is more than 255, this format can't support it
         if element.annotations.max_index > 255:
             raise Exception("Blue-channel format supports a maximum of 255 labels")
