@@ -22,6 +22,10 @@ class ToIndexedPNG(
             then: ThenFunction[IndexedPNGFormat],
             done: DoneFunction
     ):
+        # If the element is a negative, forward it as such
+        if element.annotations is None:
+            return then(IndexedPNGFormat(element.data, None))
+
         # If the number of labels is more than 255, this format can't support it
         if element.annotations.max_index > 255:
             raise Exception("Indexed PNG supports a maximum of 255 labels")
