@@ -112,7 +112,7 @@ def plugin_domains(plugin: Type[StageSpecifier]) -> str:
     elif issubclass(plugin, ProcessorStageSpecifier):
         return ", ".join(
             domain.name()
-            for domain in try_translate_domains(plugin, get_all_domains())
+            for domain in try_translate_domains(plugin, get_all_domains())[0]
         )
 
 

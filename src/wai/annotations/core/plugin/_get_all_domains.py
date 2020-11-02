@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import FrozenSet, Type, Optional, Set
+from typing import FrozenSet, Type, Optional, Set, Tuple
 
 from ..domain import DomainSpecifier
 from ..specifier import *
@@ -34,7 +34,7 @@ def get_all_domains() -> FrozenSet[Type[DomainSpecifier]]:
         # Translate all the untranslated domains
         new_domains = set()
         for specifier in all_plugins_by_base_type[ProcessorStageSpecifier].values():
-            new_domains.update(try_translate_domains(specifier, untranslated_domains))
+            new_domains.update(try_translate_domains(specifier, untranslated_domains)[1])
 
         # Mark the recently-translated domains as translated
         translated_domains.update(untranslated_domains)
@@ -49,25 +49,27 @@ def get_all_domains() -> FrozenSet[Type[DomainSpecifier]]:
 def try_translate_domains(
         specifier: Type[ProcessorStageSpecifier],
         domains: FrozenSet[Type[DomainSpecifier]]
-) -> Set[Type[DomainSpecifier]]:
+) -> Tuple[Set[Type[DomainSpecifier]], Set[Type[DomainSpecifier]]]:
     """
     Attempts to translate the given domains using the processor specifier,
     returning the set of successful results.
 
     :param specifier:   The specifier for a processor stage.
     :param domains:     The domains to translate.
-    :return:            The successfully-translated domains.
+    :return:            The successfully-translated input and output domains.
     """
     # Create the set of successful translations
-    successes = set()
+    successful_input_domains = set()
+    successful_output_domains = set()
 
     # Attempt translation for each domain, adding successes to the set
     for domain in domains:
         translated_domain = try_domain_transfer_function(specifier, domain)
         if translated_domain is not None:
-            successes.add(translated_domain)
+            successful_output_domains.add(translated_domain)
+            successful_input_domains.add(domain)
 
-    return successes
+    return successful_input_domains, successful_output_domains
 
 
 @lru_cache()
