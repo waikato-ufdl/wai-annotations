@@ -1,9 +1,12 @@
 from functools import lru_cache
-from typing import FrozenSet, Type, Optional, Set, Tuple
+from typing import FrozenSet, Type, Optional, Set, Tuple, Dict
 
 from ..domain import DomainSpecifier
 from ..specifier import *
 from ._get_all_plugins_by_type import get_all_plugins_by_type
+
+# The type of a transfer mapping from domains to domains
+DomainTransferMap = Dict[Type[DomainSpecifier], Type[DomainSpecifier]]
 
 
 @lru_cache()
@@ -46,9 +49,33 @@ def get_all_domains() -> FrozenSet[Type[DomainSpecifier]]:
     return frozenset(translated_domains)
 
 
+def get_domain_transfer_map(
+        specifier: Type[ProcessorStageSpecifier],
+        domains: Set[Type[DomainSpecifier]]
+) -> DomainTransferMap:
+    """
+    Gets a map from the input domains to the mapped output domains
+    for a processor stage.
+
+    :param specifier:   The specifier for a processor stage.
+    :param domains:     The domains to translate.
+    :return:            The successfully-translated input and output domains.
+    """
+    # Initialise the map
+    domain_transfer_map = {}
+
+    # Attempt translation for each domain, adding successes to the set
+    for domain in domains:
+        translated_domain = try_domain_transfer_function(specifier, domain)
+        if translated_domain is not None:
+            domain_transfer_map[domain] = translated_domain
+
+    return domain_transfer_map
+
+
 def try_translate_domains(
         specifier: Type[ProcessorStageSpecifier],
-        domains: FrozenSet[Type[DomainSpecifier]]
+        domains: Set[Type[DomainSpecifier]]
 ) -> Tuple[Set[Type[DomainSpecifier]], Set[Type[DomainSpecifier]]]:
     """
     Attempts to translate the given domains using the processor specifier,
@@ -62,12 +89,10 @@ def try_translate_domains(
     successful_input_domains = set()
     successful_output_domains = set()
 
-    # Attempt translation for each domain, adding successes to the set
-    for domain in domains:
-        translated_domain = try_domain_transfer_function(specifier, domain)
-        if translated_domain is not None:
-            successful_output_domains.add(translated_domain)
-            successful_input_domains.add(domain)
+    # Move translations from the transfer map into the sets
+    for input_domain, output_domain in get_domain_transfer_map(specifier, domains).items():
+        successful_input_domains.add(input_domain)
+        successful_output_domains.add(output_domain)
 
     return successful_input_domains, successful_output_domains
 
