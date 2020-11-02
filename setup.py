@@ -97,7 +97,7 @@ setup(
             "strip-annotations=wai.annotations.isp.strip_annotations.specifier:StripAnnotationsISPSpecifier",
 
             # XDCs
-            # Currently none
+            "od-to-is=wai.annotations.xdc.od_to_is.specifier:OD2ISXDCSpecifier",
         ]
     }
 )
