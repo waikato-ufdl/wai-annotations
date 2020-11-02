@@ -1,10 +1,12 @@
 Changelog
 =========
 
-0.5.2 (2020-??-??)
+0.5.2 (2020-11-02)
 ------------------
 
 - Added the layer-segments image-segmentation format.
+- Added the `od-to-is` cross-domain converter.
+- Bug fixes.
 
 0.5.1 (2020-10-30)
 ------------------
