@@ -25,6 +25,10 @@ class ToLayerSegments(
             then: ThenFunction[LayerSegmentsOutputFormat],
             done: DoneFunction
     ):
+        # Handle negatives
+        if element.annotations is None:
+            return then(LayerSegmentsOutputFormat(element.data, {}))
+
         # Create a list of label, segment image pairs
         label_images = {}
 
