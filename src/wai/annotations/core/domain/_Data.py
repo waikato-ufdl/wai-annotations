@@ -10,7 +10,7 @@ class Data:
     items in that domain, e.g. image files for the image domain.
     """
     def __init__(self, filename: str, data: Optional[bytes] = None):
-        self._filename: str = filename
+        self._filename: str = os.path.basename(filename)
         self._data: Optional[bytes] = data
 
     @property
@@ -41,10 +41,7 @@ class Data:
             with open(filepath, "rb") as file:
                 data = file.read()
 
-        # Trim the filename
-        filename = os.path.basename(filepath)
-
-        return cls.from_file_data(filename, data)
+        return cls.from_file_data(filepath, data)
 
     @classmethod
     @abstractmethod

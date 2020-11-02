@@ -6,6 +6,7 @@ Changelog
 
 - Added ability to provide a source iterable when using `iterate_files`.
 - `ConversionPipelineBuilder` now works with any combination of sources, processors and sinks.
+- Data elements now are only referred to by their base filename.
 
 0.5.2 (2020-11-02)
 ------------------
