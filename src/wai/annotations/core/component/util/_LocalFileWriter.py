@@ -138,7 +138,7 @@ def iterate_files(pipeline: Pipeline, source: Optional[Iterable] = None) -> Iter
 
         # Create a new pipeline with the new output
         new_pipeline = Pipeline(
-            pipeline.source,
+            pipeline.source if pipeline.has_source else None,
             pipeline.processors,
             temp_writer
         )
