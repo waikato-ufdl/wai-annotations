@@ -11,10 +11,10 @@ from ....core.stream import ThenFunction, DoneFunction
 from ....core.stream.util import ProcessState, RequiresNoFinalisation
 from ....domain.image.object_detection import ImageObjectDetectionInstance
 from ....domain.image.object_detection.util import get_object_label
+from ....domain.image.segmentation.util import mask_from_polygon
 from ..utils import (
     tensorflow as tf,
     make_feature,
-    mask_from_polygon,
     negative_example,
     TensorflowExampleExternalFormat,
     png_from_mask,

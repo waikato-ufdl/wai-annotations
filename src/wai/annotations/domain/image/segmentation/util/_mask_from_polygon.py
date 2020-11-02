@@ -2,8 +2,8 @@ import numpy as np
 
 from wai.common.geometry import Polygon
 
-from ....core.util import polygon_to_poly_array
-from ....image_utils import polygon_to_mask
+from .....core.util import polygon_to_poly_array
+from .....image_utils import polygon_to_mask
 
 
 def mask_from_polygon(
