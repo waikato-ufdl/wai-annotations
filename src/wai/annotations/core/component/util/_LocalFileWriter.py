@@ -2,7 +2,7 @@ from argparse import Namespace
 import os
 from abc import abstractmethod, abstractproperty
 from tempfile import TemporaryDirectory
-from typing import Optional, TypeVar, Iterator, IO, Tuple
+from typing import Optional, TypeVar, Iterator, IO, Tuple, Iterable
 
 from wai.common.cli.options import TypedOption, Option
 
@@ -104,11 +104,13 @@ class ExpectsDirectory:
             )
 
 
-def iterate_files(pipeline: Pipeline) -> Iterator[Tuple[str, IO[bytes]]]:
+def iterate_files(pipeline: Pipeline, source: Optional[Iterable] = None) -> Iterator[Tuple[str, IO[bytes]]]:
     """
     Iterates through the files written by a pipeline.
 
     :param pipeline:    The pipeline (must end in a local file-writer).
+    :param source:      The source to provide stream elements to the pipeline.
+                        Uses the fixed source if none given.
     :return:            An iterator of file-name, file pairs.
     """
     # Get the writer from the end of the pipeline
@@ -142,7 +144,7 @@ def iterate_files(pipeline: Pipeline) -> Iterator[Tuple[str, IO[bytes]]]:
         )
 
         # Execute the new pipeline
-        new_pipeline.process()
+        new_pipeline.process(source)
 
         # Iterate through all written files
         for dirpath, dirnames, filenames in os.walk(temp_directory):

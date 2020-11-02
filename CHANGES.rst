@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.3 (2020-11-03)
+------------------
+
+- Added ability to provide a source iterable when using `iterate_files`.
+
 0.5.2 (2020-11-02)
 ------------------
 
