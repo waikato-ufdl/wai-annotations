@@ -17,6 +17,7 @@ class UnlabelledInputMixin(OptionValueHandler, ABC):
         type=str,
         nargs="+",
         metavar="LABEL",
+        required=True,
         help="specifies the labels for each index"
     )
 
