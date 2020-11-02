@@ -31,7 +31,7 @@ class ToBlueChannel(
             raise Exception("Blue-channel format supports a maximum of 255 labels")
 
         # Convert the index array to RGB bytes, with the indices in the blue channel
-        rgb_array = np.zeros((*element.annotations.size, 3), np.uint8)
+        rgb_array = np.zeros((*element.annotations.indices.shape, 3), np.uint8)
         rgb_array[:, :, 2] = element.annotations.indices.astype(np.uint8)
 
         # Create the annotation image

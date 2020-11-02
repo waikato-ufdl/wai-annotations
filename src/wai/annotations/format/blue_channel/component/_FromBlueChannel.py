@@ -29,7 +29,7 @@ class FromBlueChannel(
         # Calculate the indices from the data in the blue channel of the image
         new_indices = element.annotations.convert("RGB").tobytes()
         new_indices = np.fromstring(new_indices, dtype=np.uint8)
-        new_indices.resize((*annotation.size, 3))
+        new_indices.resize((*annotation.indices.shape, 3))
         new_indices = new_indices[:, :, 2]
         new_indices = new_indices.astype(np.uint16)
 

@@ -10,7 +10,7 @@ class ImageSegmentationAnnotation:
     def __init__(self, labels: List[str], size: Tuple[int, int]):
         self._labels = list(labels)
         self._size = size
-        self._indices: np.ndarray = np.zeros(size, np.uint16)
+        self._indices: np.ndarray = np.zeros((size[1], size[0]), np.uint16)
         self._indices.flags.writeable = False
 
         self._is_negative: bool = True
@@ -42,7 +42,7 @@ class ImageSegmentationAnnotation:
     @indices.setter
     def indices(self, value: np.ndarray):
         # Make sure the array is of the correct shape/type
-        if value.shape != self._size:
+        if value.shape != self._indices.shape:
             raise Exception("Can't change shape of index array")
         elif value.dtype != np.uint16:
             raise Exception("Can't change type of index array")

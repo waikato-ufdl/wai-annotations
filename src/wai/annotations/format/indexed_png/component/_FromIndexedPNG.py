@@ -28,7 +28,7 @@ class FromIndexedPNG(
 
         # Calculate the indices from the palette indices in the image
         new_indices = np.fromstring(element.annotations.tobytes(), dtype=np.uint8).astype(np.uint16)
-        new_indices.resize(annotation.size)
+        new_indices.resize(annotation.indices.shape)
 
         # Set the indices to the calculated values
         annotation.indices = new_indices
