@@ -28,7 +28,7 @@ def instantiate_stage_as_pipeline(specifier: Type[StageSpecifier], options: Opti
         source = components[0]
         components = components[1:]
 
-    if isinstance(components[-1], SinkComponent):
+    elif isinstance(components[-1], SinkComponent):
         sink = components[-1]
         components = components[:-1]
 
