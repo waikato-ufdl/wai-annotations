@@ -12,6 +12,9 @@ def get_configured_stage_parser(specifier: Type[StageSpecifier], **kwargs):
     :param kwargs:      Any additional arguments to the parser.
     :return:            The configured parser for the stage.
     """
+    # Force suppression of help option
+    kwargs['add_help'] = False
+
     # Get the components of the stage
     component_types = specifier.components()
 

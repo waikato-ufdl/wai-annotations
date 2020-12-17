@@ -18,7 +18,7 @@ def instantiate_stage_as_pipeline(specifier: Type[StageSpecifier], options: Opti
     :return:            The stage as a pipeline.
     """
     # Instantiate all of the stage's components from the options
-    namespace = get_configured_stage_parser(specifier, prog=specifier.__name__, add_help=False).parse_args(options)
+    namespace = get_configured_stage_parser(specifier, prog=specifier.__name__).parse_args(options)
     components = tuple(component_type(namespace) for component_type in specifier.components())
 
     source = None

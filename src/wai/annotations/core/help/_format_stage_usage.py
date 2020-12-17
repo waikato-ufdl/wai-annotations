@@ -17,6 +17,5 @@ def format_stage_usage(specifier: Type[StageSpecifier], name: str, indent: int =
     return (" " * indent) + get_configured_stage_parser(
         specifier,
         prog=name,
-        add_help=False,
         formatter_class=plugin_usage_formatter_with_default_start_indent(indent)
     ).format_help()
