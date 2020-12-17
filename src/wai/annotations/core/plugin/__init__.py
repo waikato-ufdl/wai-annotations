@@ -11,4 +11,5 @@ from ._get_all_domains import (
 from ._get_all_plugin_names import get_all_plugin_names
 from ._get_all_plugins import get_all_plugins
 from ._get_all_plugins_by_type import get_all_plugins_by_type
+from ._get_plugin_domains import get_plugin_domains
 from ._get_plugin_specifier import get_plugin_specifier
