@@ -6,6 +6,13 @@ from ....core.domain import DomainSpecifier
 from .._Image import Image
 from ._ImageObjectDetectionInstance import ImageObjectDetectionInstance
 
+DESCRIPTION = """Images containing multiple identified objects.
+
+The image object-detection domain pertains to finding regions of still images which contain identifiable objects.
+Instances in this domain consist of an image and a set of regions (either axis-aligned boxes or polygons), each with
+an accompanying label, identifying the detected objects within the image.
+"""
+
 
 class ImageObjectDetectionDomainSpecifier(DomainSpecifier[Image, LocatedObjects]):
     """
@@ -18,7 +25,7 @@ class ImageObjectDetectionDomainSpecifier(DomainSpecifier[Image, LocatedObjects]
 
     @classmethod
     def description(cls) -> str:
-        return "Objects detected in images, bound by a geometric shape"
+        return DESCRIPTION
 
     @classmethod
     def data_type(cls) -> Type[Image]:

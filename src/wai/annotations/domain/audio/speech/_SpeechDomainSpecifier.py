@@ -5,6 +5,12 @@ from .._Audio import Audio
 from ._SpeechInstance import SpeechInstance
 from ._Transcription import Transcription
 
+DESCRIPTION = """Transcriptions of recorded speech.
+
+The speech domain covers audio data of people speaking natural languages, annotated with text transcribing the verbal
+contents of the audio. Instances in this domain are an audio file and a string containing the transcription.
+"""
+
 
 class SpeechDomainSpecifier(DomainSpecifier[Audio, Transcription]):
     """
@@ -17,7 +23,7 @@ class SpeechDomainSpecifier(DomainSpecifier[Audio, Transcription]):
     
     @classmethod
     def description(cls) -> str:
-        return "Transcriptions of recorded speech"
+        return DESCRIPTION
     
     @classmethod
     def data_type(cls) -> Type[Audio]:

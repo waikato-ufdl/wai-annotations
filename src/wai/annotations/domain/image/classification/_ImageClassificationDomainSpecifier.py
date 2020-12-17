@@ -5,6 +5,12 @@ from ...classification import Classification
 from .._Image import Image
 from ._ImageClassificationInstance import ImageClassificationInstance
 
+DESCRIPTION = """Images categorised by content.
+
+The image classification domain deals with labelling entire images as containing a certain subject. Instances in this
+domain contain an image and a string label classifying the image.
+"""
+
 
 class ImageClassificationDomainSpecifier(DomainSpecifier[Image, str]):
     """
@@ -17,7 +23,7 @@ class ImageClassificationDomainSpecifier(DomainSpecifier[Image, str]):
 
     @classmethod
     def description(cls) -> str:
-        return "Images grouped into classes, identified by a string label"
+        return DESCRIPTION
 
     @classmethod
     def data_type(cls) -> Type[Image]:
