@@ -1,6 +1,9 @@
+"""
+Provides functions for working with macros.
+"""
 from wai.common.cli import OptionsList
 
-from ..core.macros import load_macro_file, expand_macros
+from ....core.macros import load_macro_file, expand_macros
 
 
 def perform_macro_expansion(options: OptionsList, filename: str) -> OptionsList:

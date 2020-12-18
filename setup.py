@@ -1,4 +1,5 @@
 from setuptools import setup, find_namespace_packages
+import sys
 
 
 def _read(filename: str) -> str:
@@ -10,6 +11,28 @@ def _read(filename: str) -> str:
     """
     with open(filename, "r") as file:
         return file.read()
+
+
+def _gen_help():
+    """
+    Writes the --list-plugins/--help-plugins text to file.
+    """
+    from wai.annotations.main.commands.plugins import get_plugins_formatted, PluginsOptions
+    from wai.annotations.main.commands.domains import get_domains_formatted, DomainsOptions
+
+    options = PluginsOptions(["-g", "--format=markdown"])
+
+    with open("doc/PLUGINS.md", "w") as file:
+        file.write(get_plugins_formatted(options))
+
+    options = DomainsOptions(["--format=markdown"])
+
+    with open("doc/DOMAINS.md", "w") as file:
+        file.write(get_domains_formatted((options)))
+
+
+if "sdist" in sys.argv:
+    _gen_help()
 
 
 setup(
@@ -49,7 +72,7 @@ setup(
         "opencv-python",
     ],
     entry_points={
-        "console_scripts": ["convert-annotations=wai.annotations.main:sys_main"],
+        "console_scripts": ["wai-annotations=wai.annotations.main:sys_main"],
         "wai.annotations.plugins": [
             # Image Object Detection Formats
             "from-adams-od=wai.annotations.format.adams.od.specifier:ADAMSODInputFormatSpecifier",

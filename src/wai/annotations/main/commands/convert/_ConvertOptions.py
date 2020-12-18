@@ -6,44 +6,15 @@ from wai.common.cli.options import CountOption, FlagOption, TypedOption
 from wai.common.cli.util import TranslationTable
 
 
-class MainSettings(CLIInstantiable):
+class ConvertOptions(CLIInstantiable):
     """
-    The main settings class for the library. Contains global
-    settings.
+    The global options for a conversion.
     """
     # The verbosity of logging to implement
     VERBOSITY = CountOption(
         "-v",
         translation=TranslationTable(WARNING, INFO, DEBUG),
         help="whether to be more verbose when generating the records"
-    )
-
-    # Lists the available plugins and exits
-    LIST_PLUGINS = FlagOption(
-        "--list-plugins",
-        help="lists the available plugins and exits"
-    )
-
-    # Lists the available plugins and exits
-    LIST_DOMAINS = FlagOption(
-        "--list-domains",
-        help="lists the available domains and exits"
-    )
-
-    # Provides usage information for the installed plugins
-    HELP_PLUGINS = TypedOption(
-        "--help-plugins",
-        type=str,
-        nargs="*",
-        default=None,
-        help="provides usage information about plugins and exits",
-        metavar="PLUGIN"
-    )
-
-    # Override the default help option
-    HELP = FlagOption(
-        "-h", "--help",
-        help="prints this help message and exits"
     )
 
     # Lets the user define a macro file other than the default one
@@ -53,6 +24,12 @@ class MainSettings(CLIInstantiable):
         default="",
         help="the file to load macros from",
         metavar="FILENAME"
+    )
+
+    # Override the default help option
+    HELP = FlagOption(
+        "-h", "--help",
+        help="prints this help message and exits"
     )
 
     @classmethod
