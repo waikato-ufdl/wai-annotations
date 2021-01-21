@@ -11,7 +11,7 @@ Also adds additional logging information and removes annotations smaller than 5 
 ```
 convert-annotations -v \
     from-adams-od -i input \
-    dimension-discarder --min-width 5 --min-height 5
+    dimension-discarder --min-width 5 --min-height 5 \
     to-coco-od -o output/annotations.json --license-name "my license" --no-images
 ```
 
