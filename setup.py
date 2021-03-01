@@ -65,7 +65,7 @@ setup(
         "Cython",
         "Pillow",
         "contextlib2",
-        "numpy>=1.16,<=1.17.4",
+        "numpy>=1.16",
         "planar",
         "scikit-image",
         "wai.pycocotools",
