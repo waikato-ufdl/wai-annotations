@@ -10,13 +10,9 @@ def reset_process_state(stream_element):
     # Get the class of the element
     element_type = type(stream_element)
 
-    # Look for all ProcessState descriptors
+    # Look for all ProcessState descriptors, and delete them to reset them
     for attr_name in dir(element_type):
-        # Get the attribute of the class
-        attr = getattr(element_type, attr_name)
-
-        # If it's a ProcessState descriptor, delete it from the instance
-        if attr is ProcessState:
+        if hasattr(element_type, attr_name) and getattr(element_type, attr_name) is ProcessState:
             delattr(stream_element, attr_name)
 
 
