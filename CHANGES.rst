@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.6.0 (2021-03-30)
+------------------
+
+- Sub-commands (convert, plugins, domains).
+- Can use --help/-h anywhere in a command string and get help.
+- Updated documentation.
+- Bug fixes.
+
 0.5.4 (2020-11-05)
 ------------------
 

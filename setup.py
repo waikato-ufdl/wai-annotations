@@ -55,7 +55,7 @@ setup(
     namespace_packages=[
         "wai"
     ],
-    version="0.5.4",
+    version="0.6.0",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
