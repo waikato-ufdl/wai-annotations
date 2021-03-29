@@ -3,18 +3,18 @@
 To convert a dataset using wai-annotations from the command-line, run the following command:
 
 ```
-convert-annotations [GLOBAL OPTIONS] \
+wai-annotations convert [CONVERSION OPTIONS] \
     input-type [INPUT OPTIONS] \
     [ISP/XDC [ISP/XDC OPTIONS]]... \
     output-type [OUTPUT OPTIONS]
 ```
 
-For the available global options, see [here](GLOBAL_OPTIONS.md).
+For the available conversion options, see [here](CONVERSION_OPTIONS.md).
 
 For all other options, run:
 
 ```
-convert-annotations --list-plugins
+wai-annotations plugins
 ```
 
 for the list of available plugins in your environment and how to use them.
