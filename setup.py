@@ -28,7 +28,7 @@ def _gen_help():
     options = DomainsOptions(["--format=markdown"])
 
     with open("doc/DOMAINS.md", "w") as file:
-        file.write(get_domains_formatted((options)))
+        file.write(get_domains_formatted(options))
 
 
 if "sdist" in sys.argv:
