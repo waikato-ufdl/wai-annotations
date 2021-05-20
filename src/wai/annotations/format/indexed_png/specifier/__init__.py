@@ -1,2 +1,0 @@
-from ._IndexedPNGInputFormatSpecifier import IndexedPNGInputFormatSpecifier
-from ._IndexedPNGOutputFormatSpecifier import IndexedPNGOutputFormatSpecifier

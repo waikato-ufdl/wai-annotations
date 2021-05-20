@@ -1,2 +1,0 @@
-from ._SubDirInputFormatSpecifier import SubDirInputFormatSpecifier
-from ._SubDirOutputFormatSpecifier import SubDirOutputFormatSpecifier

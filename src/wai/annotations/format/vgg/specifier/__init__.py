@@ -1,2 +1,0 @@
-from ._VGGInputFormatSpecifier import VGGInputFormatSpecifier
-from ._VGGOutputFormatSpecifier import VGGOutputFormatSpecifier

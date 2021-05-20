@@ -1,2 +1,0 @@
-from ._TFRecordsInputFormatSpecifier import TFRecordsInputFormatSpecifier
-from ._TFRecordsOutputFormatSpecifier import TFRecordsOutputFormatSpecifier

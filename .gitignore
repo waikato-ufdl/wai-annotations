@@ -108,7 +108,3 @@ corey/*
 # other
 *~
 *.swp
-
-# Generated plugin registry files
-/src/wai/annotations/core/plugin/factories/*
-/src/wai/annotations/core/plugin/_registry.py

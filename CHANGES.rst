@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.0 (2021-05-20)
+------------------
+
+- Split packages into separate modules so individual formats can be used/excluded.
+
 0.6.0 (2021-03-30)
 ------------------
 
