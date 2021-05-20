@@ -1,4 +1,4 @@
-from setuptools import setup, find_namespace_packages
+from setuptools import setup
 
 
 def _read(filename: str) -> str:
@@ -25,15 +25,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     license='Apache License Version 2.0',
-    package_dir={
-        '': 'src'
-    },
-    packages=find_namespace_packages(where='src'),
-    namespace_packages=[
-        "wai",
-        "wai.annotations"
-    ],
-    version="0.7.0",
+    version="0.7.1",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
