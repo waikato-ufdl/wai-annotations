@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.3 (2021-11-11)
+------------------
+
+- Upgraded wai.annotations.tf version from 1.1.0 to 1.2.0.
+- Included wai.annotations.voc.
+
 0.7.2 (2021-07-28)
 ------------------
 
