@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.4 (2022-03-01)
+------------------
+
+- Included wai.annotations.imgaug.
+- Included wai.annotations.yolo.
+
 0.7.3 (2021-11-11)
 ------------------
 
