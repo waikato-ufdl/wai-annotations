@@ -4,6 +4,10 @@ Pypi
 Preparation:
 * increment version in `setup.py`
 * add new changelog section in `CHANGES.rst`
+* update the plugin documentation on the wai.annotations manual
+  
+  https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
+  
 * commit/push all changes
 
 Commands for releasing on pypi-waikato (requires twine >= 1.8.0):
