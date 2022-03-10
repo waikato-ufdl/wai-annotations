@@ -25,7 +25,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     license='Apache License Version 2.0',
-    version="0.7.4",
+    version="0.7.5",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
@@ -40,7 +40,7 @@ setup(
         "wai.annotations.layersegments>=1.0.0",
         "wai.annotations.roi>=1.0.0",
         "wai.annotations.subdir>=1.0.0",
-        "wai.annotations.tf>=1.2.0",
+        "wai.annotations.tf>=1.3.0",
         "wai.annotations.vgg>=1.0.0",
         "wai.annotations.voc>=1.1.0",
         "wai.annotations.yolo>=1.0.0"
