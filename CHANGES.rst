@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Added wai.annotations.imgstats.
+- Added wai.annotations.imgvis.
 
 0.7.5 (2022-03-10)
 ------------------

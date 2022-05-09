@@ -37,6 +37,7 @@ setup(
         "wai.annotations.festvox>=1.0.0",
         "wai.annotations.imgaug>=1.0.3",
         "wai.annotations.imgstats>=1.0.2",
+        "wai.annotations.imgvis>=1.0.0",
         "wai.annotations.indexedpng>=1.0.0",
         "wai.annotations.layersegments>=1.0.0",
         "wai.annotations.roi>=1.0.0",
