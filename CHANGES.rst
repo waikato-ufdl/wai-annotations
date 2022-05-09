@@ -6,6 +6,8 @@ Changelog
 
 - Added wai.annotations.imgstats.
 - Added wai.annotations.imgvis.
+- Added wai.annotations.video.
+- Upgraded wai.annotations.core version.
 
 0.7.5 (2022-03-10)
 ------------------
