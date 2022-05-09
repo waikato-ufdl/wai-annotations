@@ -40,6 +40,7 @@ setup(
         "wai.annotations.imgvis>=1.0.0",
         "wai.annotations.indexedpng>=1.0.0",
         "wai.annotations.layersegments>=1.0.0",
+        "wai.annotations.opex>=1.0.0",
         "wai.annotations.roi>=1.0.0",
         "wai.annotations.subdir>=1.0.0",
         "wai.annotations.tf>=1.3.0",

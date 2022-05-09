@@ -6,6 +6,7 @@ Changelog
 
 - Added wai.annotations.imgstats.
 - Added wai.annotations.imgvis.
+- Added wai.annotations.opex.
 - Added wai.annotations.video.
 - Upgraded wai.annotations.core version.
 
