@@ -29,7 +29,7 @@ setup(
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
-        "wai.annotations.core>=0.1.5",
+        "wai.annotations.core>=0.1.6",
         "wai.annotations.adams>=1.0.1",
         "wai.annotations.bluechannel>=1.0.1",
         "wai.annotations.coco>=1.0.1",
