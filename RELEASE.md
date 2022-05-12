@@ -28,3 +28,17 @@ Steps:
 * upload `wai.annotations-X.Y.Z.tar.gz` previously generated with `setup.py`
 * publish
 
+
+Docker
+======
+
+* Copy sub-folder in [docker](docker) directory with new version number
+* Adjust versions in:
+
+  * `README.md`
+  * `Dockerfile`
+  * `bash.bashrc`
+  
+* Test and adjust `Dockerfile` if necessary
+* Add link to new version in [docker/README.md](docker/README.md)
+* Build and deploy docker image to local registry and docker hub
