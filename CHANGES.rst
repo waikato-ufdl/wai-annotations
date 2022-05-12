@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7.6 (????-??-??)
+0.7.6 (2022-05-12)
 ------------------
 
 - Added wai.annotations.imgstats.
