@@ -8,6 +8,7 @@ Changelog
 - Added wai.annotations.imgvis.
 - Added wai.annotations.opex.
 - Added wai.annotations.video.
+- Added wai.annotations.redis.predictions.
 - Upgraded wai.annotations.core version.
 
 0.7.5 (2022-03-10)
