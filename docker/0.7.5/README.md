@@ -23,7 +23,7 @@ docker build -t wai.annotations:0.7.5 .
       wai.annotations:0.7.5 \
       public-push.aml-repo.cms.waikato.ac.nz:443/waikatoufdl/wai.annotations:0.7.5
       
-  docker public-push.aml-repo.cms.waikato.ac.nz:443/waikatoufdl/wai.annotations:0.7.5
+  docker push public-push.aml-repo.cms.waikato.ac.nz:443/waikatoufdl/wai.annotations:0.7.5
   ```
 
 ### Use
