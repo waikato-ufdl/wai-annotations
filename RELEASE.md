@@ -25,14 +25,6 @@ Steps:
 * publish
 
 
-Manual
-======
-
-Update the plugin documentation of the wai.annotations manual
-  
-  https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
-
-
 Docker
 ======
 
@@ -46,3 +38,14 @@ Docker
 * Test and adjust `Dockerfile` if necessary
 * Add link to new version in [docker/README.md](docker/README.md)
 * Build and deploy docker image to local registry and docker hub
+
+
+Manual
+======
+
+* Update the plugin documentation of the wai.annotations manual
+  
+  https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
+
+* Update the list of available docker images in `docs/docker.md`
+
