@@ -38,7 +38,7 @@ docker build -t wai.annotations:0.7.6 .
 
   ```bash
   docker run -u $(id -u):$(id -g) \
-      -v /local/dir:/workspace
+      -v /local/dir:/workspace \
       -it public.aml-repo.cms.waikato.ac.nz:443/waikatoufdl/wai.annotations:0.7.6
   ```
 
@@ -70,7 +70,7 @@ For the current directory, simply use `pwd`.
 
 ```bash
 docker run -u $(id -u):$(id -g) \
-    -v /local/dir:/workspace
+    -v /local/dir:/workspace \
     -it waikatoufdl/wai.annotations:0.7.6
 ```
 
