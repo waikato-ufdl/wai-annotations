@@ -15,11 +15,6 @@ Commands for releasing on pypi-waikato (requires twine >= 1.8.0):
   twine upload dist/*
 ```
 
-* update the plugin documentation of the wai.annotations manual
-  
-  https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
-
-
 Github
 ======
 
@@ -28,6 +23,14 @@ Steps:
 * enter release notes, i.e., significant changes since last release
 * upload `wai.annotations-X.Y.Z.tar.gz` previously generated with `setup.py`
 * publish
+
+
+Manual
+======
+
+Update the plugin documentation of the wai.annotations manual
+  
+  https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
 
 
 Docker
