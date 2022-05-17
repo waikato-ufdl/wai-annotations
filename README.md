@@ -30,3 +30,9 @@ https://ufdl.cms.waikato.ac.nz/wai-annotations-manual
 * [wai-annotations-video](https://github.com/waikato-ufdl/wai-annotations-video)
 * [wai-annotations-voc](https://github.com/waikato-ufdl/wai-annotations-voc)
 * [wai-annotations-yolo](https://github.com/waikato-ufdl/wai-annotations-yolo)
+
+## Docker images
+
+Public [docker images](docker) with all the modules installed are available from here:
+
+https://hub.docker.com/r/waikatoufdl/wai.annotations/
