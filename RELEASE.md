@@ -38,6 +38,7 @@ Docker
 * Test and adjust `Dockerfile` if necessary
 * Add link to new version in [docker/README.md](docker/README.md)
 * Build and deploy docker image to local registry and docker hub
+* Ensure that [docker/latest/Dockerfile](docker/latest/Dockerfile) uses all the wai.annotations repos
 
 
 Manual
