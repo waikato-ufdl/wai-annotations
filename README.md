@@ -36,3 +36,9 @@ https://ufdl.cms.waikato.ac.nz/wai-annotations-manual
 Public [docker images](docker) with all the modules installed are available from here:
 
 https://hub.docker.com/r/waikatoufdl/wai.annotations/
+
+## Bash script
+
+The [install.sh](install.sh) bash script allows you to install wai.annotations in a
+virtual environment. Either using the published modules or from the latest source
+code available from the github repositories.

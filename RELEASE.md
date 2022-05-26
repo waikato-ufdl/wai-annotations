@@ -41,6 +41,18 @@ Docker
 * Ensure that [docker/latest/Dockerfile](docker/latest/Dockerfile) uses all the wai.annotations repos
 
 
+Scripts
+=======
+
+* Ensure that [install.sh](install.sh) contains all the wai.annotations repos.
+
+
+README.md
+=========
+
+* Ensure that [README.md](README.md) points to all the github repositories.
+
+
 Manual
 ======
 
@@ -49,4 +61,3 @@ Manual
   https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
 
 * Update the list of available docker images in `docs/docker.md`
-
