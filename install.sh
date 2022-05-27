@@ -63,6 +63,7 @@ then
     read -n 1 -p "Virtual environment '$VENV_DIR' exists - remove (y/n)? " ANSWER
     if [ "$ANSWER" != "y" ]
     then
+      echo
       echo "Keeping the virtual environment, exiting script."
       echo
       exit 0
