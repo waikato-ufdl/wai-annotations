@@ -97,6 +97,7 @@ then
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-coco.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-commonvoice.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-festvox.git
+  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-grayscale.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-imgaug.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-imgstats.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-imgvis.git
