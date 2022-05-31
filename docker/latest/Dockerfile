@@ -31,6 +31,7 @@ RUN git clone https://github.com/waikato-ufdl/wai-annotations-core.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-coco.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-commonvoice.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-festvox.git && \
+    git clone https://github.com/waikato-ufdl/wai-annotations-grayscale.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-imgaug.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-imgstats.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-imgvis.git && \
@@ -51,6 +52,7 @@ RUN pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-core && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-coco && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-commonvoice && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-festvox && \
+    pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-grayscale && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-imgaug && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-imgstats && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-imgvis && \
