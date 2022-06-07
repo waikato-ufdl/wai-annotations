@@ -56,6 +56,8 @@ README.md
 Manual
 ======
 
+* Update the list of available plugins in `docs/install.md`
+
 * Update the plugin documentation of the wai.annotations manual
   
   https://github.com/waikato-ufdl/wai-annotations-manual#updating-plugin-documentation
