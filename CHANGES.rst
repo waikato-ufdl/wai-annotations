@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Added wai.annotations.grayscale.
+- Upgraded wai.annotations.core to 0.1.7
 
 0.7.6 (2022-05-12)
 ------------------
