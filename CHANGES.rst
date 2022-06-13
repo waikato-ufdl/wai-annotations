@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Added wai.annotations.grayscale
+- Upgraded wai.annotations.coco to 1.0.2
 - Upgraded wai.annotations.core to 0.1.7
 - Upgraded wai.annotations.imgaug to 1.0.5
 - Upgraded wai.annotations.imgstats to 1.0.3
