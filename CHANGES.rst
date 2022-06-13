@@ -11,6 +11,7 @@ Changelog
 - Upgraded wai.annotations.imgaug to 1.0.5
 - Upgraded wai.annotations.imgstats to 1.0.3
 - Upgraded wai.annotations.imgvis to 1.0.3
+- Upgraded wai.annotations.redis.predictions to 1.0.2
 - Upgraded wai.annotations.roi to 1.0.1
 - Upgraded wai.annotations.video to 1.0.1
 
