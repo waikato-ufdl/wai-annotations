@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Added wai.annotations.grayscale
+- Upgraded wai.annotations.bluechannel to 1.0.2
 - Upgraded wai.annotations.coco to 1.0.2
 - Upgraded wai.annotations.core to 0.1.7
 - Upgraded wai.annotations.grayscale to 1.0.1
