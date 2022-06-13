@@ -36,7 +36,7 @@ setup(
         "wai.annotations.commonvoice>=1.0.1",
         "wai.annotations.festvox>=1.0.0",
         "wai.annotations.grayscale>=1.0.0",
-        "wai.annotations.imgaug>=1.0.4",
+        "wai.annotations.imgaug>=1.0.5",
         "wai.annotations.imgstats>=1.0.3",
         "wai.annotations.imgvis>=1.0.3",
         "wai.annotations.indexedpng>=1.0.0",
