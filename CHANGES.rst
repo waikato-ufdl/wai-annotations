@@ -4,8 +4,9 @@ Changelog
 0.7.7 (????-??-??)
 ------------------
 
-- Added wai.annotations.grayscale.
+- Added wai.annotations.grayscale
 - Upgraded wai.annotations.core to 0.1.7
+- Upgraded wai.annotations.imgstats to 1.0.3
 - Upgraded wai.annotations.video to 1.0.1
 
 0.7.6 (2022-05-12)
