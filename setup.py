@@ -43,7 +43,7 @@ setup(
         "wai.annotations.layersegments>=1.0.1",
         "wai.annotations.opex>=1.0.0",
         "wai.annotations.redis.predictions>=1.0.1",
-        "wai.annotations.roi>=1.0.0",
+        "wai.annotations.roi>=1.0.1",
         "wai.annotations.subdir>=1.0.0",
         "wai.annotations.tf>=1.3.0",
         "wai.annotations.vgg>=1.0.0",
