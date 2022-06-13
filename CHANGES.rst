@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7.7 (????-??-??)
+0.7.7 (2022-06-13)
 ------------------
 
 - Added wai.annotations.grayscale
