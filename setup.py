@@ -38,7 +38,7 @@ setup(
         "wai.annotations.grayscale>=1.0.0",
         "wai.annotations.imgaug>=1.0.4",
         "wai.annotations.imgstats>=1.0.3",
-        "wai.annotations.imgvis>=1.0.2",
+        "wai.annotations.imgvis>=1.0.3",
         "wai.annotations.indexedpng>=1.0.0",
         "wai.annotations.layersegments>=1.0.1",
         "wai.annotations.opex>=1.0.0",
