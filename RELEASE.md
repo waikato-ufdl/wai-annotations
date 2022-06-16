@@ -7,12 +7,12 @@ Preparation:
   
 * commit/push all changes
 
-Commands for releasing on pypi-waikato (requires twine >= 1.8.0):
+Commands for releasing on pypi (requires twine >= 1.8.0):
 
 ```
-  rm -r dist wai.annotations.egg-info
-  python setup.py clean sdist
-  twine upload dist/*
+rm -r dist wai.annotations.egg-info
+python setup.py clean sdist
+twine upload dist/*
 ```
 
 Github
