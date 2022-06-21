@@ -93,6 +93,7 @@ then
   "$PIP" install numpy
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-core.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-adams.git
+  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-audio.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-bluechannel.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-coco.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-commonvoice.git

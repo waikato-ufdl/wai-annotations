@@ -12,6 +12,7 @@ https://ufdl.cms.waikato.ac.nz/wai-annotations-manual
 
 * [wai-annotations-core](https://github.com/waikato-ufdl/wai-annotations-core)
 * [wai-annotations-adams](https://github.com/waikato-ufdl/wai-annotations-adams)
+* [wai-annotations-audio](https://github.com/waikato-ufdl/wai-annotations-audio)
 * [wai-annotations-bluechannel](https://github.com/waikato-ufdl/wai-annotations-bluechannel)
 * [wai-annotations-coco](https://github.com/waikato-ufdl/wai-annotations-coco)
 * [wai-annotations-commonvoice](https://github.com/waikato-ufdl/wai-annotations-commonvoice)

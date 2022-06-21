@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.8 (????-??-??)
+------------------
+
+- Added wai.annotations.audio
+- Added wai.annotations.generic
+
 0.7.7 (2022-06-13)
 ------------------
 

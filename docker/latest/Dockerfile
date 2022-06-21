@@ -27,6 +27,7 @@ WORKDIR /opt/wai-annotations
 
 RUN git clone https://github.com/waikato-ufdl/wai-annotations-core.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-adams.git && \
+    git clone https://github.com/waikato-ufdl/wai-annotations-audio.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-bluechannel.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-coco.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-commonvoice.git && \
@@ -49,6 +50,7 @@ RUN git clone https://github.com/waikato-ufdl/wai-annotations-core.git && \
     git clone https://github.com/waikato-ufdl/wai-annotations-yolo.git
 RUN pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-core && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-adams && \
+    pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-audio && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-bluechannel && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-coco && \
     pip3 --no-cache-dir install /opt/wai-annotations/wai-annotations-commonvoice && \
