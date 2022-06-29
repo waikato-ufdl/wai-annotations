@@ -31,7 +31,7 @@ setup(
     install_requires=[
         "wai.annotations.core>=0.1.8",
         "wai.annotations.adams>=1.0.1",
-        "wai.annotations.audio>=1.0.0",
+        "wai.annotations.audio>=1.0.1",
         "wai.annotations.bluechannel>=1.0.2",
         "wai.annotations.coco>=1.0.2",
         "wai.annotations.commonvoice>=1.0.1",
