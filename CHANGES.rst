@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.9 (????-??-??)
+------------------
+
+- Upgraded wai.annotations.layersegments to 1.0.2
+
+
 0.7.8 (2022-06-29)
 ------------------
 

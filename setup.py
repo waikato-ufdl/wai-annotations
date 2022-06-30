@@ -42,7 +42,7 @@ setup(
         "wai.annotations.imgstats>=1.0.3",
         "wai.annotations.imgvis>=1.0.3",
         "wai.annotations.indexedpng>=1.0.1",
-        "wai.annotations.layersegments>=1.0.1",
+        "wai.annotations.layersegments>=1.0.2",
         "wai.annotations.opex>=1.0.0",
         "wai.annotations.redis.predictions>=1.0.2",
         "wai.annotations.roi>=1.0.1",
