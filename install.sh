@@ -90,30 +90,30 @@ echo "Installing wai.annotations modules..."
 echo
 if [ "$LATEST" = "yes" ]
 then
-  "$PIP" install "numpy<1.23.0" pipdeptree
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-core.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-adams.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-audio.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-bluechannel.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-coco.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-commonvoice.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-festvox.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-generic.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-grayscale.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-imgaug.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-imgstats.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-imgvis.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-indexedpng.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-layersegments.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-opex.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-redis-predictions.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-roi.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-subdir.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-tf.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-vgg.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-video.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-voc.git
-  "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-yolo.git
+  "$PIP" install "numpy<1.23.0" pipdeptree \
+      git+https://github.com/waikato-ufdl/wai-annotations-core.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-adams.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-audio.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-bluechannel.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-coco.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-commonvoice.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-festvox.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-generic.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-grayscale.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-imgaug.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-imgstats.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-imgvis.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-indexedpng.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-layersegments.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-opex.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-redis-predictions.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-roi.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-subdir.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-tf.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-vgg.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-video.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-voc.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-yolo.git
 else
   "$PIP" install wai.annotations
 fi
