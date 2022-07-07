@@ -90,7 +90,7 @@ echo "Installing wai.annotations modules..."
 echo
 if [ "$LATEST" = "yes" ]
 then
-  "$PIP" install numpy
+  "$PIP" install "numpy<1.23.0" pipdeptree
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-core.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-adams.git
   "$PIP" install git+https://github.com/waikato-ufdl/wai-annotations-audio.git
