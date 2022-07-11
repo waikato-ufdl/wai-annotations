@@ -84,13 +84,18 @@ echo "Creating virtual environment: $VENV_DIR"
 echo
 $PYTHON_INTERPRETER -m venv "$VENV_DIR"
 
+# update tools
+"$VENV_DIR/bin/pip" install --upgrade pip wheel
+
 # installing wai.annotation
 echo
 echo "Installing wai.annotations modules..."
 echo
 if [ "$LATEST" = "yes" ]
 then
-  "$PIP" install "numpy<1.23.0" pipdeptree \
+  "$PIP" install \
+      "numpy<1.23.0" pipdeptree 
+  "$PIP" install \
       git+https://github.com/waikato-ufdl/wai-annotations-core.git \
       git+https://github.com/waikato-ufdl/wai-annotations-adams.git \
       git+https://github.com/waikato-ufdl/wai-annotations-audio.git \
