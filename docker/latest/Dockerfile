@@ -27,6 +27,7 @@ RUN pip3 --no-cache-dir install \
       git+https://github.com/waikato-ufdl/wai-annotations-bluechannel.git \
       git+https://github.com/waikato-ufdl/wai-annotations-coco.git \
       git+https://github.com/waikato-ufdl/wai-annotations-commonvoice.git \
+      git+https://github.com/waikato-ufdl/wai-annotations-coqui.git \
       git+https://github.com/waikato-ufdl/wai-annotations-festvox.git \
       git+https://github.com/waikato-ufdl/wai-annotations-generic.git \
       git+https://github.com/waikato-ufdl/wai-annotations-grayscale.git \
