@@ -16,6 +16,7 @@ https://ufdl.cms.waikato.ac.nz/wai-annotations-manual
 * [wai-annotations-bluechannel](https://github.com/waikato-ufdl/wai-annotations-bluechannel)
 * [wai-annotations-coco](https://github.com/waikato-ufdl/wai-annotations-coco)
 * [wai-annotations-commonvoice](https://github.com/waikato-ufdl/wai-annotations-commonvoice)
+* [wai-annotations-coqui](https://github.com/waikato-ufdl/wai-annotations-coqui)
 * [wai-annotations-festvox](https://github.com/waikato-ufdl/wai-annotations-festvox)
 * [wai-annotations-generic](https://github.com/waikato-ufdl/wai-annotations-generic)
 * [wai-annotations-grayscale](https://github.com/waikato-ufdl/wai-annotations-grayscale)
