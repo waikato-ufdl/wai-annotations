@@ -47,10 +47,12 @@ setup(
         "wai.annotations.redis.predictions>=1.0.2",
         "wai.annotations.roi>=1.0.1",
         "wai.annotations.subdir>=1.0.1",
-        "wai.annotations.tf>=1.3.0",
         "wai.annotations.vgg>=1.0.0",
         "wai.annotations.video>=1.0.1",
         "wai.annotations.voc>=1.1.0",
         "wai.annotations.yolo>=1.0.0"
-    ]
+    ],
+    extras_require={
+        "tf": ["wai.annotations.tf>=1.3.0"],
+    },
 )
