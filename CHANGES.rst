@@ -9,6 +9,7 @@ Changelog
 - Upgraded wai.annotations.commonvoice to 1.0.2
 - Upgraded wai.annotations.imgaug to 1.0.6
 - Upgraded wai.annotations.layersegments to 1.0.2
+- Upgraded wai.annotations.video to 1.0.2
 - Upgraded wai.annotations.yolo to 1.0.1
 
 
