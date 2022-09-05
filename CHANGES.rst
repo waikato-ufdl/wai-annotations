@@ -5,6 +5,8 @@ Changelog
 ------------------
 
 - Upgraded wai.annotations.layersegments to 1.0.2
+- wai.annotations.tf is now optional
+- install.sh now has -o flag to optional modules when installing latest (-l)
 
 
 0.7.8 (2022-06-29)

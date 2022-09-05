@@ -6,7 +6,7 @@
 function usage()
 {
    echo
-   echo "${0##*/} [-v <dir>] [-p <path>] [-y] [-l] [-h]"
+   echo "${0##*/} [-v <dir>] [-p <path>] [-y] [-l] [-o] [-h]"
    echo
    echo "Installs all the wai.annotations repos in a virtual environment."
    echo
@@ -19,6 +19,7 @@ function usage()
    echo "      e.g., if the venv dir already exists and requires deleting"
    echo " -l   whether to install the latest, i.e., straight from the github repositories"
    echo "      rather than using the modules published on PyPI.org."
+   echo " -o   when installing latest ('-l') also installs the optional modules like wai.annotations.tf."
    echo
 }
 
@@ -28,9 +29,10 @@ PYTHON_INTERPRETER_DEFAULT="/usr/bin/python3"
 PYTHON_INTERPRETER=$PYTHON_INTERPRETER_DEFAULT
 ASSUME_YES="no"
 LATEST="no"
+OPTIONAL="no"
 
 # interpret parameters
-while getopts ":hylv:p:" flag
+while getopts ":hylov:p:" flag
 do
    case $flag in
       v) VENV_DIR=$OPTARG
@@ -40,6 +42,8 @@ do
       y) ASSUME_YES="yes"
          ;;
       l) LATEST="yes"
+         ;;
+      o) OPTIONAL="yes"
          ;;
       h) usage
          exit 0
@@ -93,6 +97,11 @@ echo "Installing wai.annotations modules..."
 echo
 if [ "$LATEST" = "yes" ]
 then
+  OPTIONAL_PIP=""
+  if [ "$OPTIONAL" = "yes" ]
+  then
+    OPTIONAL_PIP="git+https://github.com/waikato-ufdl/wai-annotations-tf.git"
+  fi
   "$PIP" install "numpy<1.23.0" pipdeptree
   "$PIP" install wai.pycocotools
   "$PIP" install \
@@ -115,7 +124,7 @@ then
       git+https://github.com/waikato-ufdl/wai-annotations-redis-predictions.git \
       git+https://github.com/waikato-ufdl/wai-annotations-roi.git \
       git+https://github.com/waikato-ufdl/wai-annotations-subdir.git \
-      git+https://github.com/waikato-ufdl/wai-annotations-tf.git \
+      $OPTIONAL_PIP \
       git+https://github.com/waikato-ufdl/wai-annotations-vgg.git \
       git+https://github.com/waikato-ufdl/wai-annotations-video.git \
       git+https://github.com/waikato-ufdl/wai-annotations-voc.git \
