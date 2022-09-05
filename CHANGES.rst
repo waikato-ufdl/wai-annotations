@@ -4,9 +4,10 @@ Changelog
 0.7.9 (????-??-??)
 ------------------
 
-- Upgraded wai.annotations.layersegments to 1.0.2
 - wai.annotations.tf is now optional
 - install.sh now has -o flag to optional modules when installing latest (-l)
+- Upgraded wai.annotations.layersegments to 1.0.2
+- Upgraded wai.annotations.yolo to 1.0.1
 
 
 0.7.8 (2022-06-29)
