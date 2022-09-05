@@ -6,6 +6,7 @@ Changelog
 
 - wai.annotations.tf is now optional
 - install.sh now has -o flag to optional modules when installing latest (-l)
+- Upgraded wai.annotations.imgaug to 1.0.6
 - Upgraded wai.annotations.layersegments to 1.0.2
 - Upgraded wai.annotations.yolo to 1.0.1
 
