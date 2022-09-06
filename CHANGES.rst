@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8.0 (????-??-??)
+0.8.0 (2022-09-06)
 ------------------
 
 - wai.annotations.tf is now optional

@@ -25,7 +25,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     license='Apache License Version 2.0',
-    version="0.7.8",
+    version="0.8.0",
     author='Corey Sterling',
     author_email='coreytsterling@gmail.com',
     install_requires=[
