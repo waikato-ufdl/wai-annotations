@@ -12,6 +12,7 @@ Changelog
 - Upgraded wai.annotations.layersegments to 1.0.2
 - Upgraded wai.annotations.video to 1.0.2
 - Upgraded wai.annotations.yolo to 1.0.1
+- Added wai.annotations.coqui 1.0.0
 
 
 0.7.8 (2022-06-29)

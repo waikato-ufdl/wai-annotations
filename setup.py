@@ -35,6 +35,7 @@ setup(
         "wai.annotations.bluechannel>=1.0.2",
         "wai.annotations.coco>=1.0.2",
         "wai.annotations.commonvoice>=1.0.2",
+        "wai.annotations.coqui>=1.0.0",
         "wai.annotations.festvox>=1.0.0",
         "wai.annotations.generic>=1.0.0",
         "wai.annotations.grayscale>=1.0.1",
