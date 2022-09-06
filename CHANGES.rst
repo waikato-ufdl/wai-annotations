@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - wai.annotations.tf is now optional
-- install.sh now has -o flag to optional modules when installing latest (-l)
+- install.sh now has -o flag to install optional modules when installing latest (-l)
 - Upgraded wai.annotations.commonvoice to 1.0.2
 - Upgraded wai.annotations.core to 0.2.0
 - Upgraded wai.annotations.imgaug to 1.0.6
