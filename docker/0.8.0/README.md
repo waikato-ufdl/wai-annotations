@@ -13,7 +13,7 @@ docker build -t wai.annotations:0.8.0 .
 * Log into https://aml-repo.cms.waikato.ac.nz with user that has write access
 
   ```bash
-  docker login -u USER --password-stdin public-push.aml-repo.cms.waikato.ac.nz:443
+  docker login -u USER public-push.aml-repo.cms.waikato.ac.nz:443
   ```
 
 * Execute commands
