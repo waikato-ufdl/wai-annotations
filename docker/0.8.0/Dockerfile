@@ -18,7 +18,7 @@ RUN apt-get update && \
        libxext6 \
        libgl1-mesa-glx \
        libpq-dev \
-       libsndfile-dev
+       libsndfile-dev \
        ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
