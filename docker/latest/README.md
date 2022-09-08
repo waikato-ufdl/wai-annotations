@@ -53,7 +53,7 @@ For the current directory, simply use `pwd`.
 * Log into docker hub as user `waikatoufdl`:
 
   ```bash
-  docker login -u waikatoufdl --password-stdin
+  docker login -u waikatoufdl
   ```
 
 * Execute command:
