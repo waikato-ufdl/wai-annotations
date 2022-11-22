@@ -6,6 +6,7 @@ Changelog
 
 - Upgraded wai.annotations.audio to 1.0.2
 - Upgraded wai.annotations.core to 0.2.1
+- Upgraded wai.annotations.yolo to 1.0.2
 
 
 0.8.0 (2022-09-06)
