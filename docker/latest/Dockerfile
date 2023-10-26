@@ -22,7 +22,7 @@ RUN apt-get update && \
        ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 --no-cache-dir install "numpy<1.23.0" pipdeptree
+RUN pip3 --no-cache-dir install "numpy<1.23.0" pipdeptree "pillow<10"
 RUN pip3 --no-cache-dir install \
       git+https://github.com/waikato-ufdl/wai-annotations-core.git \
       git+https://github.com/waikato-ufdl/wai-annotations-adams.git \
