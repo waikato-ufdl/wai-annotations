@@ -102,7 +102,7 @@ then
   then
     OPTIONAL_PIP="git+https://github.com/waikato-ufdl/wai-annotations-tf.git"
   fi
-  "$PIP" install "numpy<1.23.0" pipdeptree
+  "$PIP" install "numpy<1.23.0" pipdeptree "pillow<9" "scikit-image<0.20.0"
   "$PIP" install wai.pycocotools
   "$PIP" install \
       git+https://github.com/waikato-ufdl/wai-annotations-core.git \
@@ -130,7 +130,7 @@ then
       git+https://github.com/waikato-ufdl/wai-annotations-voc.git \
       git+https://github.com/waikato-ufdl/wai-annotations-yolo.git
 else
-  "$PIP" install "numpy<1.23.0"
+  "$PIP" install "numpy<1.23.0" "pillow<9" "scikit-image<0.20.0"
   "$PIP" install wai.pycocotools
   "$PIP" install wai.annotations
 fi
