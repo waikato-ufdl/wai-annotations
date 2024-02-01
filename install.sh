@@ -89,7 +89,7 @@ echo
 $PYTHON_INTERPRETER -m venv "$VENV_DIR"
 
 # update tools
-"$VENV_DIR/bin/pip" install --upgrade pip wheel
+"$VENV_DIR/bin/pip" install --upgrade "pip<21.0.0" wheel
 
 # installing wai.annotation
 echo
